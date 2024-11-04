@@ -1,0 +1,17 @@
+.password-field {
+  position: relative;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  padding: 0 5px;
+  z-index: 2;
+}
+
+.invit__header {
+  color: purple;
+}
