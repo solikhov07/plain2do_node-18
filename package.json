@@ -36,6 +36,7 @@
     "p-min-delay": "^4.0.1",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-bootstrap": "^2.6.0",
     "react-bootstrap-daterangepicker": "^8.0.0",
     "react-chartist": "^0.14.4",
