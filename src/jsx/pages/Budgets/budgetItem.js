@@ -4,7 +4,7 @@ import swal from "sweetalert";
 import PageTitle from "../../layouts/PageTitle";
 import { useLanguage } from "../../../context/LanguageContext";
 import translations from "../../../translation/translation";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useNavigate } from "react-router-dom";
 import "./BudgetItem.css"; // Import the CSS file
 import { getUserPermissions } from "../../components/Permissions/getUserPermissions";
 import { Button, Form } from "react-bootstrap";
@@ -14,7 +14,7 @@ const BudgetItem = () => {
   const parser = JSON.parse(localStorage.getItem("userDetails"));
   const token = parser.access;
   const { language } = useLanguage();
-  const history = useHistory();
+  const history = useNavigate();
   const t = translations[language];
   const [budgetDetails, setBudgetDetails] = useState(null);
   const [newRow, setNewRow] = useState(false);

@@ -91,7 +91,7 @@ import Nestable from "./components/PluginsMenu/Nestable/Nestable";
 import MainNouiSlider from "./components/PluginsMenu/Noui Slider/MainNouiSlider";
 import MainSweetAlert from "./components/PluginsMenu/Sweet Alert/SweetAlert";
 import Toastr from "./components/PluginsMenu/Toastr/Toastr";
-import JqvMap from "./components/PluginsMenu/Jqv Map/JqvMap";
+// import JqvMap from "./components/PluginsMenu/Jqv Map/JqvMap";
 import Lightgallery from "./components/PluginsMenu/Lightgallery/Lightgallery";
 
 //Redux
@@ -209,7 +209,7 @@ const Markup = () => {
     { url: "uc-noui-slider", component: MainNouiSlider },
     { url: "uc-sweetalert", component: MainSweetAlert },
     { url: "uc-toastr", component: Toastr },
-    { url: "map-jqvmap", component: JqvMap },
+    // { url: "map-jqvmap", component: JqvMap },
     { url: "uc-lightgallery", component: Lightgallery },
 
     ///Redux
