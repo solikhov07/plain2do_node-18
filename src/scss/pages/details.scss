@@ -1,0 +1,424 @@
+// --------.card-box-------
+
+.card{
+    .card-box-icon {
+        width:  4.5rem;
+        height: 4.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #EEEEEE;
+        border-radius: $radius-sm;
+       
+    }
+   
+}
+.counter{
+    .chart-num{
+        margin-top: 0.375rem;
+    }
+	.card-body{
+		padding:1.563rem;
+		.card-box-icon{
+			margin-right:1.25rem;
+		}
+	}
+}
+// -----pie-chart---
+
+.color-picker {
+    display: flex;
+    justify-content: space-between;
+}
+
+// -------Statistic- chart--
+.statistic {
+    background-color: var(--secondary);
+}
+.statistic-content{
+	padding: 1.5rem 1.875rem;
+    padding-bottom: 0;
+	padding-left: 0;
+	@include respond ('tab-land'){
+		padding-left:1.875rem;
+		padding-bottom: 1.25rem;
+	}
+    .default-select{
+        border: none;
+       // color: $bg-color;
+       
+    }
+    .bootstrap-select .btn{
+        color: $white;
+        border-color: var(--primary);
+    }
+    .default-select{
+        background-image: none;
+        position: relative;
+        option{
+            //color: $main-color;
+        }
+    }
+    .default-select .dropdown-toggle::after{
+        border-color: $white;
+    }
+    .statistic-toggle{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        @include respond('tab-land'){
+            justify-content: flex-start;
+			
+        }
+    }
+	@include respond ('phone'){
+		border-top:1px solid rgba(255,255,255,0.3);
+		padding-bottom: 14px;
+	}
+}
+
+.primary-light{
+    background-color: rgba(255,255,255,0.1) !important;
+    svg{
+        g{
+            circle{
+            fill: $white;
+            }
+        }
+    }
+}
+.card.expense{
+    background-color: rgba(255,255,255,0.1)!important;
+    .students1{
+        .content{
+            color: $white;
+            span{
+                margin-bottom: 0.5rem;
+                display: block;
+            }
+            h2{
+                font-size: 1.375rem;
+            }
+            h5{
+                font-size: 1.125rem;
+				margin-bottom: 0;
+            }
+            h5,h2{
+                color: $white;
+            }
+            .up{
+                color: #ffd125;
+				
+            }
+        }
+    }
+}
+
+// ---chackbox-----
+.round {
+    margin-right: 1.5rem;
+    position: relative;
+    padding-left: 2.2rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    user-select: none;
+    input{
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 1.25rem;
+        width: 6.25rem;
+        //background-color: $bg-color;
+        opacity: 0;
+      }
+    span{
+        //color: $main-color;
+    }
+    .checkmark {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        height: 24px;
+        width: 24px;
+        //background-color: $bg-color;
+        border-radius: 50%;
+        border: 3px solid var(--primary);
+        padding: 2px;
+        margin: 0;
+      }
+      .checkmark2 {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        height: 1.35rem;
+        width: 1.35rem;
+       // background-color: $bg-color;
+        border-radius: 50%;
+        border: 2px solid var(--primary);
+        padding: 0.2rem;
+      }
+      
+}
+.round.weekly{
+    .checkmark {
+        border: 3px solid var(--secondary);
+    }
+}
+  .round:hover input ~ .checkmark {
+    //background-color: $bg-color;
+  }
+  
+  .round input:checked ~ .checkmark {
+   // background-color: $bg-color;
+    border: 2px solid var(--primary);
+  }
+  .round.weekly input:checked ~ .checkmark {
+   // background-color: $bg-color;
+    border: 2px solid var(--secondary);
+  }
+  
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+
+  .round input:checked ~ .checkmark:after {
+    display: block;
+  }
+  .round.weekly input:checked ~ .checkmark:after {
+    display: block;
+    background-color:var(--secondary) ;
+  }
+  .round .checkmark:after {
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary);
+    border-radius: 50%;
+    position: relative;
+  }
+  .round.disabled {
+    opacity: 1;
+}
+  
+// ------chack---
+.toggle-btn {
+    margin-right: 1.8rem;
+    position: relative;
+    padding-left: 2rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    user-select: none;
+    input{
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 1.25rem;
+        width: 6.25rem;
+        opacity: 0;
+      }
+    .check {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        height: 22px;
+        width: 22px;
+        background-color: var(--secondary);
+        border-radius: 50%;
+        border: 3px solid $white;
+        padding:2px;
+      }
+      
+}
+
+  .toggle-btn input:checked ~ .check {
+    background-color: var(--seconadry);
+    border: 3px solid $white;
+  }
+  
+  .check:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+
+  .toggle-btn input:checked ~ .check:after {
+    display: block;
+  }
+  .toggle-btn .check:after {
+    width: 82%;
+    height: 82%;
+    background-color: $white;
+    border-radius: 50%;
+	top: 1px;
+    left: 1px;
+    position: relative;
+  }
+  .toggle-btn.expense{
+        .check {
+            border: 3px solid $yellow;
+        }
+    } 
+
+  .toggle-btn.expense input:checked ~ .check{
+    background-color: var(--seconadry);
+    border: 3px solid $yellow;
+  }
+  .toggle-btn.expense .check:after{
+    background-color: $yellow;
+  }
+
+// ------porgrass-bar---
+  
+  .progressbar{
+      box-shadow: none;
+  
+}
+.expense{
+	.students1{
+		padding: 0 10px;
+	}
+}
+.mail-img {
+    position: absolute;
+    bottom: 0%;
+    right: 0;
+}
+
+
+// ----- porject-Statistic---
+.crypto-chart{
+   .default-select{
+        margin-right: 1.85rem;
+    }
+    .progress {
+        height: 0.5rem;
+    }
+    .progress-content{
+        h6{
+            margin-bottom:0;
+            font-weight: 400;
+            color: #666666;
+        }
+        .pull-end{
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+    }
+    .custome-tooltip{
+        .apexcharts-tooltip.apexcharts-theme-light{
+            width: 6.563rem;
+        }
+        .apexcharts-xaxistooltip { 
+            color: #ffffff;
+            background: var(--primary);
+            border: 1px solid var(--rgba-primary-1);
+            border-radius: 0.625rem;
+           
+        }
+        .apexcharts-xaxistooltip-bottom:after {
+            border-bottom-color: var(--primary);
+        }
+    }
+    
+}
+.custome-tooltip{
+    .apexcharts-tooltip.apexcharts-theme-light{
+          
+            font-size: 1.125rem;
+            background-color: var(--primary);
+            border-radius: $radius;
+            border: none;
+            overflow: unset;
+            &::before{
+                content: '';
+                display: none;
+                background-color: var(--primary);
+                width: 1.5rem;
+                height: 1.5rem;
+                position: absolute;
+                top: 90%;
+                left: 50%;
+                transform: rotate(45deg) translateX(-50%);
+                z-index: -1;
+            }
+        }
+    .apexcharts-tooltip.apexcharts-theme-light .apexcharts-tooltip-title {
+        display: none;
+    }
+    .apexcharts-tooltip-series-group.apexcharts-active {
+        justify-content: center;
+        font-size: 1.125rem;
+        color: $white;
+    }
+    .apexcharts-tooltip-text {
+        font-size:  0.875rem !important;
+    }
+    .apexcharts-tooltip-series-group.apexcharts-active .apexcharts-tooltip-marker {
+        opacity: 1;
+        display: none;
+    }
+
+}
+.card.statistic{
+    .custome-tooltip{
+        .apexcharts-tooltip.apexcharts-theme-light{ 
+            background-color: $warning;
+            &::before{
+                content: '';
+                background-color: $warning;
+                width: 1rem;
+                height: 1rem;
+            }
+        }
+        .apexcharts-tooltip-series-group.apexcharts-active {
+           // color: $main-color;
+        } 
+    }       
+}
+.dashboard-select{
+	&.style-1{
+		 .current{
+			color:$white;
+		 }
+		 
+		 &:after{
+			border-bottom:4px solid $white;
+			border-right: 4px solid $white;
+		 }
+	}
+	
+}
+/* index-3 */
+
+.bg-card-loan,
+.bg-card-loan-1,
+.bg-card-loan-2,
+.bg-card-loan-3{
+	background-color:#709fba!important;
+	svg{
+		path{
+			fill:$white;
+		}
+	}
+}
+.bg-card-loan-1{
+	background-color:#5bcfc5!important;
+}
+.bg-card-loan-2{
+	background-color:#fd5353!important;
+}
+.bg-card-loan-3{
+	background-color:#FFAA2B!important;
+}
+
+
+
+
+
