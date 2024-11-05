@@ -70,16 +70,20 @@ function Login(props) {
           </Link>
           <div className="login-description">
             <h2 className="main-title mb-2">{t.welcometoplain2do}</h2>
-            <p className="">{t.herodescription}</p>
             <ul className="social-icons mt-4">
-              <li>
-                <Link to={"#"}>
-                  <i className="fa fa-facebook"></i>
+            <li>
+                <Link to={"https://t.me/foxdevuz"}>
+                  <i className="fa fa-telegram"></i>
                 </Link>
               </li>
               <li>
-                <Link to={"#"}>
-                  <i className="fa fa-twitter"></i>
+                <Link to={"https://www.youtube.com/@Plain2Do"}>
+                  <i className="fa fa-youtube"></i>
+                </Link>
+              </li>
+              <li>
+                <Link to={"https://www.instagram.com/plain2do/profilecard/?igsh=MmhucGdjYnpubG94"}>
+                  <i className="fa fa-instagram"></i>
                 </Link>
               </li>
               <li>
