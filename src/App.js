@@ -9,6 +9,9 @@ import {
 } from "react-router-dom";
 import { checkAutoLogin } from "./services/AuthService";
 import 'bootstrap-select/dist/css/bootstrap-select.min.css';
+import './vendor/swiper/css/swiper-bundle.min.css';
+import "./vendor/bootstrap-select/dist/css/bootstrap-select.min.css";
+import "./css/style.css";
 import { DemoRegistr } from "./jsx/pages/Registration-demo/Registration-demo.js";
 import InvitedUser from "./jsx/pages/InvitedUser.jsx";
 import ResetPassword from './jsx/pages/forgot-password/ForgotPassword.js';
