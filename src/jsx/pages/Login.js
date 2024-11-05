@@ -198,7 +198,7 @@ function Login(props) {
                       <div className="new-account mt-2">
                         <p className="">
                           {t.donothaveaccount}{" "}
-                          <Link className="text__purple" to="./page-register">
+                          <Link className="text__purple" to="/registration-demo">
                             {t.signup.charAt(0).toUpperCase() +
                               t.signup.slice(1)}
                           </Link>
