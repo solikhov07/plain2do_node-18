@@ -1,26 +1,26 @@
 import React from 'react'
-
+import { FaInstagram, FaYoutube, FaTelegramPlane, FaLinkedinIn  } from "react-icons/fa";
 const SocialMediaApps = () => {
     return (
         <ul className="social-icons mt-4">
         <li>
         <a href="https://t.me/foxdevuz">
-              <i className="fa fa-telegram"></i>
+              <i><FaTelegramPlane /></i>
             </a>
           </li>
           <li>
             <a href={"https://www.youtube.com/@Plain2Do"}>
-              <i className="fa fa-youtube"></i>
+              <FaYoutube />
             </a>
           </li>
           <li>
             <a href={"https://www.instagram.com/plain2do/profilecard/?igsh=MmhucGdjYnpubG94"}>
-              <i className="fa fa-instagram"></i>
+              <i><FaInstagram/></i>
             </a>
           </li>
           <li>
             <a href={"#"}>
-              <i className="fa fa-linkedin"></i>
+              <i><FaLinkedinIn /></i>
             </a>
           </li>
         </ul>
