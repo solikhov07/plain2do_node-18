@@ -152,7 +152,7 @@ function Login(props) {
                       <div className="new-account mt-2">
                         <p className="">
                           {t.haveanaccount}{" "}
-                          <Link className="text__purple" to="./login">
+                          <Link className="text__purple" to="/login">
                             {t.signin}
                           </Link>
                         </p>

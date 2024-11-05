@@ -5,7 +5,6 @@ import {
   saveTokenInLocalStorage,
   signUp,
 } from "../../services/AuthService";
-import { useNavigate } from "react-router-dom";
 
 export const SIGNUP_CONFIRMED_ACTION = "[signup action] confirmed signup";
 export const SIGNUP_FAILED_ACTION = "[signup action] failed signup";
@@ -21,7 +20,11 @@ export function signupAction(username, password, navigate) {
         saveTokenInLocalStorage(response.data);
         runLogoutTimer(dispatch, response.data.expiresIn * 1000, navigate);
         dispatch(confirmedSignupAction(response.data));
-        navigate("/dashboard"); // Replaces history.push
+        if (typeof navigate === 'function') {
+          navigate("/dashboard"); // Replaces history.push
+        } else {
+          console.error("Navigate is not a function");
+        }
       })
       .catch((error) => {
         const errorMessage = formatError(error.response.data);
@@ -32,7 +35,11 @@ export function signupAction(username, password, navigate) {
 
 export function logout(navigate) {
   localStorage.removeItem("userDetails");
-  navigate("/login"); // Replaces history.push
+  if (typeof navigate === 'function') {
+    navigate("/login");
+  } else {
+    console.error("Navigate is not a function");
+  }
   return {
     type: LOGOUT_ACTION,
   };
@@ -47,7 +54,11 @@ export function loginAction(username, password, navigate) {
         saveTokenInLocalStorage(response.data);
         runLogoutTimer(dispatch, response.data.expiresIn * 1000, navigate);
         dispatch(loginConfirmedAction(response.data));
-        navigate("/dashboard");
+        if (typeof navigate === 'function') {
+          navigate("/dashboard");
+          } else {
+          console.error("Navigate is not a function");
+        }
       })
       .catch((error) => {
         // Log the entire error object for debugging
