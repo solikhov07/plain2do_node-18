@@ -11,6 +11,7 @@ import StatusPopup from "../../components/popup/Popup";
 import { useLanguage } from "../../../context/LanguageContext";
 import translations from "../../../translation/translation";
 import LanguageSelector from "../../components/language-selector/LanguageSelector";
+import SocialMediaApps from "../../components/socialmedia-apps/SocialMediaApps";
 function CodeVerification(props) {
   if(!localStorage.getItem("email")) window.location='/login'
   const [username, setUsername] = useState("");
@@ -102,26 +103,7 @@ function CodeVerification(props) {
           </Link>
           <div className="login-description">
             <h2 className="main-title mb-2">{t.welcometoplain2do}</h2>
-            <p className="">
-              {t.herodescription}
-            </p>
-            <ul className="social-icons mt-4">
-              <li>
-                <Link to={"#"}>
-                  <i className="fa fa-facebook"></i>
-                </Link>
-              </li>
-              <li>
-                <Link to={"#"}>
-                  <i className="fa fa-twitter"></i>
-                </Link>
-              </li>
-              <li>
-                <Link to={"#"}>
-                  <i className="fa fa-linkedin"></i>
-                </Link>
-              </li>
-            </ul>
+            <SocialMediaApps/>
             <div className="mt-5 bottom-privacy"></div>
           </div>
         </div>

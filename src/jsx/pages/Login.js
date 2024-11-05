@@ -14,6 +14,7 @@ import { MdOutlineVisibilityOff, MdOutlineVisibility } from "react-icons/md";
 import { useLanguage } from "../../context/LanguageContext";
 import translation from "../../translation/translation.js";
 import LanguageSelector from "../components/language-selector/LanguageSelector";
+import SocialMediaApps from "../components/socialmedia-apps/SocialMediaApps";
 
 function Login(props) {
   const [username, setUsername] = useState("");
@@ -70,28 +71,7 @@ function Login(props) {
           </Link>
           <div className="login-description">
             <h2 className="main-title mb-2">{t.welcometoplain2do}</h2>
-            <ul className="social-icons mt-4">
-            <li>
-                <Link to={"https://t.me/foxdevuz"}>
-                  <i className="fa fa-telegram"></i>
-                </Link>
-              </li>
-              <li>
-                <Link to={"https://www.youtube.com/@Plain2Do"}>
-                  <i className="fa fa-youtube"></i>
-                </Link>
-              </li>
-              <li>
-                <Link to={"https://www.instagram.com/plain2do/profilecard/?igsh=MmhucGdjYnpubG94"}>
-                  <i className="fa fa-instagram"></i>
-                </Link>
-              </li>
-              <li>
-                <Link to={"#"}>
-                  <i className="fa fa-linkedin"></i>
-                </Link>
-              </li>
-            </ul>
+           <SocialMediaApps/>
             <div className="mt-5 bottom-privacy"></div>
           </div>
         </div>
