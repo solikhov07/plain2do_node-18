@@ -17,39 +17,37 @@ import LanguageSelector from "../components/language-selector/LanguageSelector";
 import SocialMediaApps from "../components/socialmedia-apps/SocialMediaApps";
 
 function Login(props) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [isVisiblePassword, setIsVisiblePassword] = useState("password");
-  let errorsObj = { email: "", password: "" };
-  const [errors, setErrors] = useState(errorsObj);
-  const dispatch = useDispatch();
-  const navigate = useNavigate(); // Initialize navigate
   const language2 = useLanguage()?.language || "en";
   const t = translation.registration[language2];
   const [languageBoxState, setLanguageBoxState] = useState(false);
+  const [isVisiblePassword, setIsVisiblePassword] = useState("password");
+  const [email, setEmail] = useState('demo@example.com');
+    let errorsObj = { email: '', password: '' };
+    const [errors, setErrors] = useState(errorsObj);
+    const [password, setPassword] = useState('123456');
 
-  function onLogin(e) {
-    e.preventDefault();
-    let error = false;
-    const errorObj = { ...errorsObj };
+    const dispatch = useDispatch();
+    const nav  = useNavigate();
 
-    if (username === "") {
-      errorObj.username = t.usernamerequired;
-      error = true;
+    function onLogin(e) {
+        e.preventDefault();
+        let error = false;
+        const errorObj = { ...errorsObj };
+        if (email === '') {
+            errorObj.email = 'Email is Required';
+            error = true;
+        }
+        if (password === '') {
+            errorObj.password = 'Password is Required';
+            error = true;
+        }
+        setErrors(errorObj);
+        if (error) {
+			return ;
+		}
+		dispatch(loadingToggleAction(true));	
+    dispatch(loginAction(email, password, nav));
     }
-    if (password === "") {
-      errorObj.password = t.passwordisrequired;
-      error = true;
-    }
-    setErrors(errorObj);
-    if (error) {
-      return;
-    }
-
-    dispatch(loadingToggleAction(true));
-    dispatch(loginAction(username, password, navigate)); // Pass navigate here
-  }
-
   return (
     <div
       onClick={(e) => {
@@ -107,8 +105,8 @@ function Login(props) {
                           </label>
                           <input
                             className="form-control"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             placeholder={t.typeyourusernameaddress}
                           />
                           {errors.username && (
@@ -198,7 +196,7 @@ function Login(props) {
                       <div className="new-account mt-2">
                         <p className="">
                           {t.donothaveaccount}{" "}
-                          <Link className="text__purple" to="/registration-demo">
+                          <Link className="text__purple" to="/page-register">
                             {t.signup.charAt(0).toUpperCase() +
                               t.signup.slice(1)}
                           </Link>
@@ -218,10 +216,9 @@ function Login(props) {
 
 const mapStateToProps = (state) => {
   return {
-    errorMessage: state.auth.errorMessage,
-    successMessage: state.auth.successMessage,
-    showLoading: state.auth.showLoading,
+      errorMessage: state.auth.errorMessage,
+      successMessage: state.auth.successMessage,
+      showLoading: state.auth.showLoading,
   };
 };
-
 export default connect(mapStateToProps)(Login);
