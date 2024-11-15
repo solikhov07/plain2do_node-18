@@ -13,7 +13,6 @@ const data = {
       pointHoverRadius: 10,
       backgroundColor: "transparent",
       pointBackgroundColor: "#3b4cb8",
-      tension:0.4,
     },
     {
       label: "My First dataset 2",
@@ -25,15 +24,12 @@ const data = {
       pointBorderWidth: 5,
       pointBorderColor: "rgba(255, 255, 255, 1)",
       pointBackgroundColor: "rgba(63, 154, 224, 1)",
-      tension:0.4,
     },
   ],
 };
 
 const options = {
-  plugins:{
-    legend: false,
-  },
+  legend: false,
   tooltips: {
     intersect: false,
   },
@@ -42,9 +38,9 @@ const options = {
     intersect: true,
   },
   scales: {
-    y: 
+    yAxes: [
       {
-        // display: false,
+        display: false,
         ticks: {
           beginAtZero: true,
           max: 100,
@@ -53,15 +49,14 @@ const options = {
           padding: 10,
         },
       },
-    
-    x: 
+    ],
+    xAxes: [
       {
-        
         ticks: {
           padding: 5,
         },
       },
-    
+    ],
   },
   elements: {
     point: {

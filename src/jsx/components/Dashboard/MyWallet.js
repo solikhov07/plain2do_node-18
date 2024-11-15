@@ -1,10 +1,11 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {Link} from 'react-router-dom';
 import loadable from "@loadable/component";
 import pMinDelay from "p-min-delay";
 import {Dropdown} from 'react-bootstrap';
-import {Tab, Nav, Accordion} from 'react-bootstrap';
-
+import { TabContent, TabPane, } from 'reactstrap';
+import { Accordion} from 'react-bootstrap';
+import classnames from 'classnames';
 //Images
 import circle from './../../../images/pattern/circle.png';
 import avatar1 from './../../../images/avatar/1.jpg';
@@ -13,7 +14,9 @@ import avatar3 from './../../../images/avatar/3.jpg';
 import avatar4 from './../../../images/avatar/4.jpg';
 import avatar5 from './../../../images/avatar/5.jpg';
 
-import {AccordionBlog1,AccordionBlog2,AccordionBlog3} from '../Dompet/MyWallet/TabData';
+import {AccordionBlog1,IconSuccess,} from '../Dompet/MyWallet/TabData';
+import AccordionSection2 from '../Dompet/MyWallet/AccordionSection2';
+import AccordionSection3 from '../Dompet/MyWallet/AccordionSection3';
 
 const WeeklyPieChart = loadable(() =>
 	pMinDelay(import("../Dompet/MyWallet/WeeklyPieChart"), 1000)
@@ -23,8 +26,12 @@ const WeeklyApexChart = loadable(() =>
 );
 
 
-const MyWallet = () => {	
-	
+const MyWallet = () => {
+	const [activeTab, setActiveTab] = useState('1');
+    const toggle = tab => {
+        if (activeTab !== tab) setActiveTab(tab);
+    }
+	const [activeDefault, setActiveDefault] = useState(0)
 	return(
 		<>
 			<div className="row">
@@ -95,148 +102,72 @@ const MyWallet = () => {
 						</div>
 						<div className="col-xl-12">
 							<div className="card">
-								<Tab.Container defaultActiveKey={'Month'}>
-									<div className="card-header d-block d-sm-flex border-0">
-										<div className="me-3">
-											<h4 className="card-title mb-2">Payment History</h4>
-											<span className="fs-12">Lorem ipsum dolor sit amet, consectetur</span>
-										</div>
-										<div className="card-tabs mt-3 mt-sm-0">
-											<Nav as="ul" className="nav nav-tabs" role="tablist">											
-												<Nav.Item as="li">
-													<Nav.Link eventKey="Month">Monthly</Nav.Link>
-												</Nav.Item>
-												<Nav.Item as="li">
-													<Nav.Link eventKey="Weekly">Weekly</Nav.Link>
-												</Nav.Item>
-												<Nav.Item as="li">
-													<Nav.Link eventKey="Today">Today</Nav.Link>
-												</Nav.Item>
-											</Nav>
-										</div>
+								<div className="card-header d-block d-sm-flex border-0">
+									<div className="me-3">
+										<h4 className="card-title mb-2">Payment History</h4>
+										<span className="fs-12">Lorem ipsum dolor sit amet, consectetur</span>
 									</div>
-									<Tab.Content  className="card-body p-0">
-										<Tab.Pane eventKey="Month">											
-											<Accordion className="style-1"  defaultActiveKey="0" >
-												{AccordionBlog1.map((data, i) => (
-													<Accordion.Item  className="accordion-item" key={i} eventKey={`${i}`}>
-														<Accordion.Header as="div" variant="">
-															<div className="d-flex align-items-center">
-																<div className="profile-image">
-																	<img src={data.image} alt="" />
-																	<span className="bg-success">
-																		<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-																			<g clipPath="url(#clip3)">
-																			<path d="M10.4125 14.85C10.225 14.4625 10.3906 13.9937 10.7781 13.8062C11.8563 13.2875 12.7688 12.4812 13.4188 11.4719C14.0844 10.4375 14.4375 9.23749 14.4375 7.99999C14.4375 4.44999 11.55 1.56249 8 1.56249C4.45 1.56249 1.5625 4.44999 1.5625 7.99999C1.5625 9.23749 1.91562 10.4375 2.57812 11.475C3.225 12.4844 4.14062 13.2906 5.21875 13.8094C5.60625 13.9969 5.77187 14.4625 5.58437 14.8531C5.39687 15.2406 4.93125 15.4062 4.54062 15.2187C3.2 14.575 2.06562 13.575 1.2625 12.3187C0.4375 11.0312 -4.16897e-07 9.53749 -3.49691e-07 7.99999C-2.56258e-07 5.86249 0.83125 3.85312 2.34375 2.34374C3.85313 0.831242 5.8625 -7.37314e-06 8 -7.2797e-06C10.1375 -7.18627e-06 12.1469 0.831243 13.6563 2.34374C15.1688 3.85624 16 5.86249 16 7.99999C16 9.53749 15.5625 11.0312 14.7344 12.3187C13.9281 13.5719 12.7938 14.575 11.4563 15.2187C11.0656 15.4031 10.6 15.2406 10.4125 14.85Z" fill="white"/>
-																			<path d="M11.0407 8.41563C11.1938 8.56876 11.2688 8.76876 11.2688 8.96876C11.2688 9.16876 11.1938 9.36876 11.0407 9.52188L9.07503 11.4875C8.78753 11.775 8.40628 11.9313 8.00315 11.9313C7.60003 11.9313 7.21565 11.7719 6.93127 11.4875L4.96565 9.52188C4.6594 9.21563 4.6594 8.72188 4.96565 8.41563C5.2719 8.10938 5.76565 8.10938 6.0719 8.41563L7.22502 9.56876L7.22502 5.12814C7.22502 4.69689 7.57503 4.34689 8.00628 4.34689C8.43753 4.34689 8.78753 4.69689 8.78753 5.12814L8.78753 9.57188L9.94065 8.41876C10.2407 8.11251 10.7344 8.11251 11.0407 8.41563Z" fill="white"/>
-																			</g>
-																			<defs>
-																			<clipPath id="clip3">
-																			<rect width="16" height="16" fill="white" transform="matrix(-4.37114e-08 1 1 4.37114e-08 0 -7.62939e-06)"/>
-																			</clipPath>
-																			</defs>
-																		</svg>
-																	</span>
+									<div className="card-tabs mt-3 mt-sm-0">
+										<ul className="nav nav-tabs" role="tablist">
+											<li className="nav-item">
+												<Link to ={"#"} className= {classnames({ active : activeTab === '1'}) + ' nav-link'} onClick={() => { toggle('1'); }}>Monthly</Link>
+											</li>
+											<li className="nav-item">
+												<Link to ={"#"} className= {classnames({ active : activeTab === '2'}) + ' nav-link'} onClick={() => { toggle('2'); }}>Weekly</Link>
+											</li>
+											<li className="nav-item">
+												<Link to ={"#"} className= {classnames({ active : activeTab === '3'}) + ' nav-link'} onClick={() => { toggle('3'); }}>Today</Link>
+											</li>										
+										</ul>
+									</div>
+								</div>
+								<div className="card-body tab-content p-0">
+									<div className="tab-pane fade active show"  role="tabpanel">
+										<TabContent activeTab={activeTab}>
+											<TabPane tabId="1">
+												<Accordion className="accordion style-1"  defaultActiveKey="0" id="accordion-one" >
+													{AccordionBlog1.map((data, i) => (	
+														<div className="accordion-item" key={i}>
+															<Accordion.Toggle as="div" variant="" className={` ${ activeDefault === i ? 'accordion-header' : 'accordion-header collapsed'}`} 
+															onClick={() => 	setActiveDefault(activeDefault === i ? -1 : i)} eventKey={`${i}`}>
+																<div className="d-flex align-items-center">
+																	<div className="profile-image">
+																		<img src={data.image} alt="" />
+																		<span className="bg-success">
+																			<IconSuccess />
+																		</span>
+																	</div>
+																	<div className="user-info">
+																		<h6 className="fs-16 font-w700 mb-0"><Link to={"#"}>{data.title}</Link></h6>
+																		<span className="fs-14">Online Shop</span>
+																	</div>
 																</div>
-																<div className="user-info">
-																	<h6 className="fs-16 font-w700 mb-0"><Link to={"#"}>XYZ Store ID</Link></h6>
-																	<span className="fs-14">Online Shop</span>
-																</div>
-															</div>
-															<span>June 5, 2020, 08:22 AM</span>
-															<span>+$5,553</span>
-															<span>MasterCard 404</span>
-															{data.status}
-														</Accordion.Header>
-														<Accordion.Collapse eventKey={`${i}`} className="accordion_body" >
-															{data.cardbody}
-														</Accordion.Collapse>
-													</Accordion.Item >
-												))}
-											</Accordion>	
-										</Tab.Pane>		
-										<Tab.Pane eventKey="Weekly">	
-											<Accordion className="style-1"  defaultActiveKey="0" >
-												{AccordionBlog2.map((data, i) => (
-													<Accordion.Item  className="accordion-item" key={i} eventKey={`${i}`}>
-														<Accordion.Header as="div" variant="">
-															<div className="d-flex align-items-center">
-																<div className="profile-image">
-																	<img src={data.image} alt="" />
-																	<span className="bg-success">
-																		<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-																			<g clipPath="url(#clip3)">
-																			<path d="M10.4125 14.85C10.225 14.4625 10.3906 13.9937 10.7781 13.8062C11.8563 13.2875 12.7688 12.4812 13.4188 11.4719C14.0844 10.4375 14.4375 9.23749 14.4375 7.99999C14.4375 4.44999 11.55 1.56249 8 1.56249C4.45 1.56249 1.5625 4.44999 1.5625 7.99999C1.5625 9.23749 1.91562 10.4375 2.57812 11.475C3.225 12.4844 4.14062 13.2906 5.21875 13.8094C5.60625 13.9969 5.77187 14.4625 5.58437 14.8531C5.39687 15.2406 4.93125 15.4062 4.54062 15.2187C3.2 14.575 2.06562 13.575 1.2625 12.3187C0.4375 11.0312 -4.16897e-07 9.53749 -3.49691e-07 7.99999C-2.56258e-07 5.86249 0.83125 3.85312 2.34375 2.34374C3.85313 0.831242 5.8625 -7.37314e-06 8 -7.2797e-06C10.1375 -7.18627e-06 12.1469 0.831243 13.6563 2.34374C15.1688 3.85624 16 5.86249 16 7.99999C16 9.53749 15.5625 11.0312 14.7344 12.3187C13.9281 13.5719 12.7938 14.575 11.4563 15.2187C11.0656 15.4031 10.6 15.2406 10.4125 14.85Z" fill="white"/>
-																			<path d="M11.0407 8.41563C11.1938 8.56876 11.2688 8.76876 11.2688 8.96876C11.2688 9.16876 11.1938 9.36876 11.0407 9.52188L9.07503 11.4875C8.78753 11.775 8.40628 11.9313 8.00315 11.9313C7.60003 11.9313 7.21565 11.7719 6.93127 11.4875L4.96565 9.52188C4.6594 9.21563 4.6594 8.72188 4.96565 8.41563C5.2719 8.10938 5.76565 8.10938 6.0719 8.41563L7.22502 9.56876L7.22502 5.12814C7.22502 4.69689 7.57503 4.34689 8.00628 4.34689C8.43753 4.34689 8.78753 4.69689 8.78753 5.12814L8.78753 9.57188L9.94065 8.41876C10.2407 8.11251 10.7344 8.11251 11.0407 8.41563Z" fill="white"/>
-																			</g>
-																			<defs>
-																			<clipPath id="clip3">
-																			<rect width="16" height="16" fill="white" transform="matrix(-4.37114e-08 1 1 4.37114e-08 0 -7.62939e-06)"/>
-																			</clipPath>
-																			</defs>
-																		</svg>
-																	</span>
-																</div>
-																<div className="user-info">
-																	<h6 className="fs-16 font-w700 mb-0"><Link to={"#"}>XYZ Store ID</Link></h6>
-																	<span className="fs-14">Online Shop</span>
-																</div>
-															</div>
-															<span>June 5, 2020, 08:22 AM</span>
-															<span>+$5,553</span>
-															<span>MasterCard 404</span>
-															{data.status}
-														</Accordion.Header>
-														<Accordion.Collapse eventKey={`${i}`} className="accordion_body" >
-															{data.cardbody}
-														</Accordion.Collapse>
-													</Accordion.Item >
-												))}
-											</Accordion>
-										</Tab.Pane>		
-										<Tab.Pane eventKey="Today">	
-											<Accordion className="style-1"  defaultActiveKey="0" >
-												{AccordionBlog3.map((data, i) => (
-													<Accordion.Item  className="accordion-item" key={i} eventKey={`${i}`}>
-														<Accordion.Header as="div" variant="">
-															<div className="d-flex align-items-center">
-																<div className="profile-image">
-																	<img src={data.image} alt="" />
-																	<span className="bg-success">
-																		<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-																			<g clipPath="url(#clip3)">
-																			<path d="M10.4125 14.85C10.225 14.4625 10.3906 13.9937 10.7781 13.8062C11.8563 13.2875 12.7688 12.4812 13.4188 11.4719C14.0844 10.4375 14.4375 9.23749 14.4375 7.99999C14.4375 4.44999 11.55 1.56249 8 1.56249C4.45 1.56249 1.5625 4.44999 1.5625 7.99999C1.5625 9.23749 1.91562 10.4375 2.57812 11.475C3.225 12.4844 4.14062 13.2906 5.21875 13.8094C5.60625 13.9969 5.77187 14.4625 5.58437 14.8531C5.39687 15.2406 4.93125 15.4062 4.54062 15.2187C3.2 14.575 2.06562 13.575 1.2625 12.3187C0.4375 11.0312 -4.16897e-07 9.53749 -3.49691e-07 7.99999C-2.56258e-07 5.86249 0.83125 3.85312 2.34375 2.34374C3.85313 0.831242 5.8625 -7.37314e-06 8 -7.2797e-06C10.1375 -7.18627e-06 12.1469 0.831243 13.6563 2.34374C15.1688 3.85624 16 5.86249 16 7.99999C16 9.53749 15.5625 11.0312 14.7344 12.3187C13.9281 13.5719 12.7938 14.575 11.4563 15.2187C11.0656 15.4031 10.6 15.2406 10.4125 14.85Z" fill="white"/>
-																			<path d="M11.0407 8.41563C11.1938 8.56876 11.2688 8.76876 11.2688 8.96876C11.2688 9.16876 11.1938 9.36876 11.0407 9.52188L9.07503 11.4875C8.78753 11.775 8.40628 11.9313 8.00315 11.9313C7.60003 11.9313 7.21565 11.7719 6.93127 11.4875L4.96565 9.52188C4.6594 9.21563 4.6594 8.72188 4.96565 8.41563C5.2719 8.10938 5.76565 8.10938 6.0719 8.41563L7.22502 9.56876L7.22502 5.12814C7.22502 4.69689 7.57503 4.34689 8.00628 4.34689C8.43753 4.34689 8.78753 4.69689 8.78753 5.12814L8.78753 9.57188L9.94065 8.41876C10.2407 8.11251 10.7344 8.11251 11.0407 8.41563Z" fill="white"/>
-																			</g>
-																			<defs>
-																			<clipPath id="clip3">
-																			<rect width="16" height="16" fill="white" transform="matrix(-4.37114e-08 1 1 4.37114e-08 0 -7.62939e-06)"/>
-																			</clipPath>
-																			</defs>
-																		</svg>
-																	</span>
-																</div>
-																<div className="user-info">
-																	<h6 className="fs-16 font-w700 mb-0"><Link to={"#"}>XYZ Store ID</Link></h6>
-																	<span className="fs-14">Online Shop</span>
-																</div>
-															</div>
-															<span>June 5, 2020, 08:22 AM</span>
-															<span>+$5,553</span>
-															<span>MasterCard 404</span>
-															{data.status}
-														</Accordion.Header>
-														<Accordion.Collapse eventKey={`${i}`} className="accordion_body" >
-															{data.cardbody}
-														</Accordion.Collapse>
-													</Accordion.Item >
-												))}
-											</Accordion>
-										</Tab.Pane>	
-									</Tab.Content>	
-								</Tab.Container>
+																<span>June 5, 2020, 08:22 AM</span>
+																<span>+$5,553</span>
+																<span>MasterCard 404</span>
+																{data.status}
+																<span className="accordion-header-indicator"></span>
+															</Accordion.Toggle>
+															<Accordion.Collapse eventKey={`${i}`} className="accordion_body">
+																{data.cardbody}
+															</Accordion.Collapse>	
+														</div>	
+														
+													))}
+												</Accordion>		
+											</TabPane>		
+											<TabPane tabId="2">	
+												<AccordionSection2 />
+											</TabPane>		
+											<TabPane tabId="3">	
+												<AccordionSection3 />
+											</TabPane>	
+										</TabContent>	
+									</div>	
+								</div>	
 							</div>	
-						</div>
+						</div>	
+					{/* Payment History */}
 					</div>
 				</div>
 				

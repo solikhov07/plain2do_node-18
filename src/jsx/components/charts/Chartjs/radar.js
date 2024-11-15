@@ -1,26 +1,6 @@
 import React, { Component } from "react";
 import { Radar } from "react-chartjs-2";
 
-import {
-  Chart as ChartJS,
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-//import { Radar } from 'react-chartjs-2';
-
-ChartJS.register(
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend
-);
-
 const data = {
   defaultFontFamily: "Poppins",
   labels: [
@@ -51,9 +31,7 @@ const data = {
 };
 
 const options = {
-	plugins:{
-		legend: false,
-	},
+  legend: false,
   maintainAspectRatio: false,
   scale: {
     ticks: {

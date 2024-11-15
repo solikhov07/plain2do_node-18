@@ -8,37 +8,33 @@ const data = {
     {
       label: "My First dataset",
       data: [25, 20, 60, 41, 66, 45, 80],
-      borderColor: "rgba(235,129,83,1)",
+      borderColor: "#5bcfc5",
       borderWidth: "2",
       backgroundColor: "transparent",
-      pointBackgroundColor: "rgba(235,129,83,1)",
-	  tension:0.4
+      pointBackgroundColor: "#5bcfc5",
     },
     {
-      label: "My Second dataset",
+      label: "My First dataset",
       data: [5, 20, 15, 41, 35, 65, 80],
-      borderColor: "rgba(91,207,197,1)",
+      borderColor: "transparent",
       borderWidth: "2",
       backgroundColor: "transparent",
-      pointBackgroundColor: "rgba(91,207,197,1)",
-	    tension:0.4
+      pointBackgroundColor: "transparent",
     },
   ],
 };
 
 const options = {
-  plugins:{
-	  legend: false,
-	  tooltips: {
-		intersect: false,
-	  },
-	  hover: {
-		// mode: "nearest",
-		intersect: true,
-	  }
+  legend: false,
+  tooltips: {
+    intersect: false,
+  },
+  hover: {
+    // mode: "nearest",
+    intersect: true,
   },
   scales: {
-    y: 
+    yAxes: [
       {
         ticks: {
           beginAtZero: true,
@@ -48,14 +44,14 @@ const options = {
           padding: 10,
         },
       },
-    
-    x: 
+    ],
+    xAxes: [
       {
         ticks: {
           padding: 5,
         },
       },
-    
+    ],
   },
 };
 class DualLine extends Component {

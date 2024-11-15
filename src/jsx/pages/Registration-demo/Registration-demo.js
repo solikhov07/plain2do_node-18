@@ -1001,8 +1001,8 @@ const DemoRegistr = () => {
     { phoneCode: "+380", country: "DPR", phonenumber: "+380 9 123 4567" }, // Special case - disputed territory, often uses Ukraine's code
     { phoneCode: "+380", country: "LPR", phonenumber: "+380 9 123 4567" }, // Special case - disputed territory, often uses Ukraine's code
   ];
-  useEffect(async () => {
-    const arr = [];
+  useEffect(() => {
+   ;(async () => { const arr = [];
     const response = await fetch(linkFetch);
     const data = await response.json();
     data.Response.forEach((e) => {
@@ -1021,7 +1021,7 @@ const DemoRegistr = () => {
     setStyleValueBox(
       data.Response.find((e) => e.AlphaCode3.toLocaleLowerCase() === "uzb").id
     );
-  }, []);
+  })()}, []);
   const [selectCountrBox, setSelectCountryBox] = useState(false);
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
@@ -1062,8 +1062,8 @@ const DemoRegistr = () => {
       })();
     } else setCompanyInn({});
   }, [companyName]);
-  useEffect(async () => {
-    const responseSpheres = await fetch(spheresLink);
+  useEffect(() => {
+    ;(async () => {const responseSpheres = await fetch(spheresLink);
     const dataSpheresCompany = await responseSpheres.json();
     setCompanySpheres(
       dataSpheresCompany.Response.sort((a, b) => {
@@ -1074,7 +1074,7 @@ const DemoRegistr = () => {
     );
     setSelectCompanySphere(dataSpheresCompany.Response[0]);
     setSelectCompanySphereOptionIndex(selectCompanySphere.id);
-  }, []);
+  })()}, []);
   useEffect(() => {
     if (password.split("").length > 7) {
       setPasswordLength(true);

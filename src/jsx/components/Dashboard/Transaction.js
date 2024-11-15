@@ -1,6 +1,7 @@
 import React,{useEffect, useState, useRef} from 'react';
 import { Link } from "react-router-dom";
-import {Tab, Nav} from 'react-bootstrap';
+import classnames from 'classnames';
+import { TabContent, TabPane, } from 'reactstrap';
 import { IconGreen,IconRed, DropdownBox} 
 	from '../Dompet/Transaction/TransactionData';
 import TabComplete from  '../Dompet/Transaction/TabComplete';
@@ -19,10 +20,10 @@ import avat29 from './../../../images/avatar/1.jpg';
 
 const Transaction = () => {
 	//Tab function
-	// const [activeTab, setActiveTab] = useState('1');
-    // const toggle = tab => {
-    //     if (activeTab !== tab) setActiveTab(tab);
-    // }
+	const [activeTab, setActiveTab] = useState('1');
+    const toggle = tab => {
+        if (activeTab !== tab) setActiveTab(tab);
+    }
 	//
 	const [data, setData] = useState(
 		document.querySelectorAll('#transactions-data tbody tr')
@@ -81,32 +82,32 @@ const Transaction = () => {
 	}
 	return (
 		<>
-			<Tab.Container defaultActiveKey={'All'}>
-				<div className="d-flex flex-wrap align-items-center mb-3">
-					<div className="mb-3 me-auto">
-						<div className="card-tabs style-1 mt-3 mt-sm-0">
-							<Nav as="ul" className="nav nav-tabs" role="tablist">							
-								<Nav.Item as="li">
-									<Nav.Link eventKey="All">All transaction</Nav.Link>
-								</Nav.Item>
-								<Nav.Item as="li">
-									<Nav.Link eventKey="Completed">Completed</Nav.Link>
-								</Nav.Item>
-								<Nav.Item as="li">
-									<Nav.Link eventKey="Pending">Pending</Nav.Link>
-								</Nav.Item>
-								<Nav.Item as="li">
-									<Nav.Link eventKey="Canceled">Canceled</Nav.Link>
-								</Nav.Item>
-							</Nav>
-						</div>
+			<div className="d-flex flex-wrap align-items-center mb-3">
+				<div className="mb-3 me-auto">
+					<div className="card-tabs style-1 mt-3 mt-sm-0">
+						<ul className="nav nav-tabs" role="tablist">
+							<li className="nav-item">
+								<Link to ={"#"} className= {classnames({ active : activeTab === '1'}) + ' nav-link'} onClick={() => { toggle('1'); }}>All transaction</Link>
+							</li>
+							<li className="nav-item">
+								<Link to ={"#"} className= {classnames({ active : activeTab === '2'}) + ' nav-link'} onClick={() => { toggle('2'); }}>Completed</Link>
+							</li>
+							<li className="nav-item">
+								<Link to ={"#"} className= {classnames({ active : activeTab === '3'}) + ' nav-link'} onClick={() => { toggle('3'); }}>Pending</Link>
+							</li>
+							<li className="nav-item">
+								<Link to ={"#"} className= {classnames({ active : activeTab === '4'}) + ' nav-link'} onClick={() => { toggle('4'); }}>Canceled</Link>
+							</li>
+						</ul>
 					</div>
-					<Link to={"#"} className="btn btn-outline-primary mb-3"><i className="fa fa-calendar me-3 scale3"></i>Filter Date</Link>
 				</div>
-				<div className="row">
-					<div className="col-xl-12">					
-						<Tab.Content>
-							<Tab.Pane eventKey="All">
+				<Link to={"#"} className="btn btn-outline-primary mb-3"><i className="fa fa-calendar me-3 scale3"></i>Filter Date</Link>
+			</div>
+			<div className="row">
+				<div className="col-xl-12 tab-content">
+					<div className="tab-pane fade show active" id="AllTransaction" role="tabpanel" aria-labelledby="transaction-tab">
+						<TabContent activeTab={activeTab}>
+							<TabPane tabId="1">
 								<div className="table-responsive  fs-14  dataTables_wrapper" id="transactions-data">
 									<table	className='table card-table display mb-4 dataTablesCard  dataTable text-black no-footer' id='example5'>
 										<thead>
@@ -415,11 +416,11 @@ const Transaction = () => {
 									</table>	
 									<div className='d-sm-flex text-center justify-content-between align-items-center'>
 										<div className='dataTables_info' id='example5_info'>
-												Showing {activePag.current * sort + 1} to{' '}
-												{data.length > (activePag.current + 1) * sort
+											  Showing {activePag.current * sort + 1} to{' '}
+											  {data.length > (activePag.current + 1) * sort
 												? (activePag.current + 1) * sort
 												: data.length}{' '}
-												of {data.length} entries
+											  of {data.length} entries
 										</div>
 
 										<div className='dataTables_paginate paging_simple_numbers' id='example5_paginate'>
@@ -439,22 +440,20 @@ const Transaction = () => {
 										</div>
 									</div>	
 								</div>
-							</Tab.Pane>
-							<Tab.Pane eventKey="Completed">
+							</TabPane>
+							<TabPane tabId="2">
 								<TabComplete />
-							</Tab.Pane>
-							<Tab.Pane eventKey="Pending">	
+							</TabPane>
+							<TabPane tabId="3">	
 								<TabPending />
-							</Tab.Pane>
-							<Tab.Pane eventKey="Canceled">	
+							</TabPane>
+							<TabPane tabId="4">	
 								<TabCancel />
-							</Tab.Pane>
-						</Tab.Content>
-						
+							</TabPane>
+						</TabContent>
 					</div>
-				</div>	
-			</Tab.Container>
-
+				</div>
+			</div>		
 		</>	
 	);
 };

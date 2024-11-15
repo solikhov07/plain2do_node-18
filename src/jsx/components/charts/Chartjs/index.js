@@ -10,8 +10,8 @@ import LineChart1 from "./line1";
 import DualLine from "./dualLine";
 import BasicArea from "./basicArea";
 import GradientArea from "./gradinetArea";
-import DualArea from "./dualArea";
-//import Radar from "./radar";
+//import DualArea from "./dualArea";
+import Radar from "./radar";
 import PolarChart from "./polar";
 //import DualLine2 from "./dualLine2";
 
@@ -22,7 +22,7 @@ function ChartChartjs() {
     <>
       <PageTitle motherMenu="Charts" activeMenu="ChartJs" />
       <Row>
-	   <Col xl={6} lg={6}>
+        <Col xl={6} lg={6}>
           <Card>
             <Card.Header>
               <h4 className="card-title">Bar chart</h4>
@@ -32,7 +32,7 @@ function ChartChartjs() {
             </Card.Body>
           </Card>
         </Col>
-       <Col xl={6} lg={6}>
+        <Col xl={6} lg={6}>
           <Card>
             <Card.Header>
               <h4 className="card-title">Bar chart</h4>
@@ -52,7 +52,7 @@ function ChartChartjs() {
             </Card.Body>
           </Card>
         </Col>
-		 <Col xl={6} lg={6}>
+        <Col xl={6} lg={6}>
           <Card>
             <Card.Header>
 				<h4 className="card-title">Line chart</h4>
@@ -61,7 +61,7 @@ function ChartChartjs() {
               <LineChart1 />
             </Card.Body>
           </Card>
-        </Col> 
+        </Col>
         <Col xl={6} lg={6}>
           <Card>
             <Card.Header>
@@ -95,10 +95,10 @@ function ChartChartjs() {
         <Col xl={6} lg={6}>
           <Card>
             <Card.Header>
-               <h4 className="card-title">Dual Area Chart</h4>
+               <h4 className="card-title">Radar Chart</h4>
             </Card.Header>
             <Card.Body>
-              <DualArea />
+              <Radar />
             </Card.Body>
           </Card>
         </Col>
@@ -123,7 +123,7 @@ function ChartChartjs() {
               <PolarChart />
             </Card.Body>
           </Card>
-		</Col>  
+        </Col>
       </Row>
     </>
   );

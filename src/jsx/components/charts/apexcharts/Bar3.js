@@ -9,11 +9,11 @@ class ApexBar3 extends React.Component {
       series: [
         {
           name: "Income",
-          data: [420, 550, 850, 220, 650,400,500],
+          data: [420, 550, 850, 220, 650],
         },
         {
           name: "Expenses",
-          data: [170, 850, 101, 90, 250,300,400],
+          data: [170, 850, 101, 90, 250],
         },
       ],
       options: {
@@ -27,7 +27,7 @@ class ApexBar3 extends React.Component {
         plotOptions: {
           bar: {
             horizontal: false,
-            columnWidth: "80%",
+            columnWidth: "55%",
             endingShape: "rounded",
           },
         },
@@ -72,7 +72,7 @@ class ApexBar3 extends React.Component {
           colors: ["transparent"],
         },
         xaxis: {
-          categories: ["06", "07", "08", "09", "10","11","12"],
+          categories: ["06", "07", "08", "09", "10"],
         },
         fill: {
           colors: ["#5bcfc5", "#709fba"],

@@ -19,7 +19,7 @@ const SocialMediaApps = () => {
             </a>
           </li>
           <li>
-            <a href={"#"}>
+            <a href={"https://www.linkedin.com/company/105528760/admin/dashboard/"}>
               <i><FaLinkedinIn /></i>
             </a>
           </li>

@@ -174,6 +174,6 @@ const mapStateToProps = (state) => {
     errorMessage: state.auth.errorMessage,
     successMessage: state.auth.successMessage,
     showLoading: state.auth.showLoading,
-  };
+};
 };
 export default connect(mapStateToProps)(Login);

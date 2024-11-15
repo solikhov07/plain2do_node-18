@@ -1,11 +1,7 @@
 import { useState, useEffect } from "react";
 import './NewPassword.css'
 import { connect, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import {
-  saveTokenInLocalStorage
-} from "../../../services/AuthService";
-// image
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../images/plain2do.png";
 import loginbg from "../../../images/bg-login.jpg";
 import { IoArrowBackOutline } from "react-icons/io5";
@@ -18,17 +14,16 @@ import { useLanguage } from "../../../context/LanguageContext";
 import translations from "../../../translation/translation";
 import LanguageSelector from "../../components/language-selector/LanguageSelector";
 import SocialMediaApps from "../../components/socialmedia-apps/SocialMediaApps";
+import { loadingToggleAction, loginAction } from "../../../store/actions/AuthActions";
 function NewPassword(props) {
-  const link = "https://dev.plain2do.com"
-  if(!localStorage.getItem("email") || !localStorage.getItem('verified')) window.location='/login'
-  const dispatch = useDispatch()
+  const link = process.env.REACT_APP_API_URL
+  const email = localStorage.getItem("email") 
+  if(!email || !localStorage.getItem('verified')) window.location='/login'
   const [redirectState, setRedirectState] = useState(true)
   const [username, setUsername] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState('')
   const [disabledState,setDisabledState] = useState(true)
   const [inputDisabledState, setInputDisabledState] = useState(true)
-  let errorsObj = { username: "", password: "" };
-  const [errors, setErrors] = useState(errorsObj);
   const [btnPreviousPageState, setBtnPreviousPageState] = useState(false)
   const [statusPopup, setStatusPopup] = useState(false)
   const [errorMsg, setErrorMsg] = useState({})
@@ -37,12 +32,16 @@ function NewPassword(props) {
   const language2 = useLanguage().language
   const t = translations.registration[language2]
   const [languageBoxState, setLanguageBoxState] = useState(false);
+    let errorsObj = { email: '', password: '' };
+    const [errors, setErrors] = useState(errorsObj);
+
+    const dispatch = useDispatch();
+    const nav  = useNavigate();
   useEffect(() => {
     if(redirectState === false){
-      setTimeout(() => {
-      localStorage.removeItem('verified')
-      window.location.pathname = '/dashboard'
-    }, 3000)}
+  dispatch(loadingToggleAction(true));	
+  dispatch(loginAction(email, username, nav));
+      }
   }, [redirectState])
   useEffect(() => {
     if(
@@ -62,10 +61,10 @@ function NewPassword(props) {
     e.preventDefault();
       try{
           if(passwordConfirm === username){
-              const reponseEmail = await fetch(`${link}/api/password-reset-confirm/`,{
+              const reponseEmail = await fetch(`${link}/password-reset-confirm/`,{
                   method: "POST",
                   body: JSON.stringify({
-                      email:localStorage.getItem("email"),
+                      email,
                       new_password: username
                     }),
                     headers: {
@@ -77,18 +76,6 @@ function NewPassword(props) {
         setErrorMsg({msg: t.thepasswordhasbeenreset, status: 200, title: t.success.charAt(0).toUpperCase() + t.success.slice(1)})
         setStatusPopup(true)  
         setRedirectState(false)
-        const responseLogin = await fetch(`${link}/api/token/`, {
-          method: "POST",
-          body: JSON.stringify({
-            email: localStorage.getItem('email'),
-            password: username
-          }),
-          headers: {
-            "Content-type":"application/json"
-          }
-        })
-        const dataLogin = await responseLogin.json()
-        saveTokenInLocalStorage(dataLogin);
       };
     }
       else throw new Error(t.thepassworddoesnotmatch)
@@ -244,9 +231,9 @@ function NewPassword(props) {
 
 const mapStateToProps = (state) => {
   return {
-    errorMessage: state.auth.errorMessage,
-    successMessage: state.auth.successMessage,
-    showLoading: state.auth.showLoading,
+      errorMessage: state.auth.errorMessage,
+      successMessage: state.auth.successMessage,
+      showLoading: state.auth.showLoading,
   };
 };
 export default connect(mapStateToProps)(NewPassword);

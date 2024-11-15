@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useNavigate } from "react-router";
 import swal from "sweetalert";
 import { loginConfirmedAction, logout } from "../store/actions/AuthActions";
 
@@ -12,8 +13,7 @@ export function signUp(username, password) {
 
   return axios.post(
     `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=API_KEY`,
-    postData
-  );
+    postData)
 }
 
 // Login function

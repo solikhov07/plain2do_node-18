@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-import { Line } from 'react-chartjs-2';
-
-import 'chart.js/auto'
-
+import { Line } from "react-chartjs-2";
 
 class LineChart1 extends Component {
   render() {
@@ -13,32 +10,29 @@ class LineChart1 extends Component {
         {
           label: "My First dataset",
           data: [25, 20, 50, 41, 55, 45, 70],
-          borderColor: "rgba(91,207,197,1)",
-          borderWidth: this.props.borderWidth ? this.props.borderWidth : "2",          
-          backgroundColor: "rgba(91,207,197, 0)",
-		      tension:0.4
+          borderColor: "#5bcfc5",
+          borderWidth: this.props.borderWidth ? this.props.borderWidth : "2",
+          // pointBackgroundColor: "rgba(64, 24, 157, 1)",
+          backgroundColor: "rgba(91, 207, 197, 0)",
         },
       ],
     };
 
     const options = {
-      plugins:{		  
-		  legend: {
-			  display:false
-		  }
-	  },
+      legend: false,
       scales: {
-        y: 
+        yAxes: [
           {
-             min: 0,	
-			max: 100,
             ticks: {
-              beginAtZero: true,    
+              beginAtZero: true,
+              max: 100,
+              min: 0,
+              stepSize: 20,
               padding: 0,
             },
           },
-        
-        x: 
+        ],
+        xAxes: [
           {
             ticks: {
               padding: 0,
@@ -48,7 +42,7 @@ class LineChart1 extends Component {
               drawBorder: false,
             },
           },
-        
+        ],
       },
     };
     return (

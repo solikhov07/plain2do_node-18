@@ -5,6 +5,7 @@ import {
   saveTokenInLocalStorage,
   signUp,
 } from "../../services/AuthService";
+import { useNavigate } from "react-router-dom";
 
 export const SIGNUP_CONFIRMED_ACTION = "[signup action] confirmed signup";
 export const SIGNUP_FAILED_ACTION = "[signup action] failed signup";
@@ -20,11 +21,7 @@ export function signupAction(username, password, navigate) {
         saveTokenInLocalStorage(response.data);
         runLogoutTimer(dispatch, response.data.expiresIn * 1000, navigate);
         dispatch(confirmedSignupAction(response.data));
-        if (typeof navigate === 'function') {
-          navigate("/dashboard"); // Replaces history.push
-        } else {
-          console.error("Navigate is not a function");
-        }
+        navigate("/dashboard"); // Replaces history.push
       })
       .catch((error) => {
         const errorMessage = formatError(error.response.data);
@@ -35,17 +32,14 @@ export function signupAction(username, password, navigate) {
 
 export function logout(navigate) {
   localStorage.removeItem("userDetails");
-  if (typeof navigate === 'function') {
-    navigate("/login");
-  } else {
-    console.error("Navigate is not a function");
-  }
+  window.location = ("/login"); // Replaces history.push
   return {
     type: LOGOUT_ACTION,
   };
 }
 
 export function loginAction(username, password, navigate) {
+  console.log(username, password);
   return (dispatch) => {
     login(username, password)
       .then((response) => {
@@ -54,11 +48,7 @@ export function loginAction(username, password, navigate) {
         saveTokenInLocalStorage(response.data);
         runLogoutTimer(dispatch, response.data.expiresIn * 1000, navigate);
         dispatch(loginConfirmedAction(response.data));
-        if (typeof navigate === 'function') {
-          navigate("/dashboard");
-          } else {
-          console.error("Navigate is not a function");
-        }
+        navigate("/dashboard");
       })
       .catch((error) => {
         // Log the entire error object for debugging

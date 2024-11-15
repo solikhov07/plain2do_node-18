@@ -10,32 +10,29 @@ class BarChart5 extends Component {
         {
           label: "My First dataset",
           data: [65, 59, 80, 81, 56, 55, 40],
-          borderColor: "rgba(91,207,197,1)",
+          borderColor: "rgba(91, 207, 197, 1)",
           borderWidth: "0",
-          backgroundColor: "rgba(91,207,197, 0.5)",
-          hoverBackgroundColor: "rgba(91,207,197, 0.5)",		      
-          barPercentage: 0.5,
+          backgroundColor: "rgba(91, 207, 193, 0.5)",
+          hoverBackgroundColor: "rgba(91, 207, 193, 0.5)",
         },
       ],
     };
     const options = {
-		plugins:{
-		  legend: false,
-		},
+      legend: false,
       scales: {
-        y: 
+        yAxes: [
           {
             ticks: {
               beginAtZero: true,
             },
           },
-        
-        x: 
+        ],
+        xAxes: [
           {
             // Change here
             barPercentage: 0.5,
           },
-        
+        ],
       },
     };
 
