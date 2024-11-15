@@ -8,15 +8,15 @@ const ChartPie = ({ color1, color2, color3, color4, height, width }) => {
             data: [45, 25, 20, 10],
             borderWidth: 0,
             backgroundColor: [
-               `${color1 ? color1 : "rgba(91,207,197, 1)"}`,
-               `${color2 ? color2 : "rgba(91,207,197, 0.7)"}`,
-               `${color3 ? color3 : "rgba(91,207,197, 0.5)"}`,
+               `${color1 ? color1 : "rgba(91, 207, 193, 1)"}`,
+               `${color2 ? color2 : "rgba(91, 207, 193, 0.7)"}`,
+               `${color3 ? color3 : "rgba(91, 207, 193, 0.5)"}`,
                `${color4 ? color4 : "rgba(0, 0, 0, 0.07)"}`,
             ],
             hoverBackgroundColor: [
-               `${color1 ? color1 : "rgba(91,207,197, 1)"}`,
-               `${color2 ? color2 : "rgba(91,207,197,0.7)"}`,
-               `${color3 ? color3 : "rgba(91,207,197,0.5)"}`,
+               `${color1 ? color1 : "rgba(91, 207, 193, 1)"}"}`,
+               `${color2 ? color2 : "rgba(91, 207, 193, 0.7)"}`,
+               `${color3 ? color3 : "rgba(91, 207, 193, 0.5)"}`,
                `${color4 ? color4 : "rgba(0, 0, 0, 0.07)"}`,
             ],
          },
@@ -25,11 +25,8 @@ const ChartPie = ({ color1, color2, color3, color4, height, width }) => {
    };
 
    const options = {
-		plugins:{
-			legend: false,
-			responsive: true,
-		},
-      
+      responsive: true,
+      legend: false,
       maintainAspectRatio: false,
    };
 

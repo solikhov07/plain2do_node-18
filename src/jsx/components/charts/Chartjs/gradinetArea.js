@@ -8,38 +8,34 @@ const data = {
     {
       label: "My First dataset",
       data: [25, 20, 60, 41, 66, 45, 80],
-      borderColor: "rgba(91,207,197,1)",
+      borderColor: "#5bcfc5",
       borderWidth: "1",
-      backgroundColor: "rgba(91,207,197, 0.2)",
-      fill:true,
-      tension:0.4
+      backgroundColor: "rgba(91, 207, 193, 0.5)",
     },
   ],
 };
 
 const options = {
-	plugins:{
-		legend: false,
-	},
+  legend: false,
   scales: {
-    y: 
+    yAxes: [
       {
-		max: 100,
-        min: 0,
         ticks: {
           beginAtZero: true,
+          max: 100,
+          min: 0,
           stepSize: 20,
           padding: 5,
         },
       },
-    
-    x: 
+    ],
+    xAxes: [
       {
         ticks: {
           padding: 5,
         },
       },
-    
+    ],
   },
 };
 class GradientArea extends Component {

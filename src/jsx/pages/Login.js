@@ -21,10 +21,10 @@ function Login(props) {
   const t = translation.registration[language2];
   const [languageBoxState, setLanguageBoxState] = useState(false);
   const [isVisiblePassword, setIsVisiblePassword] = useState("password");
-  const [email, setEmail] = useState('demo@example.com');
+  const [email, setEmail] = useState('');
     let errorsObj = { email: '', password: '' };
     const [errors, setErrors] = useState(errorsObj);
-    const [password, setPassword] = useState('123456');
+    const [password, setPassword] = useState('');
 
     const dispatch = useDispatch();
     const nav  = useNavigate();

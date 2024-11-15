@@ -2,7 +2,7 @@ import React  from 'react';
 import {connect, useDispatch } from 'react-redux';
 import {  useLocation, useNavigate, useParams } from 'react-router-dom';
 
-import { Logout } from '../../../store/actions/AuthActions';
+import { logout } from '../../../store/actions/AuthActions';
 import { isAuthenticated } from '../../../store/selectors/AuthSelectors';
 
 function withRouter(Component) {
@@ -25,7 +25,7 @@ function LogoutPage(props){
     const dispatch = useDispatch();
     const navigate = useNavigate();
     function onLogout() {
-       dispatch(Logout(navigate));
+       dispatch(logout(navigate));
        // window.location.reload();
     }
     return(

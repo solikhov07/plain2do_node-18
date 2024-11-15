@@ -8,48 +8,48 @@ class BarChart6 extends Component {
       labels: ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"],
       datasets: [
         {
-          label: "Orange",
-          backgroundColor: "rgba(235, 129, 83, 1)",
-          hoverBackgroundColor: "rgba(235, 129, 83, 1)",
-          data: ["12", "12", "12", "12", "12", "12", "12"],
-        },
-        {
-          label: "Blue",
-          backgroundColor: "rgba(64,24,157, 1)",
-          hoverBackgroundColor: "rgba(64,24,157, 1)",
-          data: ["12", "12", "12", "12", "12", "12", "12"],
-        },
-        {
           label: "Green",
-          backgroundColor: "rgba(91,207,197, 1)",
-          hoverBackgroundColor: "rgba(91,207,197, 1)",
+          backgroundColor: "#5bcfc5",
+          hoverBackgroundColor: "rgba(91, 207, 193, 1)",
+          data: ["12", "12", "12", "12", "12", "12", "12"],
+        },
+        {
+          label: "Glacier",
+          backgroundColor: "rgba(112, 159, 186, 1)",
+          hoverBackgroundColor: "rgba(112, 159, 186, 1)",
+          data: ["12", "12", "12", "12", "12", "12", "12"],
+        },
+        {
+          label: "Red",
+          backgroundColor: "rgba(238, 60, 60, 1)",
+          hoverBackgroundColor: "#ee3c3c",
           data: ["12", "12", "12", "12", "12", "12", "12"],
         },
       ],
     };
     const options = {
-      plugins:{
-		  legend: {
-			display: false,
-		  },
-		  title: {
-			display: false,
-		  },
-		  tooltips: {
-			mode: "index",
-			intersect: false,
-		  },
-		  responsive: true,
-	  },
+      legend: {
+        display: false,
+      },
+      title: {
+        display: false,
+      },
+      tooltips: {
+        mode: "index",
+        intersect: false,
+      },
+      responsive: true,
       scales: {
-        x:
+        xAxes: [
           {
             stacked: true,
           },
-        y:
+        ],
+        yAxes: [
           {
             stacked: true,
           },
+        ],
       },
     };
 

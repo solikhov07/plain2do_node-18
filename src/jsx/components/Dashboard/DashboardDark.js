@@ -26,19 +26,12 @@ const TransactionApexBar = loadable(() =>
 );
 
 
-const DashboardDark = () => {	
-	const { changeBackground, 
-        changeSideBarStyle , changePrimaryColor,
-        chnageSidebarColor, 
-    } = useContext(ThemeContext);
+const DashboardDark = () => {
+	const { changeBackground, background } = useContext(ThemeContext);
 	useEffect(() => {
 		changeBackground({ value: "dark", label: "Dark" });
-		if (window.innerWidth >= 768) {
-			changeSideBarStyle({ value: "full", label: "full" });
-		}
-		changePrimaryColor("color_1");
-		chnageSidebarColor("color_1");
-	}, []);	
+	}, []);
+	
 	//Checkbox
 	const [checked, setChecked] = useState(true);
 	return(
@@ -144,9 +137,7 @@ const DashboardDark = () => {
 						</div>
 					</div>
 				</div>
-				<div className="col-xl-6 col-xxl-12">
-					<PreviousTab  /> 
-				</div>
+				<PreviousTab  /> 
 				<div className="col-xl-6 col-xxl-12">
 					<CardBlog />
 				</div>

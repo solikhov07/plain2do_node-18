@@ -16,8 +16,9 @@ import LanguageSelector from "../../components/language-selector/LanguageSelecto
 import SocialMediaApps from "../../components/socialmedia-apps/SocialMediaApps";
 import { loadingToggleAction, loginAction } from "../../../store/actions/AuthActions";
 function NewPassword(props) {
-  const link = "https://dev.plain2do.com" 
-  if(!localStorage.getItem("email") || !localStorage.getItem('verified')) window.location='/login'
+  const link = process.env.REACT_APP_API_URL
+  const email = localStorage.getItem("email") 
+  if(!email || !localStorage.getItem('verified')) window.location='/login'
   const [redirectState, setRedirectState] = useState(true)
   const [username, setUsername] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState('')
@@ -31,31 +32,15 @@ function NewPassword(props) {
   const language2 = useLanguage().language
   const t = translations.registration[language2]
   const [languageBoxState, setLanguageBoxState] = useState(false);
-  const [email, setEmail] = useState("demo@example.com");
     let errorsObj = { email: '', password: '' };
     const [errors, setErrors] = useState(errorsObj);
-    const [password, setPassword] = useState('123456');
 
     const dispatch = useDispatch();
     const nav  = useNavigate();
   useEffect(() => {
     if(redirectState === false){
-      let error = false;
-      const errorObj = { ...errorsObj };
-      if (email === '') {
-          errorObj.email = 'Email is Required';
-          error = true;
-      }
-      if (username === '') {
-          errorObj.password = 'Password is Required';
-          error = true;
-      }
-      setErrors(errorObj);
-      if (error) {
-    return ;
-  }
   dispatch(loadingToggleAction(true));	
-  dispatch(loginAction(email, password, nav));
+  dispatch(loginAction(email, username, nav));
       }
   }, [redirectState])
   useEffect(() => {
@@ -76,10 +61,10 @@ function NewPassword(props) {
     e.preventDefault();
       try{
           if(passwordConfirm === username){
-              const reponseEmail = await fetch(`${link}/api/password-reset-confirm/`,{
+              const reponseEmail = await fetch(`${link}/password-reset-confirm/`,{
                   method: "POST",
                   body: JSON.stringify({
-                      email:localStorage.getItem("email"),
+                      email,
                       new_password: username
                     }),
                     headers: {
