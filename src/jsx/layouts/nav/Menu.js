@@ -10,8 +10,8 @@ export const MenuList = [
                 to: 'projects',					
             },
             {
-                title: 'Dashboard Dark',
-                to: 'dashboard-dark',
+                title: 'Budgets',
+                to: 'budgets',
             },
             {
                 title: 'Dashboard 3',

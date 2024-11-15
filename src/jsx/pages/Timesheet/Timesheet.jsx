@@ -26,7 +26,7 @@ const TimeSheetTable = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const handleInfoClick = (timeSheet) => {
-    history.push(`/timesheet/${timeSheet.id}/details`);
+    history(`/timesheet/${timeSheet.id}/details`);
   };
   const urlLink = process.env.REACT_APP_API_URL;
 
@@ -35,7 +35,7 @@ const TimeSheetTable = () => {
   useEffect(() => {
     if (!token) {
       console.error("No access token available.");
-      history.push("/login");
+      history("/login");
       return;
     }
 
@@ -60,7 +60,7 @@ const TimeSheetTable = () => {
       .then((response) => {
         if (!response.ok) {
           localStorage.removeItem("userDetails");
-          history.push("/login");
+          history("/login");
           throw new Error(`${t.httperrorstatus}${response.status}`);
         }
         return response.json();
@@ -199,7 +199,7 @@ const TimeSheetTable = () => {
   };
 
   const handleTimesheetAdd = () => {
-    history.push("/timesheet/add-timesheet");
+    history("/timesheet/add-timesheet");
   };
 
   const currentYear = new Date().getFullYear();

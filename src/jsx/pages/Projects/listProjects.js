@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import swal from "sweetalert";
 import PageTitle from "../../layouts/PageTitle";
 import { useLanguage } from "../../../context/LanguageContext";
@@ -48,6 +48,7 @@ const ProjectsList = () => {
   };
   const [newProject, setNewProject] = useState(initialProjectState);
   const [subjectOptions, setSubjectOptions] = useState([]);
+  const [loading, setLoading] = useState(true);
   const urlLink = process.env.REACT_APP_API_URL;
 
   const userPermissions = getUserPermissions("projects");
@@ -98,6 +99,8 @@ const ProjectsList = () => {
       },
     };
 
+    setLoading(true);
+
     fetch(url, requestOptions)
       .then((response) => {
         if (!response.ok) {
@@ -132,9 +135,10 @@ const ProjectsList = () => {
         swal(
           t.error.charAt(0).toUpperCase() + t.error.slice(1),
           t.therewasissuewithfetchoperation + error.message,
-          t.error
+          "error"
         );
-      });
+      })
+      .finally(() => setLoading(false));
   }, [token, history, currentPage, itemsPerPage]);
 
   const downloadProjects = () => {
@@ -146,7 +150,11 @@ const ProjectsList = () => {
     const selectedIds = selectedItems.map((item) => item.id);
 
     if (selectedIds.length === 0) {
-      swal(t.error.charAt(0).toUpperCase() + t.error.slice(1), t.pleaseselectatleastoneitemtodownload, t.error);
+      swal(
+        t.error.charAt(0).toUpperCase() + t.error.slice(1),
+        t.pleaseselectatleastoneitemtodownload,
+        "error"
+      );
       return;
     }
 
@@ -200,7 +208,7 @@ const ProjectsList = () => {
         swal(
           t.error.charAt(0).toUpperCase() + t.error.slice(1),
           t.failedtodownloadprojectdata + error.message,
-          t.error
+          "error"
         );
       });
   };
@@ -271,10 +279,18 @@ const ProjectsList = () => {
         setContents((prev) => [...prev, savedData]);
 
         setShowModal(false);
-        swal(t.success.charAt(0).toUpperCase() + t.success.slice(1), t.projectaddedsuccessfully, t.success);
+        swal(
+          t.success.charAt(0).toUpperCase() + t.success.slice(1),
+          t.projectaddedsuccessfully,
+          "success"
+        );
       })
       .catch((error) => {
-        swal(t.error.charAt(0).toUpperCase() + t.error.slice(1), t.failedtoaddproject + error.message, t.error);
+        swal(
+          t.error.charAt(0).toUpperCase() + t.error.slice(1),
+          t.failedtoaddproject + error.message,
+          "error"
+        );
       });
   };
 
@@ -306,11 +322,19 @@ const ProjectsList = () => {
         );
 
         setShowEditModal(false);
-        swal(t.success.charAt(0).toUpperCase() + t.success.slice(1), t.projectupdatedsuccessfully, t.success);
+        swal(
+          t.success.charAt(0).toUpperCase() + t.success.slice(1),
+          t.projectupdatedsuccessfully,
+          "success"
+        );
       })
       .catch((error) => {
         console.error("Error updating project:", error);
-        swal(t.error.charAt(0).toUpperCase() + t.error.slice(1), t.failedtoupdateproject + error.message, t.error);
+        swal(
+          t.error.charAt(0).toUpperCase() + t.error.slice(1),
+          t.failedtoupdateproject + error.message,
+          "error"
+        );
       });
   };
 
@@ -353,7 +377,11 @@ const ProjectsList = () => {
           })
           .catch((error) => {
             console.error("Error deleting project:", error);
-            swal(t.error.charAt(0).toUpperCase() + t.error.slice(1), t.failedtodeletetheproject, t.error);
+            swal(
+              t.error.charAt(0).toUpperCase() + t.error.slice(1),
+              t.failedtodeletetheproject,
+              "error"
+            );
           });
       }
     });
@@ -388,8 +416,8 @@ const ProjectsList = () => {
             onChange={() => handleRowSelect(content.id)}
           />
         </td>
-        <td>{content["ProjectName"+language.toUpperCase()]}</td>
-        <td>{content["Address"+language.toUpperCase()]}</td>
+        <td>{content["ProjectName" + language.toUpperCase()]}</td>
+        <td>{content["Address" + language.toUpperCase()]}</td>
         <td>{content.StartDate}</td>
         <td>{content.EndDate}</td>
         <td>
@@ -466,123 +494,131 @@ const ProjectsList = () => {
           </div>
         </div>
         <div className="card-body">
-          <div className="w-100 table-responsive">
-            <div className="d-flex align-items-center justify-content-between">
-              <div className="form-group d-flex align-items-center">
-                <label htmlFor="itemsPerPageSelect" className="m-0 me-2">
-                  {t.projectsPerPage}:
-                </label>
-                <select
-                  className="form-control"
-                  style={{
-                    width: "100px",
-                  }}
-                  onChange={handleItemsPerPageChange}
-                  value={itemsPerPage}
-                >
-                  <option value="10">10</option>
-                  <option value="25">25</option>
-                  <option value="50">50</option>
-                </select>
-              </div>
-              {userPermissions.canAdd && (
-                <Button onClick={handleShowModal} className="btn btn-info">
-                  <i className="flaticon-067-plus"></i> {t.addProject}
-                </Button>
-              )}
+          {loading ? (
+            <div className="text-center">
+              <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
             </div>
-            <table className="display w-100 dataTable ">
-              <thead>
-                <tr>
-                  <th>{t.select}</th>
-                  <th>{t.projectName}</th>
-                  <th>{t.address}</th>
-                  <th>{t.startDate}</th>
-                  <th>{t.endDate}</th>
-                  <th>{t.status}</th>
-                  {(userPermissions.canEdit || userPermissions.canDelete) && (
-                    <th>{t.action}</th>
-                  )}
-                </tr>
-                <tr>
-                  <th></th>
-                  <th>
-                    <input
-                      type="text"
-                      className="form-control border border-info"
-                      name="ProjectNameEN"
-                      value={filters.ProjectNameEN}
-                      onChange={handleFilterChange}
-                      placeholder={t.projectName}
-                    />
-                  </th>
-                  <th>
-                    <input
-                      type="text"
-                      className="form-control border border-info"
-                      name="AddressEN"
-                      value={filters.AddressEN}
-                      onChange={handleFilterChange}
-                      placeholder={t.address}
-                    />
-                  </th>
-                  <th>
-                    <input
-                      type="text"
-                      className="form-control border border-info"
-                      name="StartDate"
-                      value={filters.StartDate}
-                      onChange={handleFilterChange}
-                      placeholder={t.startDate}
-                    />
-                  </th>
-                  <th>
-                    <input
-                      type="text"
-                      className="form-control border border-info"
-                      name="EndDate"
-                      value={filters.EndDate}
-                      onChange={handleFilterChange}
-                      placeholder={t.endDate}
-                    />
-                  </th>
-                </tr>
-              </thead>
-              <tbody>{renderTableRows()}</tbody>
-            </table>
-            <div className="d-flex align-items-center justify-content-between mt-3 mb-3">
-              <h5 className="m-0">
-                {t.pagination} {currentPage} {t.paginationOf} {totalPages}
-              </h5>
+          ) : (
+            <div className="w-100 table-responsive">
+              <div className="d-flex align-items-center justify-content-between">
+                <div className="form-group d-flex align-items-center">
+                  <label htmlFor="itemsPerPageSelect" className="m-0 me-2">
+                    {t.projectsPerPage}:
+                  </label>
+                  <select
+                    className="form-control"
+                    style={{
+                      width: "100px",
+                    }}
+                    onChange={handleItemsPerPageChange}
+                    value={itemsPerPage}
+                  >
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                  </select>
+                </div>
+                {userPermissions.canAdd && (
+                  <Button onClick={handleShowModal} className="btn btn-info">
+                    <i className="flaticon-067-plus"></i> {t.addProject}
+                  </Button>
+                )}
+              </div>
+              <table className="display w-100 dataTable ">
+                <thead>
+                  <tr>
+                    <th>{t.select}</th>
+                    <th>{t.projectName}</th>
+                    <th>{t.address}</th>
+                    <th>{t.startDate}</th>
+                    <th>{t.endDate}</th>
+                    <th>{t.status}</th>
+                    {(userPermissions.canEdit || userPermissions.canDelete) && (
+                      <th>{t.action}</th>
+                    )}
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <th>
+                      <input
+                        type="text"
+                        className="form-control border border-info"
+                        name="ProjectNameEN"
+                        value={filters.ProjectNameEN}
+                        onChange={handleFilterChange}
+                        placeholder={t.projectName}
+                      />
+                    </th>
+                    <th>
+                      <input
+                        type="text"
+                        className="form-control border border-info"
+                        name="AddressEN"
+                        value={filters.AddressEN}
+                        onChange={handleFilterChange}
+                        placeholder={t.address}
+                      />
+                    </th>
+                    <th>
+                      <input
+                        type="text"
+                        className="form-control border border-info"
+                        name="StartDate"
+                        value={filters.StartDate}
+                        onChange={handleFilterChange}
+                        placeholder={t.startDate}
+                      />
+                    </th>
+                    <th>
+                      <input
+                        type="text"
+                        className="form-control border border-info"
+                        name="EndDate"
+                        value={filters.EndDate}
+                        onChange={handleFilterChange}
+                        placeholder={t.endDate}
+                      />
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>{renderTableRows()}</tbody>
+              </table>
+              <div className="d-flex align-items-center justify-content-between mt-3 mb-3">
+                <h5 className="m-0">
+                  {t.pagination} {currentPage} {t.paginationOf} {totalPages}
+                </h5>
 
-              <div className="d-flex ">
-                {" "}
-                <button className="btn btn-primary" onClick={handleSelectAll}>
-                  {selectedItems.length === contents.length
-                    ? t.deselect_all
-                    : t.select_all}
-                </button>
-                <button
-                  className={`btn btn-primary ms-2 ${
-                    currentPage === 1 ? "disabled" : ""
-                  }`}
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage(currentPage - 1)}
-                >
-                  {t.previous}
-                </button>
-                <button
-                  className={`btn btn-primary ms-2 ${
-                    !canGoNext ? "disabled" : ""
-                  }`}
-                  disabled={!canGoNext}
-                  onClick={() => setCurrentPage(currentPage + 1)}
-                >
-                  {t.next}
-                </button>
+                <div className="d-flex ">
+                  {" "}
+                  <button className="btn btn-primary" onClick={handleSelectAll}>
+                    {selectedItems.length === contents.length
+                      ? t.deselect_all
+                      : t.select_all}
+                  </button>
+                  <button
+                    className={`btn btn-primary ms-2 ${
+                      currentPage === 1 ? "disabled" : ""
+                    }`}
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                  >
+                    {t.previous}
+                  </button>
+                  <button
+                    className={`btn btn-primary ms-2 ${
+                      !canGoNext ? "disabled" : ""
+                    }`}
+                    disabled={!canGoNext}
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                  >
+                    {t.next}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
@@ -596,8 +632,11 @@ const ProjectsList = () => {
               <Form.Label>{t.projectid}</Form.Label>
               <Form.Control
                 type="text"
-                placeholder={t.enterprojectid}
+                // placeholder={t.enterprojectid}
                 name="ProjectID_1C"
+                style={{
+                  border: "1px solid #5bcfc5",
+                }}
                 value={newProject.ProjectID_1C}
                 onChange={handleInputChange}
               />
@@ -606,8 +645,11 @@ const ProjectsList = () => {
               <Form.Label>{t.projectcode}</Form.Label>
               <Form.Control
                 type="text"
-                placeholder={t.enterprojectcode}
+                // placeholder={t.enterprojectcode}
                 name="ProjectCode"
+                style={{
+                  border: "1px solid #5bcfc5",
+                }}
                 value={newProject.ProjectCode}
                 onChange={handleInputChange}
               />
@@ -616,8 +658,11 @@ const ProjectsList = () => {
               <Form.Label>{t.projectName} (EN)</Form.Label>
               <Form.Control
                 type="text"
-                placeholder={t.enterenglishprojectname}
+                // placeholder={t.enterenglishprojectname}
                 name="ProjectNameEN"
+                style={{
+                  border: "1px solid #5bcfc5",
+                }}
                 value={newProject.ProjectNameEN}
                 onChange={handleInputChange}
               />
@@ -626,8 +671,11 @@ const ProjectsList = () => {
               <Form.Label>{t.projectName} (RU)</Form.Label>
               <Form.Control
                 type="text"
-                placeholder={t.enterrussianprojectname}
+                // placeholder={t.enterrussianprojectname}
                 name="ProjectNameRU"
+                style={{
+                  border: "1px solid #5bcfc5",
+                }}
                 value={newProject.ProjectNameRU}
                 onChange={handleInputChange}
               />
@@ -636,8 +684,11 @@ const ProjectsList = () => {
               <Form.Label>{t.projectName} (TR)</Form.Label>
               <Form.Control
                 type="text"
-                placeholder={t.enterturkishprojectname}
+                // placeholder={t.enterturkishprojectname}
                 name="ProjectNameTR"
+                style={{
+                  border: "1px solid #5bcfc5",
+                }}
                 value={newProject.ProjectNameTR}
                 onChange={handleInputChange}
               />
@@ -646,8 +697,11 @@ const ProjectsList = () => {
               <Form.Label>{t.address} (EN)</Form.Label>
               <Form.Control
                 type="text"
-                placeholder={t.enterenglishaddress}
+                // placeholder={t.enterenglishaddress}
                 name="AddressEN"
+                style={{
+                  border: "1px solid #5bcfc5",
+                }}
                 value={newProject.AddressEN}
                 onChange={handleInputChange}
               />
@@ -656,8 +710,11 @@ const ProjectsList = () => {
               <Form.Label>{t.address} (RU)</Form.Label>
               <Form.Control
                 type="text"
-                placeholder={t.enterrussianaddress}
+                // placeholder={t.enterrussianaddress}
                 name="AddressRU"
+                style={{
+                  border: "1px solid #5bcfc5",
+                }}
                 value={newProject.AddressRU}
                 onChange={handleInputChange}
               />
@@ -666,8 +723,11 @@ const ProjectsList = () => {
               <Form.Label>{t.address} (TR)</Form.Label>
               <Form.Control
                 type="text"
-                placeholder={t.enterturkishaddress}
+                // placeholder={t.enterturkishaddress}
                 name="AddressTR"
+                style={{
+                  border: "1px solid #5bcfc5",
+                }}
                 value={newProject.AddressTR}
                 onChange={handleInputChange}
               />
@@ -677,6 +737,9 @@ const ProjectsList = () => {
               <Form.Control
                 type="date"
                 name="StartDate"
+                style={{
+                  border: "1px solid #5bcfc5",
+                }}
                 defaultValue={newProject.StartDate}
                 onChange={handleInputChange}
                 max={newProject.EndDate || ""}
@@ -687,6 +750,9 @@ const ProjectsList = () => {
               <Form.Control
                 type="date"
                 name="EndDate"
+                style={{
+                  border: "1px solid #5bcfc5",
+                }}
                 defaultValue={newProject.EndDate}
                 onChange={handleInputChange}
                 min={newProject.StartDate || ""}
@@ -697,6 +763,9 @@ const ProjectsList = () => {
               <Form.Control
                 as="select"
                 name="SubjectofRF"
+                style={{
+                  border: "1px solid #5bcfc5",
+                }}
                 value={newProject.SubjectofRF}
                 onChange={(e) =>
                   handleInputChange({

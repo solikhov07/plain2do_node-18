@@ -25,7 +25,7 @@ const EditBudget = () => {
   }, [id, token]);
 
   const handleBack = () => {
-    history.push("/budgets");
+    history("/budgets");
   };
 
   useEffect(() => {
@@ -79,7 +79,7 @@ const EditBudget = () => {
       .then((updatedData) => {
         swal(t.success.charAt(0).toUpperCase() + t.success.slice(1), t.budgetitemeditedsuccessfully, t.success);
         console.log("Budget updated:", updatedData);
-        history.push("/budgets");
+        history("/budgets");
       })
       .catch((error) => {
         console.error("Error updating budget:", error);

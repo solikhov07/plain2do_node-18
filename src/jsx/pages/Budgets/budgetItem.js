@@ -141,7 +141,7 @@ const BudgetItem = () => {
   useEffect(() => {
     if (!token) {
       console.error("No access token available.");
-      history.push("/login");
+      history("/login");
       return;
     }
 
@@ -159,7 +159,7 @@ const BudgetItem = () => {
       .then((response) => {
         if (!response.ok) {
           localStorage.removeItem("userDetails");
-          history.push("/login");
+          history("/login");
           throw new Error(`${t.httperrorstatus}${response.status}`);
         }
         return response.json();

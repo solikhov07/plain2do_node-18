@@ -23,7 +23,7 @@ const TimesheetDetails = () => {
   useEffect(() => {
     if (!token) {
       swal(t.error.charAt(0).toUpperCase(), t.noaccesstokenavailable, t.error);
-      history.push("/login");
+      history("/login");
       return;
     }
 
@@ -41,7 +41,7 @@ const TimesheetDetails = () => {
       .then((response) => {
         if (!response.ok) {
           localStorage.removeItem("userDetails");
-          history.push("/login");
+          history("/login");
           throw new Error(`${t.httperrorstatus}${response.status}`);
         }
         return response.json();

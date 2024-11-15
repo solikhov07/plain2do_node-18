@@ -49,7 +49,7 @@ const AddTimesheet = () => {
   useEffect(() => {
     if (!token) {
       console.error("No access token available.");
-      history.push("/login");
+      history("/login");
       return;
     }
 
@@ -93,7 +93,7 @@ const AddTimesheet = () => {
   };
 
   const handleBack = () => {
-    history.push("/timesheet"); // Redirects the user to the /add-timesheet route
+    history("/timesheet"); // Redirects the user to the /add-timesheet route
   };
 
   const fetchTimesheetCodes = () => {
@@ -227,7 +227,7 @@ const AddTimesheet = () => {
         t.success.charAt(0).toUpperCase() + t.success.slice(1),
         t.timesheetandattendanceaddedsuccessfully,
         t.success
-      ).then(() => history.push("/timesheet"));
+      ).then(() => history("/timesheet"));
     } catch (error) {
       console.error("Error adding timesheet or attendance:", error);
       swal(

@@ -29,13 +29,13 @@ const Payroll = () => {
   const urlLink = process.env.REACT_APP_API_URL;
 
   const handleInfoClick = (payroll) => {
-    history.push(`/payroll/${payroll.id}/details`);
+    history(`/payroll/${payroll.id}/details`);
   };
 
   useEffect(() => {
     if (!token) {
       console.error("No access token available.");
-      history.push("/login");
+      history("/login");
       return;
     }
 
@@ -50,7 +50,7 @@ const Payroll = () => {
   useEffect(() => {
     if (!token) {
       console.error("No access token available.");
-      history.push("/login");
+      history("/login");
       return;
     }
 
@@ -80,7 +80,7 @@ const Payroll = () => {
       .then((response) => {
         if (!response.ok) {
           localStorage.removeItem("userDetails");
-          history.push("/login");
+          history("/login");
           throw new Error(`${t.httperrorstatus} ${response.status}`);
         }
         return response.json();
@@ -221,7 +221,7 @@ const Payroll = () => {
   };
 
   const handleTimesheetAdd = () => {
-    history.push("/payroll/add-payroll");
+    history("/payroll/add-payroll");
   };
 
   const currentYear = new Date().getFullYear();

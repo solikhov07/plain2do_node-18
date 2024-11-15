@@ -68,13 +68,13 @@ const EmployeeList = () => {
   };
 
   const handleInfoClick = (employee) => {
-    history.push(`/employee-list/${employee.id}/employee-information`);
+    history(`/employee-list/${employee.id}/employee-information`);
   };
 
   useEffect(() => {
     if (!token) {
       console.error("No access token available.");
-      history.push("/login");
+      history("/login");
       return;
     }
 
@@ -91,7 +91,7 @@ const EmployeeList = () => {
       .then((response) => {
         if (!response.ok) {
           localStorage.removeItem("userDetails");
-          history.push("/login");
+          history("/login");
           throw new Error(`${t.httperrorstatus}${response.status}`);
         }
         return response.json();
@@ -169,7 +169,7 @@ const EmployeeList = () => {
   };
 
   const handleAddEmployee = () => {
-    history.push("/employees/add-employee");
+    history("/employees/add-employee");
   };
 
   const handleDeleteClick = (employeeId) => {

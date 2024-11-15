@@ -32,7 +32,7 @@ const PayrollDetails = () => {
         t.noaccesstokenavailable,
         t.error
       );
-      history.push("/login");
+      history("/login");
       return;
     }
 

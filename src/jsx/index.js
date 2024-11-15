@@ -110,11 +110,16 @@ import Error500 from "./pages/Error500";
 import Error503 from "./pages/Error503";
 import ScrollToTop from "./pages/ScrollToTop";
 import { ThemeContext } from "../context/ThemeContext";
-
+import BudgetList from "./pages/Budgets/budgets";
+import AddBudgetItem from "./pages/Budgets/AddBudgetItem";
+import BudgetItem from "./pages/Budgets/budgetItem";
 const Markup = () => {
   const allroutes = [
-    /// Dashboard
     {url: "projects", component: <ProjectsList/>},
+    {url: "budgets", component: <BudgetList/>},
+    {url: "budgets/add-budget", component: <AddBudgetItem/>},
+    // {url: "", component: <BudgetItem/>},
+    /// Dashboard
     { url: "", component: <Home /> },
     { url: "dashboard", component: <Home /> },
     { url: "dashboard-dark", component: <DashboardDark /> },

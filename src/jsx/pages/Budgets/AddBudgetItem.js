@@ -44,7 +44,7 @@ const AddBudgetItem = () => {
         swal(
           t.error.charAt(0).toUpperCase() + t.error.slice(1),
           t.therewasanissuefetchingtheprojectdata + error.message,
-          t.error
+          "error"
         );
       }
     };
@@ -57,7 +57,7 @@ const AddBudgetItem = () => {
   }, []);
 
   const handleBackClick = () => {
-    history.goBack();
+    history(-1);
   };
 
   const handleChange = (e) => {
@@ -77,7 +77,7 @@ const AddBudgetItem = () => {
     e.preventDefault();
     if (!token) {
       console.error("No access token available.");
-      history.push("/login");
+      history("/login");
       return;
     }
 
@@ -112,12 +112,20 @@ const AddBudgetItem = () => {
         return response.json();
       })
       .then((data) => {
-        swal(t.success.charAt(0).toUpperCase() + t.success.slice(1), t.budgetitemaddedsuccessfully, t.success);
-        history.push("/budgets");
+        swal(
+          t.success.charAt(0).toUpperCase() + t.success.slice(1),
+          t.budgetitemaddedsuccessfully,
+          "success"
+        );
+        history("/budgets");
       })
       .catch((error) => {
         console.error("Error submitting data:", error);
-        swal(t.error.charAt(0).toUpperCase() + t.error.slice(1), error.message, t.error);
+        swal(
+          t.error.charAt(0).toUpperCase() + t.error.slice(1),
+          error.message,
+          "error"
+        );
       });
   };
 
@@ -158,7 +166,7 @@ const AddBudgetItem = () => {
               {Array.isArray(projects) &&
                 projects.map((project) => (
                   <option key={project.id} value={project.id}>
-                    {project["ProjectName"+language.toUpperCase()]}
+                    {project["ProjectName" + language.toUpperCase()]}
                   </option>
                 ))}
             </select>

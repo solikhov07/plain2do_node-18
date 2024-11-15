@@ -72,17 +72,17 @@ const BudgetList = () => {
   };
 
   const handleInfoClick = (budget) => {
-    history.push(`/budgets/${budget.id}/budget-details`);
+    history(`/budgets/${budget.id}/budget-details`);
   };
 
   const handleEditClick = (budget) => {
-    history.push(`/budgets/${budget.id}/edit-budget`);
+    history(`/budgets/${budget.id}/edit-budget`);
   };
 
   useEffect(() => {
     if (!token) {
       console.error("No access token available.");
-      history.push("/login");
+      history("/login");
       return;
     }
 
@@ -99,7 +99,7 @@ const BudgetList = () => {
       .then((response) => {
         if (!response.ok) {
           localStorage.removeItem("userDetails");
-          history.push("/login");
+          history("/login");
           throw new Error(`${t.httperrorstatus}${response.status}`);
         }
         return response.json();
@@ -202,7 +202,7 @@ const BudgetList = () => {
   };
 
   const handleAddProject = () => {
-    history.push("/budgets/add-budget");
+    history("/budgets/add-budget");
   };
 
   const handleDeleteClick = (projectId) => {

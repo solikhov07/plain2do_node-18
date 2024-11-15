@@ -111,7 +111,7 @@ const AddPayroll = () => {
   useEffect(() => {
     if (!token) {
       console.error("No access token available.");
-      history.push("/login");
+      history("/login");
       return;
     }
 
@@ -284,7 +284,7 @@ const AddPayroll = () => {
         t.success.charAt(0).toUpperCase() + t.success.slice(1),
         t.payrolladdedanddetailssentsuccessfully,
         t.success
-      ).then(() => history.push("/payroll"));
+      ).then(() => history("/payroll"));
     } catch (error) {
       console.error(
         "Error during payroll addition and details sending:",
@@ -396,7 +396,7 @@ const AddPayroll = () => {
               </Button>
               <Button
                 variant="secondary"
-                onClick={() => history.push("/payroll")}
+                onClick={() => history("/payroll")}
               >
                 {t.back}
               </Button>
