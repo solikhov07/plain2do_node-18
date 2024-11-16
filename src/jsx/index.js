@@ -20,24 +20,36 @@ import CardsCenter from "./components/Dashboard/CardsCenter";
 import Transaction from "./components/Dashboard/Transaction";
 import TransactionDetails from "./components/Dashboard/TransactionDetails";
 
+/// Plain2do
+import ProjectsList from "./pages/Projects/listProjects";
 
-//CMS
-import Content from "./components/Cms/Content";
-import Menu from "./components/Cms/Menu";
-import EmailTemplate from "./components/Cms/EmailTemplate";
-import Blog from "./components/Cms/Blog";
-//CMS Linking Pages
-import ContentAdd from "./components/Cms/ContentAdd";
-import AddMail from "./components/Cms/AddMail";
-import AddBlog from "./components/Cms/AddBlog";
-import BlogCategory from "./components/Cms/BlogCategory";
-import ProjectsList from './pages/Projects/listProjects'
+import BudgetList from "./pages/Budgets/budgets";
+import BudgetItem from "./pages/Budgets/budgetItem";
+import EditBudget from "./pages/Budgets/EditBudget";
+import AddBudgetItem from "./pages/Budgets/AddBudgetItem";
+import GanttChart from "./pages/Gantt/ganttChart";
+import PersonalInformation from "./pages/PersonalInfo/personalInfo";
+import EmployeeList from "./pages/Employee/employeeList";
+import AddEmployee from "./pages/Employee/AddEmployee";
+import TimeSheetTable from "./pages/Timesheet/Timesheet";
+import TimesheetDetails from "./pages/Timesheet/TimesheetDetails";
+import AddTimesheet from "./pages/Timesheet/AddTimesheet";
+import Payroll from "./pages/Payroll/Payroll";
+import AddPayroll from "./pages/Payroll/AddPayroll";
+import PayrollDetails from "./pages/Payroll/PayrollDetails";
+
+import Treasury from "./pages/Finance/Treasury";
+
+import KanbanBoard from "./pages/Kanban/Kanban";
+import CompanyList from "./pages/CompanyList/CompanyList";
+import SubscriptionChart from "./pages/test";
+import ScrollToTop from "./pages/ScrollToTop";
 /// App
 import AppProfile from "./components/AppsMenu/AppProfile/AppProfile";
 import Compose from "./components/AppsMenu/Email/Compose/Compose";
 import Inbox from "./components/AppsMenu/Email/Inbox/Inbox";
 import Read from "./components/AppsMenu/Email/Read/Read";
-import Calendar from "./components/AppsMenu/Calendar/Calendar";
+// import Calendar from "./components/AppsMenu/Calendar/Calendar";
 import PostDetails from "./components/AppsMenu/AppProfile/PostDetails";
 
 /// Product List
@@ -52,6 +64,7 @@ import Customers from "./components/AppsMenu/Shop/Customers/Customers";
 /// Charts
 import SparklineChart from "./components/charts/Sparkline";
 import ChartJs from "./components/charts/Chartjs";
+import Chartist from "./components/charts/chartist";
 import RechartJs from "./components/charts/rechart";
 import ApexChart from "./components/charts/apexcharts";
 
@@ -63,6 +76,7 @@ import UiButton from "./components/bootstrap/Button";
 import UiModal from "./components/bootstrap/Modal";
 import UiButtonGroup from "./components/bootstrap/ButtonGroup";
 import UiListGroup from "./components/bootstrap/ListGroup";
+import UiMediaObject from "./components/bootstrap/MediaObject";
 import UiCards from "./components/bootstrap/Cards";
 import UiCarousel from "./components/bootstrap/Carousel";
 import UiDropDown from "./components/bootstrap/DropDown";
@@ -76,14 +90,16 @@ import UiTypography from "./components/bootstrap/Typography";
 /// Plugins
 import Select2 from "./components/PluginsMenu/Select2/Select2";
 import Nestable from "./components/PluginsMenu/Nestable/Nestable";
-import MainSweetAlert from "./components/PluginsMenu/SweetAlert/SweetAlert";
+import MainNouiSlider from "./components/PluginsMenu/Noui Slider/MainNouiSlider";
+import MainSweetAlert from "./components/PluginsMenu/Sweet Alert/SweetAlert";
 import Toastr from "./components/PluginsMenu/Toastr/Toastr";
-import JqvMap from "./components/PluginsMenu/JqvMap/JqvMap";
+// import JqvMap from "./components/PluginsMenu/Jqv Map/JqvMap";
 import Lightgallery from "./components/PluginsMenu/Lightgallery/Lightgallery";
 
 //Redux
 import Todo from "./pages/Todo";
-
+import ReduxForm from "./components/Forms/ReduxForm/ReduxForm";
+import WizardForm from "./components/Forms/ReduxWizard/Index";
 
 /// Widget
 import Widget from "./pages/Widget";
@@ -97,28 +113,63 @@ import BootstrapTable from "./components/table/BootstrapTable";
 /// Form
 import Element from "./components/Forms/Element/Element";
 import Wizard from "./components/Forms/Wizard/Wizard";
-import CkEditor from "./components/Forms/CkEditor/CkEditor";
+import SummerNote from "./components/Forms/Summernote/SummerNote";
 import Pickers from "./components/Forms/Pickers/Pickers";
-import FormValidation from "./components/Forms/FormValidation/FormValidation";
+import jQueryValidation from "./components/Forms/jQueryValidation/jQueryValidation";
 
 /// Pages
+import Registration from "./pages/Registration";
+import Login from "./pages/Login";
+import ForgotPassword from "./pages/forgot-password/ForgotPassword";
 import LockScreen from "./pages/LockScreen";
 import Error400 from "./pages/Error400";
 import Error403 from "./pages/Error403";
 import Error404 from "./pages/Error404";
 import Error500 from "./pages/Error500";
 import Error503 from "./pages/Error503";
-import ScrollToTop from "./pages/ScrollToTop";
+import Setting from "./layouts/Setting";
 import { ThemeContext } from "../context/ThemeContext";
-import BudgetList from "./pages/Budgets/budgets";
-import AddBudgetItem from "./pages/Budgets/AddBudgetItem";
-import BudgetItem from "./pages/Budgets/budgetItem";
+import InvoiceList from "./pages/Invoice";
+import Statistics from "./pages/Statistics";
+import AnaliticalReports from "./pages/AnaliticalReports";
+import Pendingtasks from "./pages/Pendingtasks";
+import Labordemand from "./pages/Labordemand";
 const Markup = () => {
   const allroutes = [
-    {url: "projects", component: <ProjectsList/>},
-    {url: "budgets", component: <BudgetList/>},
-    {url: "budgets/add-budget", component: <AddBudgetItem/>},
-    // {url: "", component: <BudgetItem/>},
+    //temporary pages
+    { url: "labor-demand", component: <Labordemand/> },
+    { url: "pending-tasks", component: <Pendingtasks/> },
+    { url: "analytical-reports", component: <AnaliticalReports/> },
+    { url: "statistics", component: <Statistics/> },
+    ////
+    { url: "projects", component: <ProjectsList/> },
+    { url: "budgets", component: <BudgetList/> },
+    { url: "budgets/add-budget", component: <AddBudgetItem/> },
+    { url: "budgets/:id/budget-details", component: <BudgetItem/> },
+    { url: "budgets/:id/edit-budget", component: <EditBudget/> },
+
+    { url: "gantt-chart", component: <GanttChart/> },
+
+    {
+      url: "employee-list/:id/employee-information",
+      component: <PersonalInformation/>,
+    },
+
+    { url: "employees/add-employee", component: <AddEmployee/> },
+
+    { url: "timesheet", component: <TimeSheetTable/> },
+    { url: "timesheet/:id/details", component: <TimesheetDetails/> },
+    { url: "timesheet/add-timesheet", component: <AddTimesheet/> },
+    { url: "employee-list", component: <EmployeeList/> },
+    { url: "payroll", component: <Payroll/> },
+    { url: "payroll/add-payroll", component: <AddPayroll/> },
+    { url: "payroll/:id/details", component: <PayrollDetails/> },
+    { url: "treasury", component: <Treasury/> },
+
+    { url: "invoice", component: <InvoiceList/> },
+    { url: "kanban-board", component: <KanbanBoard/> },
+    { url: "company-list", component: <CompanyList/> },
+    { url: "test", component: <SubscriptionChart/> },
     /// Dashboard
     { url: "", component: <Home /> },
     { url: "dashboard", component: <Home /> },
@@ -130,21 +181,21 @@ const Markup = () => {
     { url: "transaction-details", component: <TransactionDetails /> },
 
     //Cms
-    { url: "content", component: <Content /> },
-    { url: "menu", component: <Menu /> },
-    { url: "email-template", component: <EmailTemplate /> },
-    { url: "blog", component: <Blog /> },
-    { url: "add-content", component: <ContentAdd /> },
-    { url: "add-email", component: <AddMail /> },
-    { url: "add-blog", component: <AddBlog /> },
-    { url: "blog-category", component: <BlogCategory /> },
+    // { url: "content", component: <Content /> },
+    // { url: "menu", component: <Menu /> },
+    // { url: "email-template", component: <EmailTemplate /> },
+    // { url: "blog", component: <Blog /> },
+    // { url: "add-content", component: <ContentAdd /> },
+    // { url: "add-email", component: <AddMail /> },
+    // { url: "add-blog", component: <AddBlog /> },
+    // { url: "blog-category", component: <BlogCategory /> },
 
     /// Apps
     { url: "app-profile", component: <AppProfile /> },
     { url: "email-compose", component: <Compose /> },
     { url: "email-inbox", component: <Inbox /> },
     { url: "email-read", component: <Read /> },
-    { url: "app-calender", component: <Calendar /> },
+    // { url: "app-calender", component: <Calendar /> },
     { url: "post-details", component: <PostDetails /> },
 
     /// Chart
@@ -176,7 +227,7 @@ const Markup = () => {
     { url: "uc-nestable", component: <Nestable /> },
     { url: "uc-sweetalert", component: <MainSweetAlert /> },
     { url: "uc-toastr", component: <Toastr /> },
-    { url: "map-jqvmap", component: <JqvMap /> },
+    // { url: "map-jqvmap", component: <JqvMap /> },
     { url: "uc-lightgallery", component: <Lightgallery /> },
 
     ///Redux
@@ -199,9 +250,9 @@ const Markup = () => {
     /// Form
     { url: "form-element", component: <Element /> },
     { url: "form-wizard", component: <Wizard /> },
-    { url: "form-ckeditor", component: <CkEditor /> },
+    // { url: "form-ckeditor", component: <CkEditor /> },
     { url: "form-pickers", component: <Pickers /> },
-    { url: "form-validation", component: <FormValidation /> },
+    // { url: "form-validation", component: <FormValidation /> },
 
     /// table
     { url: "table-filtering", component: <FilteringTable /> },

@@ -144,7 +144,7 @@ const TimeSheetTable = () => {
       <tr className="" key={content.id}>
         <td>{content.Date}</td>
         <td>{content.Project_data?.ProjectNameEN || "N/A"}</td>
-        <td>{content.ResponsibleUser_data.email}</td>
+        <td>{content.ResponsibleUser_data?.email}</td>
         <td>{content.TotalHours}</td>
         <td>
           <Badge variant={content.Status === "Approved" ? "success" : "danger"}>

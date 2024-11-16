@@ -8,9 +8,11 @@ import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import { MenuList } from "./Menu";
 import { ThemeContext } from "../../../context/ThemeContext";
 import LogoutPage from "./Logout";
+import translations from "../../../translation/translation";
 /// Image
 import profile from "../../../images/profile/pic1.jpg";
-
+import { useLanguage } from "../../../context/LanguageContext";
+import { getDecodedRefreshTokenFromLocalStorage } from "../../../jwt/jwtDecoder";
 const reducer = (previousState, updatedState) => ({
   ...previousState,
   ...updatedState,
@@ -73,7 +75,10 @@ const SideBar = () => {
   path = path.split("/");
   path = path[path.length - 1];
   /// Active menu
-
+const { language } = useLanguage()
+const t = translations[language];
+const decodedToken = getDecodedRefreshTokenFromLocalStorage("userDetails");
+const userName = decodedToken.payload.username;
   return (
     <div
       onMouseEnter={() => ChangeIconSidebar(true)}
@@ -90,7 +95,7 @@ const SideBar = () => {
     >
       <PerfectScrollbar className="dlabnav-scroll">
         <ul className="metismenu" id="menu">
-          <Dropdown as="li" className="nav-item dropdown header-profile">
+        <Dropdown as="li" className="nav-item dropdown header-profile">
             <Dropdown.Toggle
               variant=""
               as="a"
@@ -100,14 +105,16 @@ const SideBar = () => {
               data-toggle="dropdown"
             >
               <img src={profile} width={20} alt="" />
-              <div className="header-info ms-3">
-                <span className="font-w600 ">
-                  Hi,<b>William</b>
+              <div className="header-info ms-3 ps-0 text-truncate">
+                <span
+                  className="font-w600 d-inline-block text-truncate mb-0"
+                  title={userName}
+                  style={{ maxWidth: "150px" }}
+                >
+                  {t.hi}, <b>{userName}</b>
                 </span>
-                <small className="text-end font-w400">william@gmail.com</small>
               </div>
             </Dropdown.Toggle>
-
 
             <Dropdown.Menu
               align="right"
@@ -117,7 +124,7 @@ const SideBar = () => {
                 <svg
                   id="icon-user1"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="text-primary"
+                  className="text-warning"
                   width={18}
                   height={18}
                   viewBox="0 0 24 24"
@@ -130,9 +137,9 @@ const SideBar = () => {
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                   <circle cx={12} cy={7} r={4} />
                 </svg>
-                <span className="ms-2">Profile </span>
+                <span className="ms-2">{t.profile} </span>
               </Link>
-              <Link to="/email-inbox" className="dropdown-item ai-icon">
+              <Link to="/invoice" className="dropdown-item ai-icon">
                 <svg
                   id="icon-inbox"
                   xmlns="http://www.w3.org/2000/svg"
@@ -149,28 +156,31 @@ const SideBar = () => {
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                   <polyline points="22,6 12,13 2,6" />
                 </svg>
-                <span className="ms-2">Inbox </span>
+                <span className="ms-2">{t.invoices}</span>
               </Link>
-              {/* <Link to="/page-login" className="dropdown-item ai-icon">
-                  <svg
-                    id="icon-logout"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="text-danger"
-                    width={18}
-                    height={18}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                    <polyline points="16 17 21 12 16 7" />
-                    <line x1={21} y1={12} x2={9} y2={12} />
-                  </svg>
-                  <span className="ms-2">Logout </span>
-                </Link> */}
+              <Link to="/company-list" className="dropdown-item ai-icon">
+                <svg
+                  id="icon-company-list"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="text-primary"
+                  width={18}
+                  height={18}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                  <path d="M8 6h8M8 10h4M8 14h8" />
+                  <path d="M4 21v-2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2" />
+                  <path d="M9 21v-4" />
+                  <path d="M15 21v-4" />
+                </svg>
+                <span className="ms-2">{t.companyList}</span>
+              </Link>
+
               <LogoutPage />
             </Dropdown.Menu>
           </Dropdown>
@@ -179,7 +189,7 @@ const SideBar = () => {
             if (menuClass === "menu-title") {
               return (
                 <li className={menuClass} key={index}>
-                  {data.title}
+                  {data[`title${language.toUpperCase()}`]}
                 </li>
               );
             } else {
@@ -196,16 +206,16 @@ const SideBar = () => {
                         to={"#"}
                         className="has-arrow"
                         onClick={() => {
-                          handleMenuActive(data.title);
+                          handleMenuActive(data[`title${language.toUpperCase()}`]);
                         }}
                       >
                         {data.iconStyle}
-                        <span className="nav-text">{data.title}</span>
+                        <span className="nav-text">{data[`title${language.toUpperCase()}`]}</span>
                         <span className="badge badge-xs style-1 badge-danger ms-2">
                           {data.update}
                         </span>
                       </Link>
-                      <Collapse in={state.active === data.title ? true : false}>
+                      <Collapse in={state.active === data[`title${language.toUpperCase()}`] ? true : false}>
                         <ul
                           className={`${
                             menuClass === "mm-collapse" ? "mm-show" : ""
@@ -218,7 +228,7 @@ data.content.map((data, index) => {
     <li
       key={index}
       className={`${
-        state.activeSubmenu === data.title
+        state.activeSubmenu === data[`title${language.toUpperCase()}`]
           ? "mm-active"
           : ""
       }`}
@@ -234,11 +244,11 @@ data.content.map((data, index) => {
               handleSubmenuActive(data.title);
             }}
           >
-            {data.title}
+            {data[`title${language.toUpperCase()}`]}
           </Link>
           <Collapse
             in={
-              state.activeSubmenu === data.title
+              state.activeSubmenu === data[`title${language.toUpperCase()}`]
                 ? true
                 : false
             }
@@ -262,7 +272,7 @@ data.content.map((data, index) => {
                         }`}
                         to={data.to}
                       >
-                        {data.title}
+                        {data[`title${language.toUpperCase()}`]}
                       </Link>
                     </li>
                   );
@@ -271,7 +281,7 @@ data.content.map((data, index) => {
           </Collapse>
         </>
       ) : (
-        <Link to={data.to}>{data.title}</Link>
+        <Link to={data.to}>{data[`title${language.toUpperCase()}`]}</Link>
       )}
     </li>
   );
@@ -282,7 +292,7 @@ data.content.map((data, index) => {
 ) : (
 <Link to={data.to}>
 {data.iconStyle}
-<span className="nav-text">{data.title}</span>
+<span className="nav-text">{data[`title${language.toUpperCase()}`]}</span>
 </Link>
 )}
 </li>

@@ -469,7 +469,7 @@ const Treasury = () => {
             "N/A"}
         </td>
         <td>
-          {content.our_company_data["OurCompany" + language.toUpperCase()] ||
+          {content?.our_company_data?.OurCompanyEN ? content?.our_company_data["OurCompany" + language.toUpperCase()] :
             "N/A"}
         </td>
         <td>

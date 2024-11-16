@@ -1,636 +1,886 @@
-import React, { Fragment, useReducer } from "react";
-import { Button, Dropdown, Modal, Tab, Nav } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import LightGallery from 'lightgallery/react';
-// import styles
-import 'lightgallery/css/lightgallery.css';
-import 'lightgallery/css/lg-zoom.css';
-import 'lightgallery/css/lg-thumbnail.css';
-import lgThumbnail from 'lightgallery/plugins/thumbnail';
-import lgZoom from 'lightgallery/plugins/zoom';
-
-//** Import Image */
-import profile01 from "../../../../images/profile/1.jpg";
-import profile02 from "../../../../images/profile/2.jpg";
-import profile03 from "../../../../images/profile/3.jpg";
-import profile04 from "../../../../images/profile/4.jpg";
-import profile05 from "../../../../images/profile/5.jpg";
-import profile06 from "../../../../images/profile/6.jpg";
-import profile07 from "../../../../images/profile/7.jpg";
-import profile08 from "../../../../images/profile/8.jpg";
-import profile09 from "../../../../images/profile/9.jpg";
-import profile from "../../../../images/profile/profile.png";
+import React, { Fragment, useEffect, useState } from "react";
 import PageTitle from "../../../layouts/PageTitle";
-
-const galleryBlog = [
-	{image: profile03}, {image: profile04},
-	{image: profile02}, {image: profile04},
-	{image: profile03}, {image: profile02},
-];
-const initialState = false;
-const reducer = (state, action) =>{
-	switch (action.type){
-		case 'sendMessage':
-			return { ...state, sendMessage: !state.sendMessage }		
-		case 'postModal':
-			return { ...state, post: !state.post }
-		case 'linkModal':
-			return { ...state, link: !state.link }		
-		case 'cameraModal':
-			return { ...state, camera: !state.camera }		
-		case 'replyModal':
-			return { ...state, reply: !state.reply }
-		default:
-			return state	
-	}	
-}
+import { Button, Dropdown, Modal, Form, Spinner } from "react-bootstrap";
+import swal from "sweetalert";
+import Select from "react-select";
+import "./appProfile.css";
+import { getDecodedRefreshTokenFromLocalStorage } from "../../../../jwt/jwtDecoder";
+import { useNavigate } from "react-router-dom";
+import {
+  fetchCompany,
+  fetchCountries,
+  fetchProjects,
+} from "../../apiData/apiData";
+import { useLanguage } from "../../../../context/LanguageContext";
+import translations from "../../../../translation/translation";
 
 const AppProfile = () => {
-	const onInit = () => {
-	};
-  	const options = {
-     	settings: {
-			overlayColor: "#000000",
-     	},
- 	};
-	const [state, dispatch] = useReducer(reducer, initialState);
-	return (
-		<Fragment>
-		  <PageTitle activeMenu="Profile" motherMenu="App" />	
-		  <div className="row">
-			<div className="col-lg-12">
-			  <div className="profile card card-body px-3 pt-3 pb-0">
-				<div className="profile-head">
-				  <div className="photo-content ">
-					<div className="cover-photo rounded"></div>
-				  </div>
-				  <div className="profile-info">
-					<div className="profile-photo">
-					  <img src={profile} className="img-fluid rounded-circle" alt="profile"/>
-					</div>
-					<div className="profile-details">
-					  <div className="profile-name px-3 pt-2">
-						<h4 className="text-primary mb-0">Mitchell C. Shay</h4>
-						<p>UX / UI Designer</p>
-					  </div>
-					  <div className="profile-email px-2 pt-2">
-						<h4 className="text-muted mb-0">hello@email.com</h4>
-						<p>Email</p>
-					  </div>
-					  <Dropdown className="dropdown ms-auto">
-						<Dropdown.Toggle
-						  variant="primary"
-						  className="btn btn-primary light sharp i-false"
-						  data-toggle="dropdown"
-						  aria-expanded="true"
-						>
-						  <svg
-							xmlns="http://www.w3.org/2000/svg"
-							//    xmlns:xlink="http://www.w3.org/1999/xlink"
-							width="18px"
-							height="18px"
-							viewBox="0 0 24 24"
-							version="1.1"
-						  >
-							<g
-							  stroke="none"
-							  strokeWidth="1"
-							  fill="none"
-							  fillRule="evenodd"
-							>
-							  <rect x="0" y="0" width="24" height="24"></rect>
-							  <circle fill="#000000" cx="5" cy="12" r="2"></circle>
-							  <circle fill="#000000" cx="12" cy="12" r="2"></circle>
-							  <circle fill="#000000" cx="19" cy="12" r="2"></circle>
-							</g>
-						  </svg>
-						</Dropdown.Toggle>
-						<Dropdown.Menu className="dropdown-menu dropdown-menu-right">
-						  <Dropdown.Item className="dropdown-item">
-							<i className="fa fa-user-circle text-primary me-2" />
-							View profile
-						  </Dropdown.Item>
-						  <Dropdown.Item className="dropdown-item">
-							<i className="fa fa-users text-primary me-2" />
-							Add to close friends
-						  </Dropdown.Item>
-						  <Dropdown.Item className="dropdown-item">
-							<i className="fa fa-plus text-primary me-2" />
-							Add to group
-						  </Dropdown.Item>
-						  <Dropdown.Item className="dropdown-item">
-							<i className="fa fa-ban text-primary me-2" />
-							Block
-						  </Dropdown.Item>
-						</Dropdown.Menu>
-					  </Dropdown>
-					</div>
-				  </div>
-				</div>
-			  </div>
-			</div>
-		  </div>
-		  <div className="row">
-			<div className="col-xl-4">
-				<div className="row">
-					<div className="col-lg-12">
-						<div className="card">
-							<div className="card-body">
-								<div className="profile-statistics">
-									<div className="text-center">
-										<div className="row">
-											<div className="col">
-												<h3 className="m-b-0">150</h3><span>Follower</span>
-											</div>
-											<div className="col">
-												<h3 className="m-b-0">140</h3> <span>Place Stay</span>
-											</div>
-											<div className="col">
-												<h3 className="m-b-0">45</h3> <span>Reviews</span>
-											</div>
-										</div>
-										<div className="mt-4">
-											<Link	to="/post-details"	className="btn btn-primary mb-1 me-1">Follow</Link>
-											<Link to={"#"} className="btn btn-primary mb-1 ms-1" onClick={() => dispatch({type:'sendMessage'})}>Send Message</Link>
-										</div>
-									</div>
-								  
-								</div>
-							</div>
-						</div>
-					</div>	
-					<div className="col-lg-12">
-						<div className="card">
-							<div className="card-header border-0 pb-0">
-								<h5 className="text-primary">Today Highlights</h5>
-							</div>	
-							<div className="card-body pt-3"	>	
-								<div className="profile-blog ">
-									<img  src={profile01}  alt="profile" className="img-fluid  mb-4 w-100 " />
-									<Link to="/post-details"> <h4>Darwin Creative Agency Template</h4> </Link>
-									<p className="mb-0">
-										A small river named Duden flows by their place and supplies
-										it with the necessary regelialia. It is a paradisematic
-										country, in which roasted parts of sentences fly into your
-										mouth.
-									</p>
-								</div>
-							</div>	
-						</div>
-					</div>
-					<div className="col-lg-12">
-						<div className="card">
-							<div className="card-header border-0 pb-0">
-								<h5 className="text-primary ">Interest</h5>
-							</div>
-							<div className="card-body pt-3">
-								<div className="profile-interest ">	
-									<LightGallery
-										onInit={onInit}
-										speed={500}
-										plugins={[lgThumbnail, lgZoom]}
-										elementClassNames="row sp4"
-									>
-										
-										{galleryBlog.map((item,index)=>(
-										<div data-src={item.image} className="col-lg-4 col-xl-4 col-sm-4 col-6 int-col mb-1" key={index}>
-											<img src={item.image} style={{width:"100%"}} alt="gallery"/>
-										</div>
-										))}
-									</LightGallery>										
-								</div>
-							</div>	
-						</div>
-					</div>	
-					<div className="col-lg-12">
-						<div className="card">
-							<div className="card-header border-0 pb-0">
-								<h5 className="text-primary">Our Latest News</h5>
-							</div>	
-							<div className="card-body pt-3">
-								<div className="profile-news">
-								  <div className="media pt-3 pb-3">
-									<img src={profile05} alt="" className="me-3 rounded" width={75}/>
-									<div className="media-body">
-										<h5 className="m-b-5">
-											<Link to="/post-details" className="text-black">
-												Collection of textile samples
-											</Link>
-										</h5>
-										<p className="mb-0">I shared this on my fb wall a few months back, and I thought. </p>
-									</div>
-								  </div>
-								  <div className="media pt-3 pb-3">
-									<img src={profile06} alt=""  className="me-3 rounded" width={75}/>
-									<div className="media-body">
-										<h5 className="m-b-5">
-											<Link to="/post-details" className="text-black">
-											Collection of textile samples
-											</Link>
-										</h5>
-										<p className="mb-0">
-											I shared this on my fb wall a few months back, and I
-											thought.
-										</p>
-									</div>
-								  </div>
-								  <div className="media pt-3 ">
-									<img src={profile07} alt="" className="me-3 rounded" width={75} />
-									<div className="media-body">
-										<h5 className="m-b-5">
-											<Link to="/post-details" className="text-black">
-												Collection of textile samples
-											</Link>
-										</h5>
-										<p className="mb-0">
-											I shared this on my fb wall a few months back, and I thought.
-										</p>
-									</div>
-								  </div>
-								</div>
-							</div>	
-						</div>
-					</div>	
-				</div>	
-			</div>	
-			<div className="col-xl-8">
-			  <div className="card">
-				<div className="card-body">
-				  <div className="profile-tab">
-					<div className="custom-tab-1">
-						<Tab.Container defaultActiveKey='Posts'>					
-							<Nav as='ul' className="nav nav-tabs">
-								<Nav.Item as='li' className="nav-item">
-									<Nav.Link to="#my-posts" eventKey='Posts'>Posts</Nav.Link>
-								</Nav.Item>
-								<Nav.Item as='li'i className="nav-item">
-									<Nav.Link to="#about-me"  eventKey='About'>About Me</Nav.Link>
-								</Nav.Item>
-								<Nav.Item as='li' className="nav-item">
-									<Nav.Link to="#profile-settings" eventKey='Setting'>Setting</Nav.Link>
-								</Nav.Item>
-							</Nav>
-							<Tab.Content>
-								<Tab.Pane id="my-posts"  eventKey='Posts'>
-									<div className="my-post-content pt-3">
-										<div className="post-input">
-												<textarea name="textarea" id="textarea" cols={30} rows={5} className="form-control bg-transparent" placeholder="Please type what you want...."defaultValue={""}/>
-												<Link to="/app-profile" className="btn btn-primary light px-3 me-1"  onClick={() => dispatch({type:'linkModal'})}>
-													<i className="fa fa-link m-0" />{" "}
-												</Link>
-											{/* Modal */}
-											
-											<Link to={"#"} className="btn btn-primary light px-3 me-1"  data-target="#cameraModal" onClick={() => dispatch({type:'cameraModal'})}>
-												<i className="fa fa-camera m-0" />{" "}
-											</Link>
-											{/* Modal */}
-											
-											<Link to={"#"} className="btn btn-primary ms-1" data-target="#postModal" onClick={() => dispatch({type:'postModal'})}>Post</Link>
-											{/* Modal */}
-											
-										</div>
-	
-										<div className="profile-uoloaded-post border-bottom-1 pb-5">
-											<img src={profile08} alt="" className="img-fluid w-100 rounded" />
-											<Link className="post-title" to="/post-details">
-												<h3 className="text-black">Collection of textile samples lay spread</h3>
-											</Link>
-											<p>
-												A wonderful serenity has take possession of my entire soul like these sweet morning of spare which enjoy whole heart.A wonderful serenity has take 
-												possession of my entire soul like these sweet morning of spare which enjoy whole heart.
-											</p>
-											<button className="btn btn-primary me-2">
-												<span className="me-2"> <i className="fa fa-heart" /> </span>Like 
-											</button>
-											<button className="btn btn-secondary" onClick={() => dispatch({type:'replyModal'})}>
-												<span className="me-2"> <i className="fa fa-reply" /></span>Reply
-											</button>
-										</div>
-										<div className="profile-uoloaded-post border-bottom-1 pb-5">
-											<img src={profile09} alt="" className="img-fluid w-100 rounded" />
-											<Link className="post-title" to="/post-details">
-												<h3 className="text-black">Collection of textile samples lay spread</h3>
-											</Link>
-											<p>
-												A wonderful serenity has take possession of my
-												entire soul like these sweet morning of spare which
-												enjoy whole heart.A wonderful serenity has take
-												possession of my entire soul like these sweet
-												morning of spare which enjoy whole heart.
-											</p>
-											<button className="btn btn-primary me-2">
-												<span className="me-2"> <i className="fa fa-heart" /> </span>Like
-											</button>
-											<button className="btn btn-secondary" onClick={() => dispatch({type:'replyModal'})}>
-												<span className="me-2">  <i className="fa fa-reply" /></span>Reply
-											</button>
-										</div>
-										<div className="profile-uoloaded-post pb-3">
-											<img src={profile08} alt="" className="img-fluid  w-100 rounded" />
-											<Link className="post-title" to="/post-details">
-												<h3 className="text-black">Collection of textile samples lay spread</h3>
-											</Link>
-											<p>
-												A wonderful serenity has take possession of my
-												entire soul like these sweet morning of spare which
-												enjoy whole heart.A wonderful serenity has take
-												possession of my entire soul like these sweet
-												morning of spare which enjoy whole heart.
-											</p>
-											<button className="btn btn-primary me-2">
-												<span className="me-2"><i className="fa fa-heart" /></span>Like
-											</button>
-											<button className="btn btn-secondary" onClick={() => dispatch({type:'replyModal'})}>
-												<span className="me-2"> <i className="fa fa-reply" /></span>Reply
-											</button>
-										</div>
-										
-									</div>
-								</Tab.Pane>
-								<Tab.Pane id="about-me" eventKey='About'>
-									<div className="profile-about-me">
-										<div className="pt-4 border-bottom-1 pb-3">
-											<h4 className="text-primary">About Me</h4>
-											<p className="mb-2">
-												A wonderful serenity has taken possession of my
-												entire soul, like these sweet mornings of spring
-												which I enjoy with my whole heart. I am alone, and
-												feel the charm of existence was created for the
-												bliss of souls like mine.I am so happy, my dear
-												friend, so absorbed in the exquisite sense of mere
-												tranquil existence, that I neglect my talents.
-											</p>
-											<p>
-												A collection of textile samples lay spread out on
-												the table - Samsa was a travelling salesman - and
-												above it there hung a picture that he had recently
-												cut out of an illustrated magazine and housed in a
-												nice, gilded frame.
-											</p>
-										</div>
-									</div>
-									<div className="profile-skills mb-5">
-										<h4 className="text-primary mb-2">Skills</h4>
-										<Link to="/app-profile" className="btn btn-primary light btn-xs mb-1 me-1"> Admin</Link>
-										<Link to="/app-profile" className="btn btn-primary light btn-xs mb-1 me-1" > Dashboard</Link>
-										<Link to="/app-profile" className="btn btn-primary light btn-xs mb-1 me-1">Photoshop</Link>
-										<Link to="/app-profile" className="btn btn-primary light btn-xs mb-1 me-1">Bootstrap</Link>
-										<Link to="/app-profile" className="btn btn-primary light btn-xs mb-1 me-1">Responsive</Link>
-										<Link to="/app-profile" className="btn btn-primary light btn-xs mb-1 me-1">Crypto</Link>
-									</div>
-									<div className="profile-lang  mb-5">
-										<h4 className="text-primary mb-2">Language</h4>
-										<Link to="/app-profile" className="text-muted pe-3 f-s-16">
-											<i className="flag-icon flag-icon-us" />English
-										</Link>
-										<Link to="/app-profile" className="text-muted pe-3 f-s-16">
-											<i className="flag-icon flag-icon-fr" />French
-										</Link>
-										<Link to="/app-profile" className="text-muted pe-3 f-s-16">
-											<i className="flag-icon flag-icon-bd" />Bangla
-										</Link>
-									</div>
-									<div className="profile-personal-info">
-										<h4 className="text-primary mb-4">
-											Personal Information
-										</h4>
-										<div className="row mb-2">
-											<div className="col-3">
-												<h5 className="f-w-500"> Name<span className="pull-right">:</span></h5>
-											</div>
-											<div className="col-9">
-												<span>Mitchell C.Shay</span>
-											</div>
-										</div>
-										<div className="row mb-2">
-											<div className="col-3">
-												<h5 className="f-w-500">Email<span className="pull-right">:</span></h5>
-											</div>
-											<div className="col-9">
-												<span>example@examplel.com</span>
-											</div>
-										</div>
-										<div className="row mb-2">
-											<div className="col-3">
-												<h5 className="f-w-500">  Availability<span className="pull-right">:</span></h5>
-											</div>
-											<div className="col-9">
-												<span>Full Time (Free Lancer)</span>
-											</div>
-										</div>
-										<div className="row mb-2">
-											<div className="col-3">
-												<h5 className="f-w-500">Age<span className="pull-right">:</span></h5>
-											</div>
-											<div className="col-9">
-												<span>27</span>
-											</div>
-										</div>
-										<div className="row mb-2">
-											<div className="col-3">
-												<h5 className="f-w-500">  Location<span className="pull-right">:</span></h5>
-											</div>
-											<div className="col-9">
-												<span>Rosemont Avenue Melbourne, Florida</span>
-											</div>
-										</div>
-										<div className="row mb-2">
-											<div className="col-3">
-												<h5 className="f-w-500">Year Experience<span className="pull-right">:</span></h5>
-											</div>
-											<div className="col-9">
-												<span>07 Year Experiences</span>
-											</div>
-										</div>
-									</div>
-								</Tab.Pane>
-								<Tab.Pane id="profile-settings" eventKey='Setting'>
-									<div className="pt-3">
-										<div className="settings-form">
-											<h4 className="text-primary">Account Setting</h4>
-											<form onSubmit={(e) => e.preventDefault()}>
-												<div className="row">
-													<div className="form-group mb-3 col-md-6">
-														<label className="form-label" >Email</label>
-														<input type="email" placeholder="Email" className="form-control"/>
-													</div>
-													<div className="form-group mb-3 col-md-6">
-														<label className="form-label">Password</label>
-														<input type="password" placeholder="Password" className="form-control"/>
-													</div>
-												</div>
-												<div className="form-group mb-3">
-													<label className="form-label">Address</label>
-													<input type="text" placeholder="1234 Main St" className="form-control"/>
-												</div>
-												<div className="form-group mb-3">
-													<label className="form-label">Address 2</label>
-													<input type="text" placeholder="Apartment, studio, or floor" className="form-control"/>
-												</div>
-												<div className="row">
-													<div className="form-group mb-3 col-md-6">
-														<label className="form-label" >City</label>
-														<input type="text" className="form-control" />
-													</div>
-													<div className="form-group mb-3 col-md-4">
-														<label className="form-label">State</label>
-														<select
-														className="form-control"
-														id="inputState"
-														defaultValue="option-1"
-														>
-														<option value="option-1">Choose...</option>
-														<option value="option-2">Option 1</option>
-														<option value="option-3">Option 2</option>
-														<option value="option-4">Option 3</option>
-														</select>
-													</div>
-													<div className="form-group mb-3 col-md-2">
-														<label className="form-label">Zip</label>
-														<input type="text" className="form-control" />
-													</div>
-												</div>
-												<div className="form-group mb-3">
-													<div className="form-check custom-checkbox">
-														<input
-														type="checkbox"
-														className="form-check-input"
-														id="gridCheck"
-														/>
-														<label
-														className="form-check-label"
-														htmlFor="gridCheck"
-														>
-														Check me out
-														</label>
-													</div>
-												</div>
-												<button className="btn btn-primary" type="submit">Sign in</button>
-											</form>
-										</div>
-									</div>
-								</Tab.Pane>
-							</Tab.Content>	
-						</Tab.Container>		
-					</div>
-				  </div>
-				</div>
-			  </div>
-			</div>
-		  </div>
-		  {/* send Modal */}
-			  <Modal className="modal fade" show={state.sendMessage} onHide={()=>dispatch({type:'sendMessage'})} centered>
-				<div className="modal-content">
-					<div className="modal-header">
-						<h5 className="modal-title">Send Message</h5>
-						<Button variant="" type="button" className="btn-close" data-dismiss="modal" onClick={() => dispatch({type:'sendMessage'})}>
-							
-						</Button>
-					</div>
-					<div className="modal-body">
-						<form className="comment-form" onSubmit={(e) => { e.preventDefault(); dispatch({type:'sendMessage'}); }}>
-							<div className="row">
-								<div className="col-lg-6">
-									<div className="form-group mb-3">
-										<label htmlFor="author" className="text-black font-w600">  Name <span className="required">*</span> </label>
-										<input type="text" className="form-control" defaultValue="Author" name="Author" placeholder="Author" />
-									</div>
-								</div>
-								<div className="col-lg-6">
-									<div className="form-group mb-3">
-										<label htmlFor="email" className="text-black font-w600"> Email <span className="required">*</span></label>
-										<input type="text" className="form-control" defaultValue="Email" placeholder="Email" name="Email"/>
-									</div>
-								</div>
-								<div className="col-lg-12">
-									<div className="form-group mb-3">
-										<label htmlFor="comment" className="text-black font-w600">Comment</label>
-										<textarea rows={4} className="form-control" name="comment" placeholder="Comment" defaultValue={""}/>
-									</div>
-								</div>
-								<div className="col-lg-12">
-									<div className="form-group mb-3">
-										<input type="submit" value="Post Comment" className="submit btn btn-primary" name="submit"/>
-									</div>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-			</Modal>
-		  {/* Post Modal */}
-			  <Modal show={state.post} className="modal fade" id="postModal" onHide={() => dispatch({type:'postModal'})} centered>
-				<div className="modal-content">
-					<div className="modal-header">
-						<h5 className="modal-title">Post</h5>
-						<Button variant=""  type="button" className="close" data-dismiss="modal" onClick={() => dispatch({type:'postModal'})} >
-							<span>×</span>
-						</Button>
-						
-					</div>
-					<div className="modal-body">
-						<textarea name="textarea" id="textarea" cols={30} rows={5} className="form-control mb-2 bg-transparent" placeholder="Please type what you want...." defaultValue={""}/>
-						<Link className="btn btn-primary btn-rounded mt-1" to="/app-profile">Post</Link>
-					</div>
-				</div>
-			</Modal>
-			 {/* Link Modal */}
-			  <Modal show={state.link}  className="modal fade post-input" id="linkModal" onHide={() => dispatch({type:'linkModal'})} centered>
-				<div className="modal-content">
-					<div className="modal-header">
-						<h5 className="modal-title">Social Links</h5>
-						<button type="button" className="btn-close" data-dismiss="modal" onClick={() => dispatch({type:'linkModal'})}>
-						</button>
-					</div>
-					<div className="modal-body">
-						<Link className="btn-social me-1 facebook" to="/app-profile"><i className="fab fa-facebook-f" /></Link>
-						<Link className="btn-social me-1 google-plus" to="/app-profile"> <i className="fab fa-google-plus" /></Link>
-						<Link className="btn-social me-1 linkedin" to="/app-profile"><i className="fab fa-linkedin" /></Link>
-						<Link className="btn-social me-1 instagram" to="/app-profile"> <i className="fab fa-instagram" /></Link>
-						<Link className="btn-social me-1 twitter" to="/app-profile"><i className="fab fa-twitter" /></Link>
-						<Link className="btn-social me-1 youtube" to="/app-profile"><i className="fab fa-youtube" /></Link>
-						<Link className="btn-social whatsapp" to="/app-profile"><i className="fab fa-whatsapp" /></Link>
-					</div>
-				</div>
-			</Modal>
-			 {/* Camera Modal */}
-			  <Modal show={state.camera}  className="modal fade" id="cameraModal" onHide={() => dispatch({type:'cameraModal'})} centered>
-				<div className="modal-content">
-					<div className="modal-header">
-						<h5 className="modal-title">Upload images</h5>
-						<button type="button" className="btn-close" data-dismiss="modal" onClick={() => dispatch({type:'cameraModal'})}>
-						</button>
-					</div>
-					<div className="modal-body">						
-						<div className="input-group custom_file_input mb-3">
-							<span className="input-group-text">Upload</span>
-							<div className="form-file">
-								<input type="file" className="form-file-input form-control" />
-							</div>
-						</div>
-					</div>
-				</div>
-			</Modal>
-			 {/* Reply Modal */}
-			  <Modal   show={state.reply}  className="modal fade" id="replyModal" onHide={()=>dispatch({type:'replyModal'})} centered>
-				<div className="modal-content">
-					<div className="modal-header">
-						<h5 className="modal-title">Post Reply</h5>
-						<button type="button" className="btn-close"  onClick={() => dispatch({type:'replyModal'})}></button>
-					</div>
-					<div className="modal-body">
-						<form>
-							<textarea className="form-control" rows="4">Message</textarea>
-						</form>
-					</div>
-					<div className="modal-footer">
-						<button type="button" className="btn btn-danger light"  onClick={() => dispatch({type:'replyModal'})}>Close</button>
-						<button type="button" className="btn btn-primary">Reply</button>
-					</div>
-				</div>
-			</Modal>
-		</Fragment>
-	  );
+  const parser = JSON.parse(localStorage.getItem("userDetails"));
+  const token = parser.access;
+  const history = useNavigate();
+  const [myData, setMyData] = useState([]);
+  const decodedToken = getDecodedRefreshTokenFromLocalStorage("userDetails");
+  const id = decodedToken.payload.user_id;
+  const [company, setCompany] = useState([]);
+  const [isWindowOpen, setIsWindowOpen] = useState(false);
+  const [windowContent, setWindowContent] = useState(null);
+  const [companies, setCompanies] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [projects, setProjects] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [invited, setInvited] = useState([]);
+  const [emailFilter, setEmailFilter] = useState(""); // State for email filter
+  const [userTypeFilter, setUserTypeFilter] = useState(""); // State for user type filter
+  const [acceptedFilter, setAcceptedFilter] = useState("");
+  const [selectedProjects, setSelectedProjects] = useState([]);
+  const urlLink = process.env.REACT_APP_API_URL;
+  const [refreshData, setRefreshData] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [companyNumber, setCompanyNumber] = useState("");
+  const [companyDetails, setCompanyDetails] = useState(null);
+  const [sphereOptions, setSphereOptions] = useState([]);
+  const [numberOfEmployees, setNumberOfEmployees] = useState("");
+  const { language } = useLanguage();
+  const t = translations[language];
+  const r = translations.registration[language];
+  const [selectedSphere, setSelectedSphere] = useState("");
+  const userType = decodedToken.payload.user_type;
+
+  useEffect(() => {
+    const getProjects = async () => {
+      const data = await fetchProjects(token);
+      const formattedproject = data.map((project) => ({
+        value: project.id,
+        label: project.ProjectNameEN,
+      }));
+
+      setProjects(formattedproject);
+    };
+
+    getProjects();
+  }, []);
+
+  useEffect(() => {
+    const getCountry = async () => {
+      const data = await fetchCountries(token);
+      setCountries(data);
+    };
+
+    getCountry();
+  }, []);
+
+  useEffect(() => {
+    const getCompany = async () => {
+      const data = await fetchCompany(token);
+      setCompanies(data);
+    };
+
+    getCompany();
+  }, [token]);
+
+  const companyId = decodedToken.payload.company_id;
+
+  const filteredCompany = companies.find((company) => company.id === companyId);
+
+  const handleEditMyData = () => {
+    const EditMyData = (
+      <div className="edit-form">
+        <h3>Edit my data</h3>
+        <Form onSubmit={handleEditMyDataSubmit}>
+          <Form.Group controlId="formName">
+            <Form.Label>Your name:</Form.Label>
+            <Form.Control
+              type="text"
+              name="first_name"
+              defaultValue={myData?.first_name}
+              className="edit__input"
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formSurname">
+            <Form.Label>Your last name:</Form.Label>
+            <Form.Control
+              type="text"
+              name="last_name"
+              defaultValue={myData?.last_name}
+              className="edit__input"
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formPhoneNumber">
+            <Form.Label>Your phone number:</Form.Label>
+            <Form.Control
+              type="text"
+              name="phone_number"
+              defaultValue={myData?.phone_number}
+              className="edit__input"
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formCountry">
+            <Form.Label>Your country</Form.Label>
+            <Form.Control
+              as="select"
+              name="country"
+              defaultValue={myData?.country || ""}
+            >
+              <option value="">Select Country</option>
+              {countries.map((country) => (
+                <option key={country.id} value={country.id}>
+                  {country.CountryEN}
+                </option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+
+          <div className="edit__btn-wrapper">
+            <Button className="edit__btn" type="submit" disabled={loading}>
+              Save
+            </Button>
+          </div>
+        </Form>
+      </div>
+    );
+    setWindowContent(EditMyData);
+    setIsWindowOpen(true);
+  };
+
+  const handleEditMyDataSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const formData = new FormData();
+    const formElements = e.target.elements;
+
+    formData.append("first_name", formElements.first_name.value);
+    formData.append("last_name", formElements.last_name.value);
+    formData.append("phone_number", formElements.phone_number.value);
+    formData.append("country", formElements.country.value);
+
+    try {
+      const response = await fetch(`${urlLink}/user-registration/${id}/`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        swal("Success", "Editable data successfully changed!", "success");
+        handleCloseWindow();
+        setRefreshData(!refreshData); // Trigger refresh after successful edit
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to change editable data.");
+      }
+    } catch (error) {
+      swal("Error", error.message, "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddClick = () => {
+    const addContent = (
+      <div className="edit-form">
+        <h3>Add New User</h3>
+        <Form onSubmit={handleAddSubmit}>
+          <Form.Group controlId="formEmail">
+            <Form.Label>Email of User:</Form.Label>
+            <Form.Control
+              type="email"
+              name="email"
+              defaultValue=""
+              className="edit__input"
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formTypeUser">
+            <Form.Label>Type of User:</Form.Label>
+            <Form.Control
+              as="select"
+              name="user_type"
+              defaultValue="System admin"
+              className="edit__input"
+            >
+              <option value="System admin">System admin</option>
+              <option value="Project Admin">Project Admin</option>
+              <option value="Budget User">Budget User</option>
+              <option value="Budget Manager">Budget Manager</option>
+              <option value="HR User">HR User</option>
+              <option value="HR Manager">HR Manager</option>
+              <option value="Timekeeper">Timekeeper</option>
+            </Form.Control>
+          </Form.Group>
+
+          <Form.Group controlId="formProjects">
+            <Form.Label>Projects:</Form.Label>
+            <Select
+              isMulti
+              options={projects} // `projects` should be an array of { value, label } objects
+              defaultValue={selectedProjects}
+              onChange={(selected) => setSelectedProjects(selected || [])}
+              placeholder="Select projects..."
+            />
+          </Form.Group>
+
+          <div className="edit__btn-wrapper">
+            <Button className="edit__btn" type="submit" disabled={loading}>
+              Save
+            </Button>
+          </div>
+        </Form>
+      </div>
+    );
+    setSelectedProjects([]);
+    setWindowContent(addContent);
+    setIsWindowOpen(true);
+  };
+
+  const handleAddSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const formData = new FormData();
+    const formElements = e.target.elements;
+
+    formData.append("email", formElements.email.value);
+    formData.append("user_type", formElements.user_type.value);
+    formData.append("company", parseInt(company, 10));
+    formData.append("inviter", id);
+
+    // Remove any existing 'projects' field, in case it was previously added
+    formData.delete("projects");
+
+    // Append selected projects as integers to `formData`
+    if (Array.isArray(selectedProjects) && selectedProjects.length > 0) {
+      selectedProjects.forEach((project) => {
+        const projectId = parseInt(project.value, 10);
+        formData.append("projects", projectId); // Append each project ID
+      });
+    }
+
+    // Convert formData to a JSON-like object for logging
+    const payload = {};
+    formData.forEach((value, key) => {
+      if (payload[key]) {
+        // Handle multiple values for `projects`
+        payload[key] = Array.isArray(payload[key])
+          ? payload[key]
+          : [payload[key]];
+        payload[key].push(value);
+      } else {
+        payload[key] = value;
+      }
+    });
+
+    // Log the JSON-like payload to console for debugging
+    console.log("Sending payload:", JSON.stringify(payload, null, 2));
+
+    try {
+      const response = await fetch(`${urlLink}/send-invitation/`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        swal("Success", "Invitation mail sent successfully!", "success");
+        handleCloseWindow();
+        setRefreshData(!refreshData);
+      } else {
+        const errorData = await response.json();
+
+        if (response.status === 409) {
+          throw new Error(
+            errorData.message ||
+              "Duplicate entry. This user already has access to the System."
+          );
+        }
+
+        throw new Error(errorData.message || "Failed to send Invitation");
+      }
+    } catch (error) {
+      swal("Error", error.message, "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddEditableDate = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const formData = new FormData();
+    const formElements = e.target.elements;
+
+    formData.append("editable_date", parseInt(formElements.formEdit.value, 10));
+
+    try {
+      const response = await fetch(`${urlLink}/gendt/company/${companyId}/`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        // Show success message and reload after confirmation
+        swal("Success", "Editable date successfully changed!", "success").then(
+          () => {
+            // This will be executed after the user clicks "OK" on the alert
+            window.location.reload();
+          }
+        );
+        handleCloseWindow(); // Close the modal after showing the message
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to change editable date.");
+      }
+    } catch (error) {
+      swal("Error", error.message, "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEditableDate = () => {
+    const editableDate = (
+      <div className="edit-form">
+        <h3>Edit Number of Days</h3>
+        <Form onSubmit={handleAddEditableDate}>
+          <Form.Group controlId="formEdit">
+            <Form.Label>Enter a number:</Form.Label>
+            <Form.Control
+              type="number"
+              name="formEdit"
+              defaultValue={filteredCompany?.editable_date || ""}
+              className="edit__input"
+            />
+            <Form.Text className="text-muted">
+              Please enter the number of days to add valid timesheet.
+            </Form.Text>
+          </Form.Group>
+
+          <div className="edit__btn-wrapper">
+            <Button className="edit__btn" type="submit" disabled={loading}>
+              {loading ? "Saving..." : "Save"}
+            </Button>
+          </div>
+        </Form>
+      </div>
+    );
+
+    setWindowContent(editableDate);
+    setIsWindowOpen(true);
+  };
+
+  useEffect(() => {
+    if (!token) {
+      console.error("No access token available.");
+      history("/login");
+      return;
+    }
+
+    const url = `${urlLink}/user-registration/${id}/`;
+
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    fetch(url, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          localStorage.removeItem("userDetails");
+          history("/login");
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setCompany(data.Response.company?.id);
+        setMyData(data.Response);
+      })
+      .catch((error) => {
+        swal(
+          "Error",
+          "There was an issue with the fetch operation: " + error.message,
+          "error"
+        );
+      });
+  }, [token, id, refreshData]);
+
+  const handleCloseWindow = () => {
+    setIsWindowOpen(false);
+  };
+
+  useEffect(() => {
+    if (userType !== "System admin") {
+      return;
+    }
+
+    if (!token) {
+      console.error("No access token available.");
+      history("/login");
+      return;
+    }
+
+    const url = `${urlLink}/send-invitation/${id}/`;
+
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    fetch(url, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          localStorage.removeItem("userDetails");
+          history("/login");
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setInvited(data?.Response);
+        console.log(data.Response);
+      })
+      .catch((error) => {
+        swal(
+          "Error",
+          "There was an issue with the fetch operation: " + error.message,
+          "error"
+        );
+      });
+  }, [token, id, refreshData, userType]);
+
+  const filteredInvited = invited.filter((content) => {
+    const isEmailMatch = content.email
+      .toLowerCase()
+      .includes(emailFilter.toLowerCase());
+    const isUserTypeMatch =
+      userTypeFilter === "" ? true : content.user_type === userTypeFilter;
+    const isAcceptedMatch =
+      acceptedFilter === ""
+        ? true
+        : acceptedFilter === "accepted"
+        ? content.is_accepted
+        : !content.is_accepted;
+
+    return isEmailMatch && isUserTypeMatch && isAcceptedMatch;
+  });
+
+  const renderTableRows = () => {
+    return filteredInvited.map((content) => {
+      const formattedDateInvited = new Date(
+        content.date_invited
+      ).toLocaleString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      const formattedExpiresAt = new Date(content.expires_at).toLocaleString(
+        "en-GB",
+        {
+          day: "2-digit",
+          month: "2-digit",
+          year: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+        }
+      );
+
+      return (
+        <tr key={content.id}>
+          <td>{content.id}</td>
+          <td>{content.email}</td>
+          <td>{content.user_type}</td>
+          <td>{formattedDateInvited}</td>
+          <td>{formattedExpiresAt}</td>
+          <td>
+            {content.is_accepted ? (
+              <span className="badge badge-success">{t.accepted}</span>
+            ) : (
+              <span className="badge badge-danger">{t.notaccepted}</span>
+            )}
+          </td>
+        </tr>
+      );
+    });
+  };
+
+  const handleShowModal = () => {
+    setShowModal(true);
+    setCompanyNumber("");
+    setCompanyDetails(null);
+  };
+
+  const fetchCompanyDetails = async (number) => {
+    if (number) {
+      try {
+        const response = await fetch(`${urlLink}/find-company/${number}/`);
+        const data = await response.json();
+        if (data.Response) {
+          setCompanyDetails(data.Response[0]);
+          console.log(data);
+        } else {
+          setCompanyDetails(null);
+        }
+      } catch (error) {
+        console.error("Error fetching company details:", error);
+      }
+    } else {
+      setCompanyDetails(null);
+    }
+  };
+
+  const fetchSphereOptions = async () => {
+    try {
+      const response = await fetch(`${urlLink}/company-sphere/`);
+      const data = await response.json();
+      setSphereOptions(data.Response);
+    } catch (error) {
+      console.error("Error fetching sphere options:", error);
+    }
+  };
+
+  React.useEffect(() => {
+    if (showModal) {
+      fetchSphereOptions();
+    }
+  }, [showModal]);
+
+  const handleCompanyNumberChange = (e) => {
+    const value = e.target.value;
+    setCompanyNumber(value);
+    fetchCompanyDetails(value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const postData = {
+      OurCompanyINN: companyDetails?.data?.inn,
+      OurCompanyEN: companyDetails?.value,
+      OurCompanyKPP: companyDetails?.data?.kpp,
+      ShortCode: companyDetails?.data?.name?.short, // Adjust as needed
+      number_of_employees: numberOfEmployees,
+      sphere: selectedSphere,
+      address: companyDetails?.data?.address?.unrestricted_value,
+    };
+
+    try {
+      const response = await fetch(`${urlLink}/gendt/company/`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`, // Make sure 'token' is defined or passed in as a prop
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log(errorData);
+
+        // Handle multiple error messages
+        const errorMessages =
+          Object.values(errorData).flat().join(", ") || response.statusText;
+        throw new Error(errorMessages); // Throw an error with formatted messages
+      }
+
+      const result = await response.json();
+      console.log("Success:", result);
+      swal("Success", "Company data submitted successfully!", "success");
+      setShowModal(false); // Close the modal on success
+    } catch (error) {
+      console.error("Error submitting company data:", error);
+      swal("Error", error.message, "error"); // Display the error message from the backend
+    }
+  };
+
+  return (
+    <Fragment>
+      <PageTitle activeMenu={t.profile} />
+      <div className="row">
+        <div className="col-lg-12">
+          <div className="profile card card-body px-3 pt-3 pb-0">
+            <div className="profile-head">
+              <div className="photo-content ">
+                <div className="cover-photo rounded"></div>
+              </div>
+              <div className="profile-info">
+                <div className="profile-details align-items-center justify-content-between">
+                  <div className="profile-name px-3 pt-2">
+                    <h4 className="text-primary mb-0">
+                      {myData.first_name} {myData.last_name}
+                    </h4>
+                    <p>{myData?.user_type}</p>
+                  </div>
+                  <div className="profile-email px-2 pt-2">
+                    <h4 className="text-muted mb-0">{myData?.email}</h4>
+                    <p>{r.email}</p>
+                  </div>
+                  <div className="profile-email px-2 pt-2">
+                    <h4 className="text-primary mb-0">
+                      {filteredCompany?.OurCompanyEN}
+                    </h4>
+                    <p>{t.company}</p>
+                  </div>
+
+                  <Dropdown className="dropdown ">
+                    <Dropdown.Toggle
+                      variant="primary"
+                      className="btn btn-primary light sharp i-false"
+                      data-toggle="dropdown"
+                      aria-expanded="true"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18px"
+                        height="18px"
+                        viewBox="0 0 24 24"
+                        version="1.1"
+                      >
+                        <g
+                          stroke="none"
+                          strokeWidth="1"
+                          fill="none"
+                          fillRule="evenodd"
+                        >
+                          <rect x="0" y="0" width="24" height="24"></rect>
+                          <circle fill="#000000" cx="5" cy="12" r="2"></circle>
+                          <circle fill="#000000" cx="12" cy="12" r="2"></circle>
+                          <circle fill="#000000" cx="19" cy="12" r="2"></circle>
+                        </g>
+                      </svg>
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu className="dropdown-menu dropdown-menu-right">
+                      <Dropdown.Item
+                        className="dropdown-item"
+                        onClick={handleAddClick}
+                      >
+                        Add User
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        className="dropdown-item"
+                        onClick={handleEditMyData}
+                      >
+                        Edit My data
+                      </Dropdown.Item>
+                      <Dropdown.Item className="dropdown-item">
+                        Edit User
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        className="dropdown-item"
+                        onClick={handleEditableDate}
+                      >
+                        Edit the adding time
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        className="dropdown-item"
+                        onClick={handleShowModal}
+                      >
+                        Add Company
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {userType === "System admin" && (
+        <div className="card">
+          <div
+            className="card-header"
+            style={{ padding: "20px", paddingLeft: "30px" }}
+          >
+            <h4 className="card-title">{t.invitedUser}</h4>
+            <div className="btn-wrapper">
+              <input
+                type="text"
+                placeholder="Filter by email..."
+                value={emailFilter}
+                onChange={(e) => setEmailFilter(e.target.value)}
+                style={{
+                  marginLeft: "20px",
+                  padding: "9px",
+                  width: "200px",
+                  border: "1px solid #5bcfc5",
+                  borderRadius: "5px",
+                }}
+              />
+              <select
+                value={userTypeFilter}
+                onChange={(e) => setUserTypeFilter(e.target.value)}
+                style={{
+                  marginLeft: "20px",
+                  padding: "5px",
+                  border: "1px solid #5bcfc5",
+                  borderRadius: "5px",
+                }}
+              >
+                <option value="">All User Types</option>
+                <option value="System admin">System admin</option>
+                <option value="Project Admin">Project Admin</option>
+                <option value="Budget User">Budget User</option>
+                <option value="Budget Manager">Budget Manager</option>
+                <option value="HR User">HR User</option>
+                <option value="HR Manager">HR Manager</option>
+                <option value="Timekeeper">Timekeeper</option>
+              </select>
+              <select
+                value={acceptedFilter}
+                onChange={(e) => setAcceptedFilter(e.target.value)}
+                style={{
+                  marginLeft: "20px",
+                  padding: "5px",
+                  border: "1px solid #5bcfc5",
+                  borderRadius: "5px",
+                }}
+              >
+                <option value="">All</option>
+                <option value="accepted">Accepted</option>
+                <option value="notAccepted">Not Accepted</option>
+              </select>
+            </div>
+          </div>
+
+          <div
+            className="card-body"
+            style={{ padding: "20px", paddingTop: "0px" }}
+          >
+            <div className="w-100 table-responsive">
+              <table className="display w-100 dataTable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>{r.email}</th>
+                    <th>{t.userType}</th>
+                    <th>{t.dateinvited}</th>
+                    <th>{t.dateOfExpiry}</th>
+                    <th>{t.accepted}</th>
+                  </tr>
+                </thead>
+                <tbody>{renderTableRows()}</tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isWindowOpen && (
+        <div className="overlay show" onClick={handleCloseWindow}>
+          <div
+            className="sliding-window show"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <span className="close-btn" onClick={handleCloseWindow}>
+              &times;
+            </span>
+            {windowContent}
+          </div>
+        </div>
+      )}
+
+      {loading && (
+        <div className="fullscreen-overlay">
+          <div className="spinner-container">
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+            <p>Loading...</p>
+          </div>
+        </div>
+      )}
+
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Company Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="formCompanyNumber">
+              <Form.Label>Company Number</Form.Label>
+              <Form.Control
+                type="text"
+                value={companyNumber}
+                onChange={handleCompanyNumberChange}
+                placeholder="Enter company number"
+                required
+              />
+            </Form.Group>
+
+            {companyDetails && (
+              <div>
+                <h5>Company Details:</h5>
+                <p>Name: {companyDetails?.value}</p>
+                <p>INN: {companyDetails?.data?.inn}</p>
+                <p>KPP: {companyDetails?.data?.kpp || "No KPP"}</p>
+                <p>
+                  Address: {companyDetails?.data?.address?.unrestricted_value}
+                </p>
+
+                <Form.Group controlId="formNumberOfEmployees">
+                  <Form.Label>Number of Employees</Form.Label>
+                  <Form.Control
+                    type="number"
+                    value={numberOfEmployees}
+                    onChange={(e) => setNumberOfEmployees(e.target.value)}
+                    placeholder="Enter number of employees"
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="formSphere">
+                  <Form.Label>Company Sphere</Form.Label>
+                  <Form.Control
+                    as="select"
+                    onChange={(e) => setSelectedSphere(e.target.value)}
+                    defaultValue={selectedSphere}
+                    required
+                  >
+                    <option value="">Select Sphere</option>
+                    {sphereOptions.map((sphere) => (
+                      <option key={sphere.id} value={sphere.id}>
+                        {sphere.nameEN} {/* Change based on language setting */}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Form.Group>
+              </div>
+            )}
+
+            <Modal.Footer className="p-0">
+              <Button variant="secondary" onClick={() => setShowModal(false)}>
+                Close
+              </Button>
+              <Button variant="primary" type="submit">
+                {" "}
+                {/* This button is now correctly inside the Form */}
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Form>
+        </Modal.Body>
+      </Modal>
+    </Fragment>
+  );
 };
 
 export default AppProfile;
