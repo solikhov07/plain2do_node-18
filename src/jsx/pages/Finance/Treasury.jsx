@@ -40,6 +40,7 @@ const Treasury = () => {
   const decodedToken = getDecodedRefreshTokenFromLocalStorage("userDetails");
   const [loading, setLoading] = useState(true);
   const id = decodedToken.payload.user_id;
+  const CompanyId = decodedToken.payload.company_id;
 
   const initialTreasureState = {
     our_company: 0,
@@ -138,7 +139,7 @@ const Treasury = () => {
         swal(
           t.error.charAt(0).toUpperCase() + t.error.slice(1),
           t.therewasissuewithfetchoperation + error.message,
-          t.error
+          "error"
         );
       } finally {
         setLoading(false);
@@ -201,7 +202,7 @@ const Treasury = () => {
         swal(
           t.success.charAt(0).toUpperCase() + t.success.slice(1),
           t.projectupdatedsuccessfully,
-          t.success
+          "success"
         );
         setErrors({});
       })
@@ -218,7 +219,7 @@ const Treasury = () => {
           swal(
             t.error.charAt(0).toUpperCase() + t.error.slice(1),
             t.failedtoaddtreasure + (error.message || t.anerrorocurred),
-            t.error
+            "error"
           );
         }
       });
@@ -249,7 +250,6 @@ const Treasury = () => {
             return response.json();
           })
           .then(() => {
-            console.log(contents);
             setContents(contents.filter((item) => item.id !== treasureId));
             swal(t.proofyourprojecthasbeendeleted, {
               icon: "success",
@@ -285,7 +285,7 @@ const Treasury = () => {
     const formattedTreasure = {
       ...newTreasure,
       responsible_user: id,
-      our_company: 1,
+      our_company: CompanyId,
       transaction_method: activeTab,
       date: formatDate(newTreasure.date),
     };
@@ -398,7 +398,7 @@ const Treasury = () => {
         swal(
           t.error.charAt(0).toUpperCase() + t.error.slice(1),
           t.failedtodownloadprojectdata + error.message,
-          t.error
+          "error"
         );
       });
   };
@@ -439,6 +439,7 @@ const Treasury = () => {
   };
 
   //Render
+  console.log(contents);
 
   const formatAmount = (amount) => {
     return new Intl.NumberFormat("en-US", {
@@ -462,30 +463,23 @@ const Treasury = () => {
         <td>{content.id}</td>
         <td>{content.date}</td>
         <td style={{ whiteSpace: "nowrap" }}>{formatAmount(content.amount)}</td>
-        <td>{content.document_number}</td>
-        <td>{content.expense_type}</td>
+        <td>{content?.document_number}</td>
+        <td>{content?.expense_type}</td>
         <td>
-          {content.operation_type_data["name" + language.toUpperCase()] ||
+          {content.operation_type_data?.["name" + language.toUpperCase()] ||
             "N/A"}
         </td>
         <td>
-          {content?.our_company_data?.OurCompanyEN ? content?.our_company_data["OurCompany" + language.toUpperCase()] :
+          {content.our_company_data?.["OurCompany" + language.toUpperCase()] ||
             "N/A"}
         </td>
         <td>
-          {content.counter_party_data.firstname}{" "}
-          {content.counter_party_data.surname}
+          {content?.counter_party_data.firstname}{" "}
+          {content?.counter_party_data.surname}
         </td>
-        <td>{content.operation_type_data?.nameEN || "N/A"}</td>
-        <td>{content.our_company_data?.OurCompanyEN || "N/A"}</td>
-        <td>
-          {content.counter_party_data?.firstname}
-          {"  "}
-          {content.counter_party_data?.surname}
-        </td>
-        <td>{content.vat}</td>
-        <td>{content.cr}</td>
-        <td>{content.currency}</td>
+        <td>{content?.vat}</td>
+        <td>{content?.cr}</td>
+        <td>{content?.currency}</td>
 
         <td className="datab">
           <button
@@ -538,7 +532,7 @@ const Treasury = () => {
           onSelect={(tabKey) => setActiveTab(tabKey)}
           className="ms-3 custom-tabs"
         >
-          <Tab eventKey="Bank" title="Bank">
+          <Tab eventKey="Bank" title={t.bank}>
             <div className="card">
               <div
                 className="card-header"
@@ -663,7 +657,7 @@ const Treasury = () => {
               </div>
             </div>
           </Tab>
-          <Tab eventKey="Cash" title="Cash">
+          <Tab eventKey="Cash" title={t.cash}>
             <div className="card">
               <div
                 className="card-header"

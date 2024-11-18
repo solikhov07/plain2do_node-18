@@ -199,10 +199,11 @@ const Markup = () => {
     { url: "post-details", component: <PostDetails /> },
 
     /// Chart
-    { url: "chart-sparkline", component: <SparklineChart /> },
-    { url: "chart-chartjs", component: <ChartJs /> },
-    { url: "chart-apexchart", component: <ApexChart /> },
-    { url: "chart-rechart", component: <RechartJs /> },
+    { url: "chart-sparkline", component: <SparklineChart/> },
+    { url: "chart-chartjs", component: <ChartJs/> },
+    { url: "chart-chartist", component: <Chartist/> },
+    { url: "chart-apexchart", component: <ApexChart/> },
+    { url: "chart-rechart", component: <RechartJs/> },
 
     /// Bootstrap
     { url: "ui-alert", component: <UiAlert /> },
@@ -225,13 +226,16 @@ const Markup = () => {
     /// Plugin
     { url: "uc-select2", component: <Select2 /> },
     { url: "uc-nestable", component: <Nestable /> },
+    { url: "uc-noui-slider", component: <MainNouiSlider/> },
     { url: "uc-sweetalert", component: <MainSweetAlert /> },
     { url: "uc-toastr", component: <Toastr /> },
     // { url: "map-jqvmap", component: <JqvMap /> },
     { url: "uc-lightgallery", component: <Lightgallery /> },
 
     ///Redux
-    { url: "todo", component: <Todo /> },
+    { url: "todo", component: <Todo/> },
+    { url: "redux-form", component: <ReduxForm/> },
+    { url: "redux-wizard", component: <WizardForm/> },
 
 
     /// Widget
@@ -250,9 +254,9 @@ const Markup = () => {
     /// Form
     { url: "form-element", component: <Element /> },
     { url: "form-wizard", component: <Wizard /> },
-    // { url: "form-ckeditor", component: <CkEditor /> },
+    { url: "form-editor-summernote", component: <SummerNote/> },
     { url: "form-pickers", component: <Pickers /> },
-    // { url: "form-validation", component: <FormValidation /> },
+    { url: "form-validation-jquery", component: <jQueryValidation/> },
 
     /// table
     { url: "table-filtering", component: <FilteringTable /> },
@@ -261,6 +265,10 @@ const Markup = () => {
     { url: "table-bootstrap-basic", component: <BootstrapTable /> },
 
     /// pages
+    { url: "page-register", component: <Registration/> },
+    { url: "page-lock-screen", component: <LockScreen/> },
+    { url: "page-login", component: <Login/> },
+    { url: "page-forgot-password", component: <ForgotPassword/> },
     { url: "page-error-400", component: <Error400 /> },
     { url: "page-error-403", component: <Error403 /> },
     { url: "page-error-404", component: <Error404 /> },
@@ -313,7 +321,6 @@ function MainLayout() {
             <Outlet />
           </div>
         </div>
-        <Footer />
       </div>
     </>
   );

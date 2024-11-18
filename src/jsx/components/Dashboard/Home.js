@@ -36,10 +36,6 @@ const Home = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const browserLanguage = navigator; // Get the first two characters of the browser language
-
-  console.log(browserLanguage);
-
   return (
     <>
       <div className="row invoice-card-row">

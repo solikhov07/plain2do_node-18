@@ -32235,3 +32235,15 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
       color: #fff; }
 
 /*# sourceMappingURL=style.css.map */
+
+.login__btn {
+  background-color: #8e00af;
+}
+
+.text__purple {
+  color: #8e00af;
+}
+
+.datab {
+  display: flex;
+}
