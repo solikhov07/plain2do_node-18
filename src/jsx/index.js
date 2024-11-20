@@ -49,7 +49,7 @@ import AppProfile from "./components/AppsMenu/AppProfile/AppProfile";
 import Compose from "./components/AppsMenu/Email/Compose/Compose";
 import Inbox from "./components/AppsMenu/Email/Inbox/Inbox";
 import Read from "./components/AppsMenu/Email/Read/Read";
-// import Calendar from "./components/AppsMenu/Calendar/Calendar";
+import Calendar from "./components/AppsMenu/Calendar/Calendar";
 import PostDetails from "./components/AppsMenu/AppProfile/PostDetails";
 
 /// Product List
@@ -195,7 +195,7 @@ const Markup = () => {
     { url: "email-compose", component: <Compose /> },
     { url: "email-inbox", component: <Inbox /> },
     { url: "email-read", component: <Read /> },
-    // { url: "app-calender", component: <Calendar /> },
+    { url: "app-calender", component: <Calendar /> },
     { url: "post-details", component: <PostDetails /> },
 
     /// Chart

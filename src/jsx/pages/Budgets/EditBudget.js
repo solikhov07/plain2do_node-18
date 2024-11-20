@@ -10,8 +10,8 @@ const EditBudget = () => {
   const [projects, setProjects] = useState([]);
   const history = useNavigate();
   const token = JSON.parse(localStorage.getItem("userDetails")).access; // Retrieve token
-  const {language} = useLanguage()
-  const t = translations[language]
+  const { language } = useLanguage();
+  const t = translations[language];
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/gendt/budget-data/${id}/`, {
       method: "GET",
@@ -77,7 +77,11 @@ const EditBudget = () => {
         return response.json();
       })
       .then((updatedData) => {
-        swal(t.success.charAt(0).toUpperCase() + t.success.slice(1), t.budgetitemeditedsuccessfully, t.success);
+        swal(
+          t.success.charAt(0).toUpperCase() + t.success.slice(1),
+          t.budgetitemeditedsuccessfully,
+          "success"
+        );
         console.log("Budget updated:", updatedData);
         history("/budgets");
       })
@@ -114,7 +118,7 @@ const EditBudget = () => {
           >
             {projects.map((project) => (
               <option key={project.id} value={project.id}>
-                {project["ProjectName"+language.toUpperCase()]}
+                {project["ProjectName" + language.toUpperCase()]}
               </option>
             ))}
           </select>

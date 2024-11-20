@@ -105,8 +105,6 @@ const BudgetItem = () => {
     fetchJobTitleOptions();
   }, []);
 
-  console.log(jobTitleOptions);
-
   const fetchDocumentTypeOptions = () => {
     const url = `${urlLink}/gendt/doctype/`;
     const requestOptions = {
@@ -174,7 +172,7 @@ const BudgetItem = () => {
         swal(
           t.error.charAt(0).toUpperCase() + t.error.slice(1),
           t.therewasissuewithfetchoperation + error.message,
-          t.error
+          "error"
         );
       });
   }, [id, token, history]);
@@ -253,7 +251,7 @@ const BudgetItem = () => {
         swal(
           t.error.charAt(0).toUpperCase() + t.error.slice(1),
           t.therewasanissuefetchingthebudgetdetails + error.message,
-          t.error
+          "error"
         );
       });
   };
@@ -318,7 +316,11 @@ const BudgetItem = () => {
             EmpQty: "",
             EmpNetSalary: "",
           });
-          swal(t.success.charAt(0).toUpperCase() + t.success.slice(1), t.newbudgetitemaddedsuccessfully, t.success);
+          swal(
+            t.success.charAt(0).toUpperCase() + t.success.slice(1),
+            t.newbudgetitemaddedsuccessfully,
+            "success"
+          );
         } else {
           throw new Error(t.unexpectedresponseformat);
         }
@@ -328,7 +330,7 @@ const BudgetItem = () => {
         swal(
           t.error.charAt(0).toUpperCase() + t.error.slice(1),
           t.therewasanissuewiththesaveoperationpleasetryagainlater,
-          t.error
+          "error"
         );
       });
   };
@@ -391,7 +393,7 @@ const BudgetItem = () => {
             swal(
               t.error.charAt(0).toUpperCase() + t.error.slice(1),
               t.therewasanissuewiththedeleteoperationpleasetryagainlater,
-              t.error
+              "error"
             );
           });
       }

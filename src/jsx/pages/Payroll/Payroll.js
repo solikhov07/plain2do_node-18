@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Form, Badge, Button } from "react-bootstrap";
+import { Form, Badge, Button, Spinner } from "react-bootstrap";
 import swal from "sweetalert";
 import PageTitle from "../../layouts/PageTitle";
 import { useLanguage } from "../../../context/LanguageContext";
@@ -25,6 +25,7 @@ const Payroll = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
 
   const urlLink = process.env.REACT_APP_API_URL;
 
@@ -68,6 +69,8 @@ const Payroll = () => {
       url += `&month=${month}`;
     }
 
+    console.log(url);
+
     const requestOptions = {
       method: "GET",
       headers: {
@@ -75,6 +78,8 @@ const Payroll = () => {
         "Content-Type": "application/json",
       },
     };
+
+    setLoading(true);
 
     fetch(url, requestOptions)
       .then((response) => {
@@ -94,10 +99,11 @@ const Payroll = () => {
         swal(
           t.error.charAt(0).toUpperCase() + t.error.slice(1),
           t.therewasissuewithfetchoperation + error.message,
-          t.error
+          "error"
         );
-      });
-  }, [token, history, currentPage, itemsPerPage, year, month]);
+      })
+      .finally(() => setLoading(false));
+  }, [token, history, currentPage, itemsPerPage, year, month, project]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -136,7 +142,7 @@ const Payroll = () => {
             swal(
               t.error.charAt(0).toUpperCase() + t.error.slice(1),
               t.failedtodeletepayroll,
-              t.error
+              "error"
             );
           });
       }
@@ -241,7 +247,10 @@ const Payroll = () => {
 
   return (
     <>
-      <PageTitle activeMenu={t.payrolllist} motherMenu={t.employee.charAt(0).toUpperCase() + t.employee.slice(1)} />
+      <PageTitle
+        activeMenu={t.payrolllist}
+        motherMenu={t.employee.charAt(0).toUpperCase() + t.employee.slice(1)}
+      />
       <div>
         <div className="card">
           <div className="card-header">
@@ -266,9 +275,7 @@ const Payroll = () => {
                   >
                     <option value="all">{t.all}</option>
                     {years.map((yr) => (
-                      <option key={yr} value={yr}>
-                        {yr}
-                      </option>
+                      <option value={yr}>{yr}</option>
                     ))}
                   </Form.Control>
                 </Form.Group>
@@ -356,7 +363,7 @@ const Payroll = () => {
                         nameTR: "Aralık",
                       },
                     ].map((mnth, index) => (
-                      <option key={mnth} value={index + 1}>
+                      <option value={index + 1}>
                         {mnth["name" + language.toUpperCase()]}
                       </option>
                     ))}
@@ -381,22 +388,30 @@ const Payroll = () => {
                 </Form.Group>
               </div>
             </div>
-            <div className="w-100 table-responsive">
-              <table className="display w-100 dataTable">
-                <thead>
-                  <tr>
-                    <th>{t.date}</th>
-                    <th>{t.projectname}</th>
-                    <th>{t.responsibleuser}</th>
-                    <th>{t.totalcost}</th>
-                    <th>{t.status}</th>
-                    <th className="datab">{t.action}</th>
-                  </tr>
-                </thead>
-                <tbody>{renderTableRows()}</tbody>
-              </table>
-              <div className="pagination-container">{renderPagination()}</div>
-            </div>
+            {loading ? (
+              <div className="text-center">
+                <Spinner animation="border" role="status">
+                  <span className="sr-only">Loading...</span>
+                </Spinner>
+              </div>
+            ) : (
+              <div className="w-100 table-responsive">
+                <table className="display w-100 dataTable">
+                  <thead>
+                    <tr className="sticky-header">
+                      <th>{t.date}</th>
+                      <th>{t.projectname}</th>
+                      <th>{t.responsibleuser}</th>
+                      <th>{t.totalcost}</th>
+                      <th>{t.status}</th>
+                      <th className="datab">{t.action}</th>
+                    </tr>
+                  </thead>
+                  <tbody>{renderTableRows()}</tbody>
+                </table>
+                <div className="pagination-container">{renderPagination()}</div>
+              </div>
+            )}
           </div>
         </div>
       </div>

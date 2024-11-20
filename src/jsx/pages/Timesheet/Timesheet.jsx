@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Form, Badge, Button } from "react-bootstrap";
+import { Form, Badge, Button, Spinner } from "react-bootstrap";
 import swal from "sweetalert";
 import PageTitle from "../../layouts/PageTitle";
 import { useLanguage } from "../../../context/LanguageContext";
@@ -24,6 +24,7 @@ const TimeSheetTable = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [canGoNext, setCanGoNext] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
 
   const handleInfoClick = (timeSheet) => {
     history(`/timesheet/${timeSheet.id}/details`);
@@ -56,6 +57,8 @@ const TimeSheetTable = () => {
       },
     };
 
+    setLoading(true);
+
     fetch(url, requestOptions)
       .then((response) => {
         if (!response.ok) {
@@ -75,9 +78,10 @@ const TimeSheetTable = () => {
         swal(
           t.error.charAt(0).toUpperCase() + t.error.slice(1),
           t.therewasissuewithfetchoperation + error.message,
-          t.error
+          "error"
         );
-      });
+      })
+      .finally(() => setLoading(false));
   }, [token, history, currentPage, itemsPerPage, year, month]);
 
   useEffect(() => {
@@ -88,7 +92,7 @@ const TimeSheetTable = () => {
     swal({
       title: t.areyousure,
       text: t.onceudeleteituwillnotbeabletorecoverthistimesheet,
-      icon: t.warning,
+      icon: "warning",
       buttons: true,
       dangerMode: true,
     }).then((willDelete) => {
@@ -117,7 +121,7 @@ const TimeSheetTable = () => {
             swal(
               t.error.charAt(0).toUpperCase() + t.error.slice(1),
               t.failedtodeletethetimesheet,
-              t.error
+              "error"
             );
           });
       }
@@ -142,20 +146,22 @@ const TimeSheetTable = () => {
 
     return contents.map((content) => (
       <tr className="" key={content.id}>
-        <td>{content.Date}</td>
-        <td>{content.Project_data?.ProjectNameEN || "N/A"}</td>
-        <td>{content.ResponsibleUser_data?.email}</td>
-        <td>{content.TotalHours}</td>
+        <td>{content?.Date}</td>
+        <td>{content?.Project_data?.ProjectNameEN || "N/A"}</td>
+        <td>{content?.ResponsibleUser_data?.email || "N/A"}</td>
+        <td>{content?.TotalHours}</td>
         <td>
-          <Badge variant={content.Status === "Approved" ? "success" : "danger"}>
-            {content.Status}
+          <Badge
+            variant={content?.Status === "Approved" ? "success" : "danger"}
+          >
+            {content?.Status}
           </Badge>
         </td>
-        <td>{content.Comment}</td>
+        <td>{content?.Comment}</td>
         <td className="datab">
           <button
             className="btn btn-danger shadow btn-xs sharp me-1"
-            onClick={() => handleDeleteClick(content.id)}
+            onClick={() => handleDeleteClick(content?.id)}
           >
             <i className="fa fa-trash"></i>
           </button>
@@ -324,23 +330,31 @@ const TimeSheetTable = () => {
                 </Form.Group>
               </div>
             </div>
-            <div className="w-100 table-responsive">
-              <table className="display w-100 dataTable">
-                <thead>
-                  <tr>
-                    <th>{t.date}</th>
-                    <th>{t.projectname}</th>
-                    <th>{t.responsibleuser}</th>
-                    <th>{t.totalhours}</th>
-                    <th>{t.status}</th>
-                    <th>{t.comment}</th>
-                    <th className="datab">{t.action}</th>
-                  </tr>
-                </thead>
-                <tbody>{renderTableRows()}</tbody>
-              </table>
-              <div className="pagination-container">{renderPagination()}</div>
-            </div>
+            {loading ? (
+              <div className="text-center">
+                <Spinner animation="border" role="status">
+                  <span className="sr-only">Loading...</span>
+                </Spinner>
+              </div>
+            ) : (
+              <div className="w-100 table-responsive">
+                <table className="display w-100 dataTable">
+                  <thead>
+                    <tr className="sticky-header">
+                      <th>{t.date}</th>
+                      <th>{t.projectname}</th>
+                      <th>{t.responsibleuser}</th>
+                      <th>{t.totalhours}</th>
+                      <th>{t.status}</th>
+                      <th>{t.comment}</th>
+                      <th className="datab">{t.action}</th>
+                    </tr>
+                  </thead>
+                  <tbody>{renderTableRows()}</tbody>
+                </table>
+              </div>
+            )}
+            <div className="pagination-container">{renderPagination()}</div>
           </div>
         </div>
       </div>

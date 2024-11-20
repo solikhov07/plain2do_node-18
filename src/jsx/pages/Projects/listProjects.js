@@ -85,7 +85,7 @@ const ProjectsList = () => {
   useEffect(() => {
     if (!token) {
       console.error("No access token available.");
-      history.push("/login");
+      history("/login");
       return;
     }
 
@@ -105,7 +105,7 @@ const ProjectsList = () => {
       .then((response) => {
         if (!response.ok) {
           localStorage.removeItem("userDetails");
-          history.push("/login");
+          history("/login");
           throw new Error(`${t.httperrorstatus} ${response.status}`);
         }
         return response.json();
@@ -147,22 +147,21 @@ const ProjectsList = () => {
       return;
     }
 
-    const selectedIds = selectedItems.map((item) => item.id);
+    const allSelected = selectedItems.length === contents.length;
+    let url = `${urlLink}/gendt/project/`;
 
-    if (selectedIds.length === 0) {
+    if (allSelected) {
+      url += "?excel=True"; // All items selected
+    } else if (selectedItems.length > 0) {
+      const selectedIds = selectedItems.map((item) => item.id);
+      url += `?excel=${selectedIds.join(",")}`; // Specific items selected
+    } else {
       swal(
         t.error.charAt(0).toUpperCase() + t.error.slice(1),
         t.pleaseselectatleastoneitemtodownload,
         "error"
       );
       return;
-    }
-
-    let url = `${urlLink}/gendt/project/`;
-    if (selectedIds.length > 0) {
-      url += `?excel=${selectedIds.join(",")}`;
-    } else {
-      url += "?excel=True";
     }
 
     console.log(url);
@@ -179,12 +178,10 @@ const ProjectsList = () => {
         if (!response.ok) {
           throw new Error(`${t.httperrorstatus}${response.status}`);
         }
-        // Extract filename from headers
         const disposition = response.headers.get("Content-Disposition");
-        let filename = "project.xls"; // Default filename
+        let filename = "project.xls";
 
         if (disposition && disposition.includes("filename=")) {
-          // Extracting the filename from the Content-Disposition header
           const matches = disposition.match(/filename="([^"]+)"/);
           if (matches && matches[1]) {
             filename = matches[1];
@@ -197,11 +194,11 @@ const ProjectsList = () => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = filename; // Use the extracted filename from the response
+        a.download = filename;
         document.body.appendChild(a);
         a.click();
-        a.remove(); // Cleanup
-        window.URL.revokeObjectURL(url); // Free up memory
+        a.remove();
+        window.URL.revokeObjectURL(url);
       })
       .catch((error) => {
         console.error("Error downloading the file:", error);
@@ -455,9 +452,9 @@ const ProjectsList = () => {
   const handleSelectAll = () => {
     const allSelected = selectedItems.length === contents.length;
     if (allSelected) {
-      setSelectedItems([]);
+      setSelectedItems([]); // Clear selection
     } else {
-      setSelectedItems(contents.slice());
+      setSelectedItems(contents.slice()); // Select all items
     }
   };
 
@@ -494,6 +491,30 @@ const ProjectsList = () => {
           </div>
         </div>
         <div className="card-body">
+          <div className="d-flex align-items-center justify-content-between">
+            <div className="form-group d-flex align-items-center">
+              <label htmlFor="itemsPerPageSelect" className="m-0 me-2">
+                {t.projectsPerPage}:
+              </label>
+              <select
+                className="form-control"
+                style={{
+                  width: "100px",
+                }}
+                onChange={handleItemsPerPageChange}
+                value={itemsPerPage}
+              >
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+              </select>
+            </div>
+            {userPermissions.canAdd && (
+              <Button onClick={handleShowModal} className="btn btn-info">
+                <i className="flaticon-067-plus"></i> {t.addProject}
+              </Button>
+            )}
+          </div>
           {loading ? (
             <div className="text-center">
               <Spinner animation="border" role="status">
@@ -502,33 +523,9 @@ const ProjectsList = () => {
             </div>
           ) : (
             <div className="w-100 table-responsive">
-              <div className="d-flex align-items-center justify-content-between">
-                <div className="form-group d-flex align-items-center">
-                  <label htmlFor="itemsPerPageSelect" className="m-0 me-2">
-                    {t.projectsPerPage}:
-                  </label>
-                  <select
-                    className="form-control"
-                    style={{
-                      width: "100px",
-                    }}
-                    onChange={handleItemsPerPageChange}
-                    value={itemsPerPage}
-                  >
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                  </select>
-                </div>
-                {userPermissions.canAdd && (
-                  <Button onClick={handleShowModal} className="btn btn-info">
-                    <i className="flaticon-067-plus"></i> {t.addProject}
-                  </Button>
-                )}
-              </div>
               <table className="display w-100 dataTable ">
                 <thead>
-                  <tr>
+                  <tr className="sticky-header">
                     <th>{t.select}</th>
                     <th>{t.projectName}</th>
                     <th>{t.address}</th>
@@ -585,40 +582,40 @@ const ProjectsList = () => {
                 </thead>
                 <tbody>{renderTableRows()}</tbody>
               </table>
-              <div className="d-flex align-items-center justify-content-between mt-3 mb-3">
-                <h5 className="m-0">
-                  {t.pagination} {currentPage} {t.paginationOf} {totalPages}
-                </h5>
-
-                <div className="d-flex ">
-                  {" "}
-                  <button className="btn btn-primary" onClick={handleSelectAll}>
-                    {selectedItems.length === contents.length
-                      ? t.deselect_all
-                      : t.select_all}
-                  </button>
-                  <button
-                    className={`btn btn-primary ms-2 ${
-                      currentPage === 1 ? "disabled" : ""
-                    }`}
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage(currentPage - 1)}
-                  >
-                    {t.previous}
-                  </button>
-                  <button
-                    className={`btn btn-primary ms-2 ${
-                      !canGoNext ? "disabled" : ""
-                    }`}
-                    disabled={!canGoNext}
-                    onClick={() => setCurrentPage(currentPage + 1)}
-                  >
-                    {t.next}
-                  </button>
-                </div>
-              </div>
             </div>
           )}
+          <div className="d-flex align-items-center justify-content-between mt-3 mb-3">
+            <h5 className="m-0">
+              {t.pagination} {currentPage} {t.paginationOf} {totalPages}
+            </h5>
+
+            <div className="d-flex ">
+              {" "}
+              <button className="btn btn-primary" onClick={handleSelectAll}>
+                {selectedItems.length === contents.length
+                  ? t.deselect_all
+                  : t.select_all}
+              </button>
+              <button
+                className={`btn btn-primary ms-2 ${
+                  currentPage === 1 ? "disabled" : ""
+                }`}
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(currentPage - 1)}
+              >
+                {t.previous}
+              </button>
+              <button
+                className={`btn btn-primary ms-2 ${
+                  !canGoNext ? "disabled" : ""
+                }`}
+                disabled={!canGoNext}
+                onClick={() => setCurrentPage(currentPage + 1)}
+              >
+                {t.next}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 

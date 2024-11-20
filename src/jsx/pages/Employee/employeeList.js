@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import swal from "sweetalert";
 import PageTitle from "../../layouts/PageTitle";
 import { useLanguage } from "../../../context/LanguageContext";
 import translations from "../../../translation/translation";
 import { Badge } from "react-bootstrap";
+// import "./employee.css";
 
 const EmployeeList = () => {
   const parser = JSON.parse(localStorage.getItem("userDetails"));
@@ -29,6 +30,7 @@ const EmployeeList = () => {
   });
   const urlLink = process.env.REACT_APP_API_URL;
   const [uploading, setUploading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
@@ -87,6 +89,8 @@ const EmployeeList = () => {
       },
     };
 
+    setLoading(true); // Set loading to true before fetching data
+
     fetch(url, requestOptions)
       .then((response) => {
         if (!response.ok) {
@@ -106,9 +110,10 @@ const EmployeeList = () => {
         swal(
           t.error.charAt(0).toUpperCase() + t.error.slice(1),
           t.therewasissuewithfetchoperation + error.message,
-          t.error
+          "error"
         );
-      });
+      })
+      .finally(() => setLoading(false)); // Set loading to false after fetch is complete
   }, [token, history, currentPage, itemsPerPage]);
 
   const downloadEmployeeData = () => {
@@ -120,7 +125,11 @@ const EmployeeList = () => {
     const selectedIds = selectedItems.map((item) => item.id);
 
     if (selectedIds.length === 0) {
-      swal( t.error.charAt(0).toUpperCase() + t.error.slice(1), t.pleaseselectatleastoneitemtodownload, t.error);
+      swal(
+        t.error.charAt(0).toUpperCase() + t.error.slice(1),
+        t.pleaseselectatleastoneitemtodownload,
+        "error"
+      );
       return;
     }
 
@@ -163,7 +172,7 @@ const EmployeeList = () => {
         swal(
           t.error.charAt(0).toUpperCase() + t.error.slice(1),
           t.failedtodownloademployeedata + error.message,
-          t.error
+          "error"
         );
       });
   };
@@ -202,7 +211,11 @@ const EmployeeList = () => {
           })
           .catch((error) => {
             console.error("Error deleting employee:", error);
-            swal(t.error.charAt(0).toUpperCase() + t.error.slice(1), t.failedtodeleteemployee, t.error);
+            swal(
+              t.error.charAt(0).toUpperCase() + t.error.slice(1),
+              t.failedtodeleteemployee,
+              "error"
+            );
           });
       }
     });
@@ -252,7 +265,9 @@ const EmployeeList = () => {
         <td>{content.personnel_number}</td>
         <td>{content.surname}</td>
         <td>{content.firstname}</td>
-        <td>{content.position_data["JobTitleEN"+language.toUpperCase()] || "N/A"}</td>
+        <td>
+          {content.position_data["JobTitle" + language.toUpperCase()] || "N/A"}
+        </td>
         <td>{content.mobile_number || "N/A"}</td>
         <td>
           <Badge
@@ -314,13 +329,21 @@ const EmployeeList = () => {
       }
 
       const result = await response.json();
-      swal(t.success.charAt(0).toUpperCase() + t.success.slice(1), t.excelfileuploadedsuccessfully, t.success);
+      swal(
+        t.success.charAt(0).toUpperCase() + t.success.slice(1),
+        t.excelfileuploadedsuccessfully,
+        "success"
+      );
       setCurrentPage(1);
 
       // Reset the file input
       event.target.value = null;
     } catch (error) {
-      swal(t.error.charAt(0).toUpperCase() + t.error.slice(1), t.failedtouploadexcelfile, t.error);
+      swal(
+        t.error.charAt(0).toUpperCase() + t.error.slice(1),
+        t.failedtouploadexcelfile,
+        "error"
+      );
     } finally {
       setUploading(false);
     }
@@ -343,7 +366,7 @@ const EmployeeList = () => {
               </Button>
 
               <Button className="btn btn-secondary ms-2">
-                <i className="flaticon-045-upload"></i>{" "}
+                <i className="flaticon-045-upload"></i>
                 <label
                   htmlFor="excelUpload"
                   style={{ cursor: "pointer", margin: 0 }}
@@ -362,150 +385,158 @@ const EmployeeList = () => {
             </div>
           </div>
           <div className="card-body">
-            <div className="w-100 table-responsive">
-              <div className="d-flex align-items-center justify-content-between">
-                <div className="form-group d-flex align-items-center">
-                  <label htmlFor="itemsPerPageSelect" className="m-0 me-2">
-                    {t["employeePerPage"]}:
-                  </label>
-                  <select
-                    className="form-control"
-                    style={{ width: "100px" }}
-                    onChange={handleItemsPerPageChange}
-                    value={itemsPerPage}
-                  >
-                    <option value={5}>5</option>
-                    <option value={10}>10</option>
-                    <option value={25}>25</option>
-                    <option value={50}>50</option>
-                  </select>
-                </div>
-                <Button
-                  className="btn btn-primary ms-2"
-                  onClick={handleAddEmployee}
+            <div className="d-flex align-items-center justify-content-between">
+              <div className="form-group d-flex align-items-center">
+                <label htmlFor="itemsPerPageSelect" className="m-0 me-2">
+                  {t["employeePerPage"]}:
+                </label>
+                <select
+                  className="form-control"
+                  style={{ width: "100px" }}
+                  onChange={handleItemsPerPageChange}
+                  value={itemsPerPage}
                 >
-                  <i className="flaticon-067-plus"></i> {t["addEmployee"]}
-                </Button>
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={25}>25</option>
+                  <option value={50}>50</option>
+                </select>
               </div>
-              <table className="display w-100 dataTable">
-                <thead>
-                  <tr>
-                    <th>
-                      <input
-                        type="checkbox"
-                        checked={
-                          selectedItems.length === contents.length &&
-                          contents.length > 0
-                        }
-                        onChange={handleSelectAll}
-                      />
-                    </th>
-                    <th>{t["personal_number"]}</th>
-                    <th>{t["surname"]}</th>
-                    <th>{t["first_name"]}</th>
-                    <th>{t["position"]}</th>
-                    <th>{t["mobile_number"]}</th>
-                    <th>{t["current_status"]}</th>
-                    <th className="datab">{t["action"]}</th>
-                  </tr>
-                  <tr>
-                    <th></th>
-                    <th>
-                      <input
-                        type="text"
-                        className="form-control border border-info"
-                        name="personnel_number"
-                        value={filters.personnel_number}
-                        onChange={handleFilterChange}
-                        placeholder={t["personal_number"]}
-                      />
-                    </th>
-                    <th>
-                      <input
-                        type="text"
-                        className="form-control border border-info"
-                        name="surname"
-                        value={filters.surname}
-                        onChange={handleFilterChange}
-                        placeholder={t["surname"]}
-                      />
-                    </th>
-                    <th>
-                      <input
-                        type="text"
-                        className="form-control border border-info"
-                        name="firstname"
-                        value={filters.firstname}
-                        onChange={handleFilterChange}
-                        placeholder={t["first_name"]}
-                      />
-                    </th>
-                    <th>
-                      <input
-                        type="text"
-                        className="form-control border border-info"
-                        name="position"
-                        value={filters.position}
-                        onChange={handleFilterChange}
-                        placeholder={t["position"]}
-                      />
-                    </th>
-                    <th>
-                      <input
-                        type="text"
-                        className="form-control border border-info"
-                        name="mobile_number"
-                        value={filters.mobile_number}
-                        onChange={handleFilterChange}
-                        placeholder={t["mobile_number"]}
-                      />
-                    </th>
-                    <th>
-                      <select
-                        className="form-control border border-info"
-                        name="current_status"
-                        value={statusFilter}
-                        onChange={(e) => setStatusFilter(e.target.value)}
-                      >
-                        <option value="">{t["all"]}</option>
-                        <option value="active">{t["active"]}</option>
-                        <option value="inactive">{t["inactive"]}</option>
-                      </select>
-                    </th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>{renderTableRows()}</tbody>
-              </table>
-              <div className="d-flex align-items-center justify-content-between mt-3 mb-3">
-                <h5 className="m-0">
-                  {t.pagination} {currentPage} {t.paginationOf} {totalPages}
-                </h5>
-                <div className="d-flex">
-                  <button className="btn btn-primary" onClick={handleSelectAll}>
-                    {selectedItems.length === contents.length
-                      ? t["deselect_all"]
-                      : t["select_all"]}
-                  </button>
-                  <button
-                    className={`btn btn-primary ms-2 ${
-                      currentPage === 1 ? "disabled" : ""
-                    }`}
-                    disabled={currentPage === 1}
-                    onClick={() => handlePageChange(currentPage - 1)}
-                  >
-                    {t.previous}
-                  </button>
-                  <button
-                    className={`btn btn-primary ms-2 ${
-                      !canGoNext ? "disabled" : ""
-                    }`}
-                    disabled={!canGoNext}
-                    onClick={() => handlePageChange(currentPage + 1)}
-                  >
-                    {t.next}
-                  </button>
-                </div>
+              <Button
+                className="btn btn-primary ms-2"
+                onClick={handleAddEmployee}
+              >
+                <i className="flaticon-067-plus"></i> {t["addEmployee"]}
+              </Button>
+            </div>
+            {loading ? (
+              <div className="text-center">
+                <Spinner animation="border" role="status">
+                  <span className="sr-only">Loading...</span>
+                </Spinner>
+              </div>
+            ) : (
+              <div className="w-100 table-responsive">
+                <table className="display w-100 dataTable">
+                  <thead>
+                    <tr className="sticky-header">
+                      <th>
+                        <input
+                          type="checkbox"
+                          checked={
+                            selectedItems.length === contents.length &&
+                            contents.length > 0
+                          }
+                          onChange={handleSelectAll}
+                        />
+                      </th>
+                      <th>{t["personal_number"]}</th>
+                      <th>{t["surname"]}</th>
+                      <th>{t["first_name"]}</th>
+                      <th>{t["position"]}</th>
+                      <th>{t["mobile_number"]}</th>
+                      <th>{t["current_status"]}</th>
+                      <th className="datab">{t["action"]}</th>
+                    </tr>
+                    <tr>
+                      <th></th>
+                      <th>
+                        <input
+                          type="text"
+                          className="form-control border border-info"
+                          name="personnel_number"
+                          value={filters.personnel_number}
+                          onChange={handleFilterChange}
+                          placeholder={t["personal_number"]}
+                        />
+                      </th>
+                      <th>
+                        <input
+                          type="text"
+                          className="form-control border border-info"
+                          name="surname"
+                          value={filters.surname}
+                          onChange={handleFilterChange}
+                          placeholder={t["surname"]}
+                        />
+                      </th>
+                      <th>
+                        <input
+                          type="text"
+                          className="form-control border border-info"
+                          name="firstname"
+                          value={filters.firstname}
+                          onChange={handleFilterChange}
+                          placeholder={t["first_name"]}
+                        />
+                      </th>
+                      <th>
+                        <input
+                          type="text"
+                          className="form-control border border-info"
+                          name="position"
+                          value={filters.position}
+                          onChange={handleFilterChange}
+                          placeholder={t["position"]}
+                        />
+                      </th>
+                      <th>
+                        <input
+                          type="text"
+                          className="form-control border border-info"
+                          name="mobile_number"
+                          value={filters.mobile_number}
+                          onChange={handleFilterChange}
+                          placeholder={t["mobile_number"]}
+                        />
+                      </th>
+                      <th>
+                        <select
+                          className="form-control border border-info"
+                          name="current_status"
+                          value={statusFilter}
+                          onChange={(e) => setStatusFilter(e.target.value)}
+                        >
+                          <option value="">{t["all"]}</option>
+                          <option value="active">{t["active"]}</option>
+                          <option value="inactive">{t["inactive"]}</option>
+                        </select>
+                      </th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>{renderTableRows()}</tbody>
+                </table>
+              </div>
+            )}
+            <div className="d-flex align-items-center justify-content-between mt-3 mb-3">
+              <h5 className="m-0">
+                {t.pagination} {currentPage} {t.paginationOf} {totalPages}
+              </h5>
+              <div className="d-flex">
+                <button className="btn btn-primary" onClick={handleSelectAll}>
+                  {selectedItems.length === contents.length
+                    ? t["deselect_all"]
+                    : t["select_all"]}
+                </button>
+                <button
+                  className={`btn btn-primary ms-2 ${
+                    currentPage === 1 ? "disabled" : ""
+                  }`}
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                >
+                  {t.previous}
+                </button>
+                <button
+                  className={`btn btn-primary ms-2 ${
+                    !canGoNext ? "disabled" : ""
+                  }`}
+                  disabled={!canGoNext}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                >
+                  {t.next}
+                </button>
               </div>
             </div>
           </div>

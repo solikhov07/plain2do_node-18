@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import swal from "sweetalert";
 import PageTitle from "../../layouts/PageTitle";
 import { useLanguage } from "../../../context/LanguageContext";
 import translations from "../../../translation/translation";
-import { getDecodedRefreshTokenFromLocalStorage } from "../../../jwt/jwtDecoder";
 import { Badge } from "react-bootstrap";
-import { fetchProjects } from "../../components/apiData/apiData";
 import { getUserPermissions } from "../../components/Permissions/getUserPermissions";
 
 const BudgetList = () => {
@@ -125,7 +123,7 @@ const BudgetList = () => {
         swal(
           t.error.charAt(0).toUpperCase() + t.error.slice(1),
           t.therewasissuewithfetchoperation + error.message,
-          t.error
+          "error"
         );
       });
   }, [token, history, currentPage, itemsPerPage, dataFilter]);
@@ -141,7 +139,11 @@ const BudgetList = () => {
 
     if (selectedIds.length === 0) {
       // Show an error message if no items are selected
-      swal(t.error.charAt(0).toUpperCase() + t.error.slice(1), t.pleaseselectatleastoneitemtodownload, t.error);
+      swal(
+        t.error.charAt(0).toUpperCase() + t.error.slice(1),
+        t.pleaseselectatleastoneitemtodownload,
+        "error"
+      );
       return;
     }
 
@@ -196,7 +198,7 @@ const BudgetList = () => {
         swal(
           t.error.charAt(0).toUpperCase() + t.error.slice(1),
           t.failedtodownloadbudgetdata + error.message,
-          t.error
+          "error"
         );
       });
   };
@@ -235,7 +237,11 @@ const BudgetList = () => {
           })
           .catch((error) => {
             console.error("Error deleting project:", error);
-            swal(t.error.charAt(0).toUpperCase() + t.error.slice(1), t.failedtodeletetheproject, t.error);
+            swal(
+              t.error.charAt(0).toUpperCase() + t.error.slice(1),
+              t.failedtodeletetheproject,
+              "error"
+            );
           });
       }
     });
@@ -252,6 +258,10 @@ const BudgetList = () => {
   const handleDataFilterChange = (event) => {
     setDataFilter(event.target.value);
   };
+
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
   const renderTableRows = () => {
     const filteredContents = contents
@@ -292,8 +302,8 @@ const BudgetList = () => {
         <td>{content.Author}</td>
         <td>{content.TotalCost}</td>
         <td>
-          <Badge variant={content.Status === "Success" ? "success" : "danger"}>
-            {content.Status}
+          <Badge variant={content.Status === "success" ? "success" : "danger"}>
+            {capitalizeFirstLetter(content?.Status)}
           </Badge>
         </td>
         <td className="datab">
@@ -345,83 +355,85 @@ const BudgetList = () => {
             </div>
           </div>
           <div className="card-body">
-            <div className="w-100 table-responsive">
-              <div className="d-flex align-items-center justify-content-between">
-                <div className="form-group d-flex align-items-center">
-                  <label htmlFor="itemsPerPageSelect" className="m-0 me-2">
-                    {t.budgetsPerPage}:
-                  </label>
-                  <select
-                    className="form-control"
-                    style={{
-                      width: "100px",
-                    }}
-                    onChange={handleItemsPerPageChange}
-                    value={itemsPerPage}
-                  >
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                  </select>
+            <div className="d-flex align-items-center justify-content-between mb-2">
+              <div className="form-group d-flex align-items-center m-0">
+                <label htmlFor="itemsPerPageSelect" className="m-0 me-2">
+                  {t.budgetsPerPage}:
+                </label>
+                <select
+                  className="form-control"
+                  style={{
+                    width: "100px",
+                  }}
+                  onChange={handleItemsPerPageChange}
+                  value={itemsPerPage}
+                >
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
 
-                  <div className="d-flex me-3">
-                    <div className="form-check me-3 ms-3">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name="dataFilter"
-                        id="latest"
-                        value="latest"
-                        checked={dataFilter === "latest"}
-                        onChange={handleDataFilterChange}
-                      />
-                      <label className="form-check-label" htmlFor="latest">
-                        {t.latest}
-                      </label>
-                    </div>
-                    <div className="form-check me-3">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name="dataFilter"
-                        id="archived"
-                        value="archived"
-                        checked={dataFilter === "archived"}
-                        onChange={handleDataFilterChange}
-                      />
-                      <label className="form-check-label" htmlFor="archived">
-                        {t.archive}
-                      </label>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name="dataFilter"
-                        id="all"
-                        value="all"
-                        checked={dataFilter === "all"}
-                        onChange={handleDataFilterChange}
-                      />
-                      <label className="form-check-label" htmlFor="all">
-                        {t.all}
-                      </label>
-                    </div>
+                <div className="d-flex me-3">
+                  <div className="form-check me-3 ms-3">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="dataFilter"
+                      id="latest"
+                      value="latest"
+                      checked={dataFilter === "latest"}
+                      onChange={handleDataFilterChange}
+                    />
+                    <label className="form-check-label" htmlFor="latest">
+                      {t.latest}
+                    </label>
+                  </div>
+                  <div className="form-check me-3">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="dataFilter"
+                      id="archived"
+                      value="archived"
+                      checked={dataFilter === "archived"}
+                      onChange={handleDataFilterChange}
+                    />
+                    <label className="form-check-label" htmlFor="archived">
+                      {t.archive}
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="dataFilter"
+                      id="all"
+                      value="all"
+                      checked={dataFilter === "all"}
+                      onChange={handleDataFilterChange}
+                    />
+                    <label className="form-check-label" htmlFor="all">
+                      {t.all}
+                    </label>
                   </div>
                 </div>
-                {userPermissions.canAdd && (
-                  <Button
-                    onClick={() => handleAddProject()}
-                    className="btn btn-info"
-                  >
-                    <i className="flaticon-067-plus"></i> {t.addBudget}
-                  </Button>
-                )}
               </div>
-              <table className="display w-100 dataTable ">
+              {userPermissions.canAdd && (
+                <Button
+                  onClick={() => handleAddProject()}
+                  className="btn btn-info"
+                >
+                  <i className="flaticon-067-plus"></i> {t.addBudget}
+                </Button>
+              )}
+            </div>
+            <div className="w-100 table-responsive">
+              <table className="display w-100 dataTable mb-3">
                 <thead>
                   <tr>
-                    <th>{t.select.charAt(0).toUpperCase() + t.select.slice(1)}</th>
+                    <th>
+                      {t.select.charAt(0).toUpperCase() + t.select.slice(1)}
+                    </th>
                     <th>{t.projectName}</th>
                     <th>{t.budgetVersion}</th>
                     <th>{t.versiondate}</th>
@@ -470,7 +482,7 @@ const BudgetList = () => {
                         name="Author"
                         value={filters.Author}
                         onChange={handleFilterChange}
-                        placeholder={t.Author}
+                        placeholder={t.author}
                       />
                     </th>
                     <th>
@@ -500,37 +512,37 @@ const BudgetList = () => {
                 </thead>
                 <tbody>{renderTableRows()}</tbody>
               </table>
-              <div className="d-flex align-items-center justify-content-between mt-3 mb-3">
-                <h5 className="m-0">
-                  {t.pagination} {currentPage} {t.paginationOf} {totalPages}
-                </h5>
+            </div>
+            <div className="d-flex align-items-center justify-content-between mt-3 mb-3">
+              <h5 className="m-0">
+                {t.pagination} {currentPage} {t.paginationOf} {totalPages}
+              </h5>
 
-                <div className="d-flex ">
-                  {" "}
-                  <button className="btn btn-primary" onClick={handleSelectAll}>
-                    {selectedItems.length === contents.length
-                      ? t.deselect_all
-                      : t.select_all}
-                  </button>
-                  <button
-                    className={`btn btn-primary ms-2 ${
-                      currentPage === 1 ? "disabled" : ""
-                    }`}
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage(currentPage - 1)}
-                  >
-                    {t.previous}
-                  </button>
-                  <button
-                    className={`btn btn-primary ms-2 ${
-                      !canGoNext ? "disabled" : ""
-                    }`}
-                    disabled={!canGoNext}
-                    onClick={() => setCurrentPage(currentPage + 1)}
-                  >
-                    {t.next}
-                  </button>
-                </div>
+              <div className="d-flex ">
+                {" "}
+                <button className="btn btn-primary" onClick={handleSelectAll}>
+                  {selectedItems.length === contents.length
+                    ? t.deselect_all
+                    : t.select_all}
+                </button>
+                <button
+                  className={`btn btn-primary ms-2 ${
+                    currentPage === 1 ? "disabled" : ""
+                  }`}
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                >
+                  {t.previous}
+                </button>
+                <button
+                  className={`btn btn-primary ms-2 ${
+                    !canGoNext ? "disabled" : ""
+                  }`}
+                  disabled={!canGoNext}
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                >
+                  {t.next}
+                </button>
               </div>
             </div>
           </div>

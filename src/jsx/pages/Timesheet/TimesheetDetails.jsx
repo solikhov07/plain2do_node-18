@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Spinner, Alert, Table, Button } from "react-bootstrap";
@@ -13,8 +12,8 @@ const TimesheetDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const token = parser?.access;
-  const { language } = useLanguage()
-  const t = translations.timesheet[language]
+  const { language } = useLanguage();
+  const t = translations.timesheet[language];
   const urlLink = process.env.REACT_APP_API_URL;
   const handleBack = () => {
     history.goBack();
@@ -22,7 +21,7 @@ const TimesheetDetails = () => {
 
   useEffect(() => {
     if (!token) {
-      swal(t.error.charAt(0).toUpperCase(), t.noaccesstokenavailable, t.error);
+      swal(t.error.charAt(0).toUpperCase(), t.noaccesstokenavailable, "error");
       history("/login");
       return;
     }
@@ -69,19 +68,23 @@ const TimesheetDetails = () => {
 
   if (error) return <Alert variant="danger">{error}</Alert>;
 
+  console.log(details);
+
   return (
     <>
       <div className="card mb-2">
         <div className="card-header d-flex justify-content-between">
           <h4 className="card-title">
-            {details[0].TimeSheet_data.Project_data["ProjectName"+language.toUpperCase()]} -{" "}
-            {details[0].TimeSheet_data.Date}
+            {details[0]?.TimeSheet_data?.Project_data?.[
+              "ProjectName" + language.toUpperCase()
+            ] || "Deleted Project"}{" "}
+            - {details[0].TimeSheet_data.Date}
           </h4>
         </div>
-        <div className="card-body w-100 table-responsive">
+        <div className="card-body pt-0 w-100 table-responsive">
           <Table className="display w-100 dataTable">
             <thead>
-              <tr>
+              <tr className="sticky-header">
                 <th>{t.employeeeid}</th>
                 <th>{t.namesurname}</th>
                 <th>{t.jobtitle}</th>
@@ -99,15 +102,24 @@ const TimesheetDetails = () => {
                 <tr key={detail.id}>
                   <td>{detail.Employee_data?.personnel_number}</td>
                   <td>{`${detail.Employee_data?.surname} ${detail.Employee_data?.firstname}`}</td>
-                  <td>{detail.JobTitle_data["JobTitle"+language.toUpperCase()] || "N/A"}</td>
                   <td>
-                    {detail.JobTitle_data?.EmpClass_data["EmpClass"+language.toUpperCase()] || "N/A"}
+                    {detail.JobTitle_data[
+                      "JobTitle" + language.toUpperCase()
+                    ] || "N/A"}
+                  </td>
+                  <td>
+                    {detail.JobTitle_data?.EmpClass_data[
+                      "EmpClass" + language.toUpperCase()
+                    ] || "N/A"}
                   </td>
                   <td>{detail?.Shift}</td>
                   <td>
                     {detail.Status_data?.Working ? "Working" : "Not Working"}
                   </td>
-                  <td>{detail.Status_data["Code"+language.toUpperCase()] || "N/A"}</td>
+                  <td>
+                    {detail.Status_data["Code" + language.toUpperCase()] ||
+                      "N/A"}
+                  </td>
                   <td>{detail.TotalHours}</td>
                   <td>{detail.BudgetCode}</td>
                   <td>{detail.Comment}</td>

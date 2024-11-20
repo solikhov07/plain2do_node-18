@@ -138,7 +138,7 @@ const AddPayroll = () => {
             swal(
               t.error.charAt(0).toUpperCase() + t.error.slice(1),
               errorData.message || t.failedtofetchpayrolldata,
-              t.error
+              "error"
             );
             return;
           }
@@ -156,7 +156,7 @@ const AddPayroll = () => {
           swal(
             t.error.charAt(0).toUpperCase() + t.error.slice(1),
             t.failedtofetchpayrolldata,
-            t.error
+            "error"
           );
         }
       };
@@ -217,7 +217,7 @@ const AddPayroll = () => {
         swal(
           t.error.charAt(0).toUpperCase() + t.error.slice(1),
           errorData.message || t.failedtoaddpayroll,
-          t.error
+          "error"
         );
         return;
       }
@@ -243,7 +243,7 @@ const AddPayroll = () => {
         RegularHoursOrDays: item.RegularHoursOrDays,
         OvertimeHoursOrDays: item.OvertimeHoursOrDays,
         TotalHoursOrDaysWorked: item.TotalHoursOrDaysWorked,
-        Salary: parseInt(item.Salary),
+        Salary: item.Salary,
         OverTimeMultiplier: item.OverTimeMultiplier,
         Date: formatDateForInput(item.Date),
         Payroll: payrollId, // Attach the payroll ID
@@ -275,7 +275,7 @@ const AddPayroll = () => {
         swal(
           t.error.charAt(0).toUpperCase() + t.error.slice(1),
           errorData.message || t.failedtosendpayrolldetailsrolledbackchanges,
-          t.error
+          "error"
         );
         return;
       }
@@ -283,7 +283,7 @@ const AddPayroll = () => {
       swal(
         t.success.charAt(0).toUpperCase() + t.success.slice(1),
         t.payrolladdedanddetailssentsuccessfully,
-        t.success
+        "success"
       ).then(() => history("/payroll"));
     } catch (error) {
       console.error(
@@ -293,7 +293,7 @@ const AddPayroll = () => {
       swal(
         t.error.charAt(0).toUpperCase() + t.error.slice(1),
         t.failedtoaddpayrollandsenddetails,
-        t.error
+        "error"
       );
     }
   };
@@ -324,6 +324,8 @@ const AddPayroll = () => {
         ))
     );
   });
+
+  console.log(filteredPayrollData);
 
   return (
     <>
@@ -434,7 +436,7 @@ const AddPayroll = () => {
 
               <Table className=" display w-100 dataTable table-responsive">
                 <thead>
-                  <tr>
+                  <tr className="sticky-header">
                     <th>{t.select}</th>
                     <th>{t.date}</th>
                     <th>{t.fullname}</th>
@@ -462,8 +464,7 @@ const AddPayroll = () => {
                       };
 
                       const isSalaryPayment =
-                        item.PaymentType_data?.PaymentTypeEN ===
-                        "Salary payment";
+                        item.PaymentType?.PaymentTypeEN === "Salary payment";
                       const timeUnit = isSalaryPayment ? t.days : t.hours;
 
                       const currencySymbol =
