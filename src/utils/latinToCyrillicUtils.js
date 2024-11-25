@@ -30,7 +30,7 @@ export const latinToCyrillicMap = {
     "o'": "ў",
     "g'": "ғ",
     q: "қ",
-    h: "ҳ",
+    h: "х",
     ye: "е",
     A: "А",
     B: "Б",
