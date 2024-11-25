@@ -1422,6 +1422,12 @@ const translations = {
     failedtouploadexcelfile: "Failed to upload Excel file.",
     upload: "Upload",
     uploading: "Uploading",
+    enteryourpassportnumber: "Enter your passport number",
+    issuedby: "Issued By",
+    issuedate: "Issue Date",
+    validitydate: "Validity Date",
+    personalidentificationnumber: "Personal Identification number",
+    enterpersonalidentificationnumber: "Enter Personal Identification number"
   },
   tr: {
     subsPlan: "Abonelik Planı",
@@ -1734,6 +1740,12 @@ const translations = {
     failedtouploadexcelfile: "Excel dosyası yüklenemedi.",
     upload: "Yükle",
     uploading: "yükleniyor",
+    enteryourpassportnumber:"Pasaport numaranızı girin",
+    issuedby: "Tarafından verilen",
+    issuedate: "Yayınlanma Tarihi",
+    validitydate: "Geçerlilik Tarihi",
+    personalidentificationnumber: "Kişisel Kimlik numarası",
+    enterpersonalidentificationnumber: "Kişisel Kimlik numaranızı girin"
   },
   ru: {
     subsPlan: "План подписки",
@@ -2045,6 +2057,12 @@ const translations = {
     failedtouploadexcelfile: "Не удалось загрузить файл Excel",
     upload: "Загружать",
     uploading: "Загрузка",
+    enteryourpassportnumber: "Введите номер своего паспорта",
+    issuedby: "Выдан",
+    issuedate: "Дата выпуска",
+    validitydate: "Срок действия",
+    personalidentificationnumber: "Личный идентификационный номер",
+    enterpersonalidentificationnumber: "Введите личный идентификационный номер"
   },
 };
 

@@ -316,11 +316,11 @@ const AddEmployee = () => {
         </Form.Group>
 
         <Form.Group controlId="passportNumber">
-          <Form.Label>Passport Number</Form.Label>
+          <Form.Label>{t.passportNumber}</Form.Label>
           <Form.Control
             type="text"
             name="passportNumber"
-            placeholder="Enter your passport number"
+            placeholder={t.enteryourpassportnumber}
             value={employeeData.passportNumber}
             onChange={handleChange}
             isInvalid={!!errors.PassportNumber}
@@ -333,11 +333,11 @@ const AddEmployee = () => {
         </Form.Group>
 
         <Form.Group controlId="IssueBy">
-          <Form.Label>Issued By</Form.Label>
+          <Form.Label>{t.issuedby}</Form.Label>
           <Form.Control
             type="text"
             name="IssueBy"
-            placeholder="Issued by ..."
+            placeholder={`${t.issuedby} ...`}
             value={employeeData.IssueBy}
             onChange={handleChange}
             isInvalid={!!errors.IssuedBy}
@@ -350,7 +350,7 @@ const AddEmployee = () => {
         </Form.Group>
 
         <Form.Group controlId="IssueDate">
-          <Form.Label>Issue Date</Form.Label>
+          <Form.Label>{t.issuedate}</Form.Label>
           <Form.Control
             type="date"
             name="IssueDate"
@@ -367,7 +367,7 @@ const AddEmployee = () => {
         </Form.Group>
 
         <Form.Group controlId="ValidityDate">
-          <Form.Label>Validity Date</Form.Label>
+          <Form.Label>{t.validitydate}</Form.Label>
           <Form.Control
             type="date"
             name="ValidityDate"
@@ -384,11 +384,11 @@ const AddEmployee = () => {
         </Form.Group>
 
         <Form.Group controlId="CountryPersNo">
-          <Form.Label>Personal Identification number</Form.Label>
+          <Form.Label>{t.personalidentificationnumber}</Form.Label>
           <Form.Control
             type="text"
             name="CountryPersNo"
-            placeholder="Enter Personal Identification number"
+            placeholder={t.enterpersonalidentificationnumber}
             value={employeeData.CountryPersNo}
             onChange={handleChange}
             isInvalid={!!errors.CountryPersNo}
