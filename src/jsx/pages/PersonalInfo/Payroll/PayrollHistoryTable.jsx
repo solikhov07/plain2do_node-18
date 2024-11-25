@@ -22,6 +22,7 @@ const PayrollHistoryTable = () => {
   const [contents, setContents] = useState([]);
   const { language } = useLanguage();
   const t = translations[language];
+  const m = translations.payroll[language];
   const [filters, setFilters] = useState({
     employeeName: "",
     projectName: "",
@@ -43,64 +44,6 @@ const PayrollHistoryTable = () => {
   const urlLink = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    if (!token) {
-      console.error("No access token available.");
-      history.push("/login");
-      return;
-    }
-
-    fetch(`${urlLink}/gendt/project/`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((response) => response.json())
-      .then((data) => setProjects(data.Response || []))
-      .catch((error) => console.error("Error fetching projects:", error));
-  }, [token, history, urlLink]);
-
-  // useEffect(() => {
-  //   const getEmployees = async () => {
-  //     try {
-  //       setLoading(true); // Set loading state to true
-  //       const data = await fetchEmployee(token);
-  //       setEmployee(data);
-  //     } catch (error) {
-  //       console.error("Error fetching employees:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   getEmployees();
-  // }, [token]);
-
-  useEffect(() => {
-    const getWorkSchedule = async () => {
-      const data = await fetchWorkSchedule(token);
-      setWorkSchedule(data);
-    };
-
-    getWorkSchedule();
-  }, [token]);
-
-  useEffect(() => {
-    const getPaymentType = async () => {
-      const data = await fetchPaymentType(token);
-      setPaymentType(data);
-    };
-
-    getPaymentType();
-  }, [token]);
-
-  useEffect(() => {
-    const getCurrency = async () => {
-      const data = await fetchCurrency(token);
-      setCurrency(data);
-    };
-
-    getCurrency();
-  }, [token]);
-
-  useEffect(() => {
     const getJobs = async () => {
       const data = await fetchJobs(token);
       setjobtitle(data);
@@ -120,7 +63,7 @@ const PayrollHistoryTable = () => {
   useEffect(() => {
     if (!token) {
       console.error("No access token available.");
-      history.push("/login");
+      history("/login");
       return;
     }
 
@@ -129,6 +72,8 @@ const PayrollHistoryTable = () => {
 
   const fetchTableData = () => {
     let url = `${urlLink}/payroll-history/${id}/`;
+
+    setLoading(true);
 
     const requestOptions = {
       method: "GET",
@@ -142,16 +87,18 @@ const PayrollHistoryTable = () => {
       .then((response) => {
         if (!response.ok) {
           localStorage.removeItem("userDetails");
-          history.push("/login");
+          history("/login");
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         return response.json();
       })
       .then((data) => {
-        console.log(data);
-
         setEmployee(data?.Managers);
         setContents(data?.Response || []);
+        setCurrency(data?.Currency);
+        setPaymentType(data?.PaymentType);
+        setWorkSchedule(data?.WorkSchedule);
+        setProjects(data?.Projects);
         setTotalPages(data?.totalPages || 1);
       })
       .catch((error) => {
@@ -161,7 +108,8 @@ const PayrollHistoryTable = () => {
           "There was an issue with the fetch operation: " + error.message,
           "error"
         );
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   const handleDeleteClick = async (project_id) => {
@@ -311,7 +259,7 @@ const PayrollHistoryTable = () => {
             <Form.Label>Manager:</Form.Label>
             <Form.Control
               as="select"
-              defaultValue={content?.Manager_data.id || ""}
+              defaultValue={content?.Manager_data?.id || ""}
               name="Manager"
               required
             >
@@ -327,7 +275,7 @@ const PayrollHistoryTable = () => {
             <Form.Label>Cost Centre:</Form.Label>
             <Form.Control
               as="select"
-              defaultValue={content?.CostCentre_data.id}
+              defaultValue={content?.CostCentre_data?.id}
               name="CostCentre"
               required
             >
@@ -343,7 +291,7 @@ const PayrollHistoryTable = () => {
             <Form.Label>Payment type:</Form.Label>
             <Form.Control
               as="select"
-              defaultValue={content?.PaymentType_data.id}
+              defaultValue={content?.PaymentType_data?.id}
               name="PaymentType"
               required
             >
@@ -359,7 +307,7 @@ const PayrollHistoryTable = () => {
             <Form.Label>Currency type:</Form.Label>
             <Form.Control
               as="select"
-              defaultValue={content?.Currency_data.id}
+              defaultValue={content?.Currency_data?.id}
               name="Currency"
               required
             >
@@ -375,7 +323,7 @@ const PayrollHistoryTable = () => {
             <Form.Label>Job Title type:</Form.Label>
             <Form.Control
               as="select"
-              defaultValue={content?.JobTitle_data.id}
+              defaultValue={content?.JobTitle_data?.id}
               name="JobTitle"
               required
             >
@@ -391,7 +339,7 @@ const PayrollHistoryTable = () => {
             <Form.Label>Work Schedule:</Form.Label>
             <Form.Control
               as="select"
-              defaultValue={content?.WorkSchedule_data.id}
+              defaultValue={content?.WorkSchedule_data?.id}
               name="WorkSchedule"
               required
             >
@@ -437,8 +385,6 @@ const PayrollHistoryTable = () => {
     setWindowContent(EditData);
   };
 
-  console.log(contents);
-
   const renderTableRows = () => {
     const filteredContents = contents.filter((content) => {
       const employeeNameMatch =
@@ -453,17 +399,35 @@ const PayrollHistoryTable = () => {
       return employeeNameMatch && projectNameMatch;
     });
 
+    console.log(filteredContents);
+
     return filteredContents.map((content) => (
       <tr key={content.id}>
         <td>{content.Date}</td>
         <td>
           {content.Employee_data.firstname} {content.Employee_data.surname}
         </td>
-        <td>{content.JobTitle_data?.JobTitleEN || "N/A"}</td>
-        <td>{content.WorkSchedule_data?.WorkScheduleEN || "N/A"}</td>
-        <td>{content.CostCentre_data?.ProjectNameEN || "N/A"}</td>
-        <td>{content.PaymentType_data?.PaymentTypeEN || "N/A"}</td>
-        <td>{content.Currency_data?.CurrencyEN || "N/A"}</td>
+        <td>
+          {content.JobTitle_data?.[`JobTitle${language.toUpperCase()}`] ||
+            "N/A"}
+        </td>
+        <td>
+          {content.WorkSchedule_data?.[
+            `WorkSchedule${language.toUpperCase()}`
+          ] || "N/A"}
+        </td>
+        <td>
+          {content.CostCentre_data?.[`ProjectName${language.toUpperCase()}`] ||
+            "N/A"}
+        </td>
+        <td>
+          {content.PaymentType_data?.[`PaymentType${language.toUpperCase()}`] ||
+            "N/A"}
+        </td>
+        <td>
+          {content.Currency_data?.[`Currency${language.toUpperCase()}`] ||
+            "N/A"}
+        </td>
         <td>{content.Salary}</td>
         <td>
           {content.Manager_data?.firstname || "N/A"}{" "}
@@ -493,42 +457,55 @@ const PayrollHistoryTable = () => {
     <>
       <div className="card">
         <div className="card-header">
-          <h4 className="card-title">Salary & Transfer Info</h4>
+          <h4 className="card-title">{t.costCentreTransferHistory}</h4>
 
           <button
             className="btn btn-primary ms-1"
             onClick={() => setIsWindowOpen(true)}
           >
-            Add Transfer history
+            {t.add}
           </button>
         </div>
         <div className="card-body">
-          <div className="w-100 table-responsive">
-            <table className="display w-100 dataTable">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Employee Name</th>
-                  <th>Job Title</th>
-                  <th>Work Schedule</th>
-                  <th>Project Name</th>
-                  <th>Payment Type</th>
-                  <th>Currency</th>
-                  <th>Salary</th>
-                  <th>Manager</th>
-                  <th>Comment</th>
-                  <th>Basis</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>{renderTableRows()}</tbody>
-            </table>
-          </div>
+          {loading ? (
+            <div className="text-center">
+              <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            </div>
+          ) : (
+            <div className="w-100 table-responsive">
+              <table className="display w-100 dataTable">
+                <thead>
+                  <tr>
+                    <th>{m.date}</th>
+                    <th>{m.employee}</th>
+                    <th>{m.jobtitle}</th>
+                    <th>{m.workschedule}</th>
+                    <th>{m.projectname}</th>
+                    <th>{m.paymenttype}</th>
+                    <th>{m.currency}</th>
+                    <th>{t.salary}</th>
+                    <th>{t.manager}</th>
+                    <th>{t.comment}</th>
+                    <th>{t.basis}</th>
+                    <th>{t.actions}</th>
+                  </tr>
+                </thead>
+                <tbody>{renderTableRows()}</tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
 
       <PayrollModal
         show={isWindowOpen}
+        projects={projects}
+        manager={employee}
+        currency={currency}
+        paymentType={paymentType}
+        workSchedule={workSchedule}
         onClose={handleCloseWindow}
         onSubmit={handleAddPayroll}
         token={token}
@@ -546,17 +523,6 @@ const PayrollHistoryTable = () => {
               &times;
             </span>
             {windowContent}
-          </div>
-        </div>
-      )}
-
-      {loading && (
-        <div className="fullscreen-overlay">
-          <div className="spinner-container">
-            <Spinner animation="border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
-            <p>Loading...</p>
           </div>
         </div>
       )}

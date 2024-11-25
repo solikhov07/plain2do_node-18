@@ -129,21 +129,6 @@ const TimeSheetTable = () => {
   };
 
   const renderTableRows = () => {
-    // const filteredContents = contents?.filter((content) => {
-    //   const projectNameMatch =
-    //     content?.Project_data?.ProjectNameEN?.toLowerCase().includes(
-    //       filters.projectName.toLowerCase()
-    //     );
-    //   const responsibleUserMatch = content?.ResponsibleUser_data?.email
-    //     ?.toLowerCase()
-    //     .includes(filters.responsibleUser.toLowerCase());
-    //   const statusMatch = content?.Status?.toLowerCase().includes(
-    //     filters.status.toLowerCase()
-    //   );
-
-    //   return projectNameMatch && responsibleUserMatch && statusMatch;
-    // });
-
     return contents.map((content) => (
       <tr className="" key={content.id}>
         <td>{content?.Date}</td>

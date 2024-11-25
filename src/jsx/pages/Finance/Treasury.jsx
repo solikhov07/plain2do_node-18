@@ -19,6 +19,7 @@ const Treasury = () => {
   const token = parser.access;
   const { language } = useLanguage();
   const t = translations[language];
+  const m = translations.payroll[language];
   const [errors, setErrors] = useState({});
   const [contents, setContents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -357,8 +358,6 @@ const Treasury = () => {
       url += "?excel=True";
     }
 
-    console.log(url);
-
     const requestOptions = {
       method: "GET",
       headers: {
@@ -421,14 +420,12 @@ const Treasury = () => {
         const updatedSelectedItems = prevSelectedItems.filter(
           (item) => item.id !== projectId
         );
-        console.log(updatedSelectedItems);
         return updatedSelectedItems;
       } else {
         const selectedItem = contents.find(
           (content) => content.id === projectId
         );
         const updatedSelectedItems = [...prevSelectedItems, selectedItem];
-        console.log(updatedSelectedItems);
         return updatedSelectedItems;
       }
     });
@@ -439,7 +436,6 @@ const Treasury = () => {
   };
 
   //Render
-  console.log(contents);
 
   const formatAmount = (amount) => {
     return new Intl.NumberFormat("en-US", {
@@ -856,7 +852,7 @@ const Treasury = () => {
 
             {/* Date */}
             <Form.Group className="mb-3">
-              <Form.Label>{t.date}</Form.Label>
+              <Form.Label>{m.date}</Form.Label>
               <Form.Control
                 type="date"
                 name="date"

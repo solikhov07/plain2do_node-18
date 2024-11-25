@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import swal from "sweetalert";
 import "./styles.css";
 import { useLanguage } from "../../../context/LanguageContext";
-import Loader from "../../components/Loader/Loader";
 import { Spinner } from "react-bootstrap";
 import translations from "../../../translation/translation";
 import PassportFAQ from "./ComponentsFAQ/PasportFAQ";
@@ -47,7 +45,7 @@ const FAQ = () => {
   useEffect(() => {
     if (!token) {
       console.error("No access token available.");
-      history.push("/login");
+      history("/login");
       return;
     }
 
@@ -64,16 +62,16 @@ const FAQ = () => {
       .then((response) => {
         if (!response.ok) {
           localStorage.removeItem("userDetails");
-          history.push("/login");
+          history("/login");
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         return response.json();
       })
       .then((data) => {
         setData(data.Response);
-        if (data.Response.Passport && data.Response.Passport.length > 0) {
+        if (data?.Response?.Passport && data?.Response?.Passport.length > 0) {
           setAlphaCode(
-            data.Response.Passport[0].IssuedBy_data.AlphaCode3.toLowerCase()
+            data?.Response?.Passport[0]?.IssuedBy_data?.AlphaCode3.toLowerCase()
           );
         }
         setLoading(false);
@@ -91,7 +89,7 @@ const FAQ = () => {
   useEffect(() => {
     if (!token) {
       console.error("No access token available.");
-      history.push("/login");
+      history("/login");
       return;
     }
 
@@ -108,7 +106,7 @@ const FAQ = () => {
       .then((response) => {
         if (!response.ok) {
           localStorage.removeItem("userDetails");
-          history.push("/login");
+          history("/login");
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         return response.json();
@@ -136,7 +134,7 @@ const FAQ = () => {
   };
 
   const handleBack = () => {
-    history.goBack();
+    history(-1);
   };
 
   if (loading) {

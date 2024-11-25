@@ -275,9 +275,6 @@ const AppProfile = () => {
       }
     });
 
-    // Log the JSON-like payload to console for debugging
-    console.log("Sending payload:", JSON.stringify(payload, null, 2));
-
     try {
       const response = await fetch(`${urlLink}/send-invitation/`, {
         method: "POST",

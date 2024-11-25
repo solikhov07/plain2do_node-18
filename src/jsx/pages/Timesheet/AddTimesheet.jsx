@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Button, Table } from "react-bootstrap";
@@ -17,8 +16,8 @@ const AddTimesheet = () => {
   const [date, setDate] = useState(
     new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split("T")[0]
   );
-  const { language } = useLanguage()
-  const t = translations.timesheet[language]
+  const { language } = useLanguage();
+  const t = translations.timesheet[language];
   const [status, setStatus] = useState("Approved");
   const [comment, setComment] = useState("");
   const [projects, setProjects] = useState([]);
@@ -139,11 +138,7 @@ const AddTimesheet = () => {
     e.preventDefault();
 
     if (!attendanceData || attendanceData.length === 0) {
-      swal(
-        t.validationerror,
-        t.noemployeesfoundinattendancelist,
-        t.warning
-      );
+      swal(t.validationerror, t.noemployeesfoundinattendancelist, t.warning);
       return;
     }
 
@@ -184,9 +179,7 @@ const AddTimesheet = () => {
 
       if (!timesheetResponse.ok) {
         if (timesheetResponse.status === 409) {
-          throw new Error(
-            t.duplicateentrysimilartimesheetalreadyexists
-          );
+          throw new Error(t.duplicateentrysimilartimesheetalreadyexists);
         }
         const errorData = await timesheetResponse.json();
         console.error("Timesheet POST error response:", errorData);
@@ -218,22 +211,20 @@ const AddTimesheet = () => {
       if (!attendanceResponse.ok) {
         const errorData = await attendanceResponse.json();
         console.error("Attendance POST error response:", errorData);
-        throw new Error(
-          errorData.message || t.failedtoaddattendancedetails
-        );
+        throw new Error(errorData.message || t.failedtoaddattendancedetails);
       }
 
       swal(
         t.success.charAt(0).toUpperCase() + t.success.slice(1),
         t.timesheetandattendanceaddedsuccessfully,
-        t.success
+        "success"
       ).then(() => history("/timesheet"));
     } catch (error) {
       console.error("Error adding timesheet or attendance:", error);
       swal(
         t.error.charAt(0).toUpperCase() + t.error.slice(1),
         error.message || t.failedtoaddtimesheetorattendance,
-        t.error
+        "error"
       );
     }
   };
@@ -261,7 +252,8 @@ const AddTimesheet = () => {
                 <option value="">{t.selectproject}</option>
                 {projects.map((proj) => (
                   <option key={proj.id} value={proj.id}>
-                    {proj["ProjectName"+language.toUpperCase()] || "N/A"} - {proj["Address"+language.toUpperCase()] || "N/A"}
+                    {proj["ProjectName" + language.toUpperCase()] || "N/A"} -{" "}
+                    {proj["Address" + language.toUpperCase()] || "N/A"}
                   </option>
                 ))}
               </Form.Control>
@@ -325,11 +317,13 @@ const AddTimesheet = () => {
               <h4>{t.attendancelist}</h4>
               <Table className="display w-100 dataTable table-responsive">
                 <thead>
-                  <tr>
+                  <tr className="sticky-header">
                     <th>ID</th>
                     <th>{t.name}</th>
                     <th>{t.jobtitle}</th>
-                    <th>{t.status.charAt(0).toUpperCase() + t.status.slice(1)}</th>
+                    <th>
+                      {t.status.charAt(0).toUpperCase() + t.status.slice(1)}
+                    </th>
                     <th>{t.shift}</th>
                     <th>{t.workingstatus}</th>
                     <th>{t.timesheetcode}</th>
@@ -354,10 +348,15 @@ const AddTimesheet = () => {
                             user.surname || ""
                           }`.trim() || "N/A"}
                         </td>
-                        <td>{user.position_data["JobTitle"+language.toUpperCase()] || "N/A"}</td>
                         <td>
-                          {user.position_data?.EmpClass_data["EmpClass"+language.toUpperCase()] ||
-                            "N/A"}
+                          {user.position_data?.[
+                            "JobTitle" + language.toUpperCase()
+                          ] || "N/A"}
+                        </td>
+                        <td>
+                          {user.position_data?.EmpClass_data[
+                            "EmpClass" + language.toUpperCase()
+                          ] || "N/A"}
                         </td>
                         <td>
                           <Form.Control
@@ -415,7 +414,7 @@ const AddTimesheet = () => {
                           >
                             {availableTimesheetCodes.map((code) => (
                               <option key={code.id} value={code.id}>
-                                {code["Code"+language.toUpperCase()]}
+                                {code["Code" + language.toUpperCase()]}
                               </option>
                             ))}
                           </Form.Control>

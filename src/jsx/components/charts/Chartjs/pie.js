@@ -1,40 +1,36 @@
 import React from "react";
 import { Pie } from "react-chartjs-2";
 
-const ChartPie = ({ color1, color2, color3, color4, height, width }) => {
-   const data = {
-      datasets: [
-         {
-            data: [45, 25, 20, 10],
-            borderWidth: 0,
-            backgroundColor: [
-               `${color1 ? color1 : "rgba(91, 207, 193, 1)"}`,
-               `${color2 ? color2 : "rgba(91, 207, 193, 0.7)"}`,
-               `${color3 ? color3 : "rgba(91, 207, 193, 0.5)"}`,
-               `${color4 ? color4 : "rgba(0, 0, 0, 0.07)"}`,
-            ],
-            hoverBackgroundColor: [
-               `${color1 ? color1 : "rgba(91, 207, 193, 1)"}"}`,
-               `${color2 ? color2 : "rgba(91, 207, 193, 0.7)"}`,
-               `${color3 ? color3 : "rgba(91, 207, 193, 0.5)"}`,
-               `${color4 ? color4 : "rgba(0, 0, 0, 0.07)"}`,
-            ],
-         },
-      ],
-      labels: ["one", "two", "three"],
-   };
+const ChartPie = ({ data, labels, colors, height, width }) => {
+  const chartData = {
+    datasets: [
+      {
+        data: data || [0, 0], // Default to [0, 0] if no data is passed
+        borderWidth: 0,
+        backgroundColor: colors || ["#496ecc", "#68e365"], // Default colors
+        hoverBackgroundColor: colors || ["#496ecc", "#68e365"],
+      },
+    ],
+    labels: labels || ["Label1", "Label2"], // Default labels
+  };
 
-   const options = {
-      responsive: true,
-      legend: false,
-      maintainAspectRatio: false,
-   };
+  const options = {
+    responsive: true,
+    legend: {
+      display: false, // Show legend for labels
+      position: "bottom",
+    },
+    maintainAspectRatio: false,
+  };
 
-   return (
-      <>
-         <Pie data={data} height={height ? height : 200} options={options} />
-      </>
-   );
+  return (
+    <Pie
+      data={chartData}
+      height={height || 200}
+      width={width || 200}
+      options={options}
+    />
+  );
 };
 
 export default ChartPie;

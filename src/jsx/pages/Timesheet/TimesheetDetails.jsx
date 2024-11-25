@@ -16,7 +16,7 @@ const TimesheetDetails = () => {
   const t = translations.timesheet[language];
   const urlLink = process.env.REACT_APP_API_URL;
   const handleBack = () => {
-    history.goBack();
+    history(-1); // -1 to go back one step in history
   };
 
   useEffect(() => {

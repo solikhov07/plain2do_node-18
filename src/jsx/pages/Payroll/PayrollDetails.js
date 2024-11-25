@@ -22,7 +22,7 @@ const PayrollDetails = () => {
   const urlLink = process.env.REACT_APP_API_URL;
 
   const handleBack = () => {
-    history.goBack();
+    history(-1);
   };
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const PayrollDetails = () => {
       swal(
         t.error.charAt(0).toUpperCase() + t.error.slice(1),
         t.noaccesstokenavailable,
-        t.error
+        "error"
       );
       history("/login");
       return;
@@ -85,8 +85,6 @@ const PayrollDetails = () => {
       .format(amount)
       .replace(/,/g, " "); // Replace commas with spaces
   };
-
-  console.log(details);
 
   // Filter details based on the filter input values
   const filteredDetails = details.filter((item) => {
@@ -150,7 +148,7 @@ const PayrollDetails = () => {
 
           <Table className="display w-100 dataTable table-responsive">
             <thead>
-              <tr>
+              <tr className="sticky-header">
                 <th>{t.date}</th>
                 <th>{t.fullname}</th>
                 <th>{t.costcenter}</th>

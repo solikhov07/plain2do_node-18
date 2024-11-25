@@ -731,16 +731,13 @@ td {
 table {
   width: 100%;
   border-collapse: collapse;
+  /* border: 2px solid #f5f5f5; */
 }
 
 table th,
 table td {
   border-right: 2px solid #f5f5f5;
-}
-
-table th:last-child,
-table td:last-child {
-  border-right: none;
+  border-left: 2px solid #f5f5f5;
 }
 
 thead .sticky-header {
@@ -786,4 +783,16 @@ thead .sticky-header {
   text-overflow: ellipsis;
   max-width: 150px;
   margin-left: 10px;
+}
+
+.regular-day {
+  background-color: #ffebee;
+}
+
+.overtime-day {
+  background-color: transparent; /* Default, can be changed dynamically */
+}
+
+.weekend-day {
+  background-color: #e3f2fd; /* Background color for weekends */
 }

@@ -157,8 +157,6 @@ const Header = ({ onNote }) => {
 
   const t = translations[language][camelCaseSegment] || camelCaseSegment;
 
-  console.log(t);
-
   return (
     <div className="header">
       <div className="header-content">

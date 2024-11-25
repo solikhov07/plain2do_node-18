@@ -1,79 +1,147 @@
-import React from "react";
-import ReactApexChart from "react-apexcharts";
+import React, { useState } from "react";
 
-const SubscriptionChart = () => {
-  // Static data for the example
-  const chartData = {
-    series: [
-      {
-        name: "Basic Subscription",
-        data: [200, 150, 250, 300, 400, 350, 300, 250, 200, 280, 320, 400],
-      },
-      {
-        name: "Standard Subscription",
-        data: [300, 400, 350, 450, 500, 550, 600, 450, 500, 520, 530, 600],
-      },
-      {
-        name: "Premium Subscription",
-        data: [500, 600, 700, 650, 800, 900, 1000, 750, 850, 900, 950, 1100],
-      },
-    ],
-    options: {
-      chart: {
-        type: "line",
-        height: 400,
-      },
-      title: {
-        text: "Monthly Subscription Spending",
-        align: "center",
-      },
-      xaxis: {
-        categories: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ],
-        title: {
-          text: "Month",
-        },
-      },
-      yaxis: {
-        title: {
-          text: "Amount Spent ($)",
-        },
-      },
-      colors: ["#8884d8", "#82ca9d", "#ffc658"],
-      tooltip: {
-        y: {
-          formatter: (val) => `$${val}`,
-        },
-      },
-      legend: {
-        position: "top",
-        horizontalAlign: "center",
-      },
-    },
+const LatinToCyrillicConverter = () => {
+  const [latinText, setLatinText] = useState("");
+  const [cyrillicText, setCyrillicText] = useState("");
+
+  // Extended character mapping for Latin to Cyrillic, including uppercase
+  const latinToCyrillicMap = {
+    a: "а",
+    b: "б",
+    v: "в",
+    g: "г",
+    d: "д",
+    e: "е",
+    yo: "ё",
+    j: "ж",
+    z: "з",
+    i: "и",
+    y: "й",
+    k: "к",
+    l: "л",
+    m: "м",
+    n: "н",
+    o: "о",
+    p: "п",
+    r: "р",
+    s: "с",
+    t: "т",
+    u: "у",
+    f: "ф",
+    x: "х",
+    ch: "ч",
+    sh: "ш",
+    "'": "ъ",
+    yu: "ю",
+    ya: "я",
+    "o'": "ў",
+    "g'": "ғ",
+    q: "қ",
+    h: "ҳ",
+    ye: "е",
+    // Uppercase mappings
+    A: "А",
+    B: "Б",
+    V: "В",
+    G: "Г",
+    D: "Д",
+    E: "Э",
+    Yo: "Ё",
+    J: "Ж",
+    Z: "З",
+    I: "И",
+    Y: "Й",
+    K: "К",
+    L: "Л",
+    M: "М",
+    N: "Н",
+    O: "О",
+    P: "П",
+    R: "Р",
+    S: "С",
+    T: "Т",
+    U: "У",
+    F: "Ф",
+    X: "Х",
+    Ch: "Ч",
+    Sh: "Ш",
+    Yu: "Ю",
+    Ya: "Я",
+    "O'": "Ў",
+    "G'": "Ғ",
+    Q: "Қ",
+    H: "Ҳ",
+    Ye: "Е",
+  };
+
+  // Function to convert Latin to Cyrillic
+  const convertToCyrillic = (latin) => {
+    let result = "";
+    let i = 0;
+
+    while (i < latin.length) {
+      // Check for two-character combinations first
+      const twoChar = latin.slice(i, i + 2);
+      const oneChar = latin[i];
+
+      if (latinToCyrillicMap[twoChar]) {
+        result += latinToCyrillicMap[twoChar];
+        i += 2; // Skip the second character since it's already mapped
+      } else if (latinToCyrillicMap[oneChar]) {
+        result += latinToCyrillicMap[oneChar];
+        i += 1;
+      } else {
+        // If no match, just add the character as-is
+        result += oneChar;
+        i += 1;
+      }
+    }
+
+    return result;
+  };
+
+  // Handle Latin input change
+  const handleLatinChange = (e) => {
+    const value = e.target.value;
+    setLatinText(value);
+    setCyrillicText(convertToCyrillic(value));
   };
 
   return (
-    <div>
-      <ReactApexChart
-        options={chartData.options}
-        series={chartData.series}
-        type="line"
-        height={400}
-      />
+    <div style={{ padding: "20px" }}>
+      <h3>Latin to Cyrillic Converter</h3>
+      <div>
+        <label>Latin Name:</label>
+        <input
+          type="text"
+          value={latinText}
+          onChange={handleLatinChange}
+          placeholder="Enter Latin text"
+          style={{
+            display: "block",
+            margin: "10px 0",
+            padding: "5px",
+            width: "300px",
+          }}
+        />
+      </div>
+      <div>
+        <label>Cyrillic Name:</label>
+        <input
+          type="text"
+          value={cyrillicText}
+          placeholder="Generated Cyrillic text"
+          style={{
+            display: "block",
+            margin: "10px 0",
+            padding: "5px",
+            width: "300px",
+          }}
+          readOnly
+        />
+      </div>
     </div>
   );
 };
 
-export default SubscriptionChart;
+export default LatinToCyrillicConverter;

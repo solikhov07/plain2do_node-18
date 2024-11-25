@@ -1,88 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import swal from "sweetalert";
-import {
-  fetchCurrency,
-  fetchEmployee,
-  fetchJobs,
-  fetchPaymentType,
-  fetchWorkSchedule,
-} from "../../../components/apiData/apiEmployee";
+import { fetchJobs } from "../../../components/apiData/apiEmployee";
 import "../styles.css";
-import { useNavigate } from "react-router-dom";
 
-const PayrollModal = ({ show, onClose, onSubmit, token, id, urlLink }) => {
-  const [employee, setEmployee] = useState([]);
-  const [workSchedule, setWorkSchedule] = useState([]);
-  const [projects, setProjects] = useState([]);
-  const [paymentType, setPaymentType] = useState([]);
+const PayrollModal = ({
+  show,
+  onClose,
+  onSubmit,
+  token,
+  id,
+  projects,
+  manager,
+  currency,
+  paymentType,
+  workSchedule,
+}) => {
   const [jobtitle, setjobtitle] = useState([]);
-  const [currency, setCurrency] = useState([]);
-  const history = useNavigate();
+  const [disableInputs, setDisableInputs] = useState(false); // State to control disabling inputs
+
   const [formData, setFormData] = useState({
     Date: "",
-    Manager: 0,
+    Manager: null,
     Employee: parseInt(id, 10),
-    CostCentre: 0,
-    JobTitle: 0,
-    WorkSchedule: 0,
-    PaymentType: 0,
-    Currency: 0,
-    Salary: "",
-    Comment: "",
-    Basis: "",
+    CostCentre: null,
+    JobTitle: null,
+    WorkSchedule: null,
+    PaymentType: null,
+    Currency: null,
+    Salary: 0,
+    Comment: null,
+    Basis: null,
   });
-
-  useEffect(() => {
-    if (!token) {
-      console.error("No access token available.");
-      history.push("/login");
-      return;
-    }
-
-    fetch(`${urlLink}/gendt/project/`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((response) => response.json())
-      .then((data) => setProjects(data.Response || []))
-      .catch((error) => console.error("Error fetching projects:", error));
-  }, [token, history, urlLink]);
-
-  useEffect(() => {
-    const getEmployees = async () => {
-      const data = await fetchEmployee(token);
-      setEmployee(data);
-    };
-
-    getEmployees();
-  }, [token]);
-
-  useEffect(() => {
-    const getWorkSchedule = async () => {
-      const data = await fetchWorkSchedule(token);
-      setWorkSchedule(data);
-    };
-
-    getWorkSchedule();
-  }, [token]);
-
-  useEffect(() => {
-    const getPaymentType = async () => {
-      const data = await fetchPaymentType(token);
-      setPaymentType(data);
-    };
-
-    getPaymentType();
-  }, [token]);
-
-  useEffect(() => {
-    const getCurrency = async () => {
-      const data = await fetchCurrency(token);
-      setCurrency(data);
-    };
-
-    getCurrency();
-  }, [token]);
 
   useEffect(() => {
     const getJobs = async () => {
@@ -93,45 +42,50 @@ const PayrollModal = ({ show, onClose, onSubmit, token, id, urlLink }) => {
     getJobs();
   }, [token]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "Date") {
-      const formattedDate = formatDateToDDMMYYYY(value);
+  const handleCheckboxChange = () => {
+    setDisableInputs((prevState) => !prevState);
+    if (!disableInputs) {
+      // Set all other fields except Date to null when disabling inputs
       setFormData((prevData) => ({
         ...prevData,
-        [name]: formattedDate,
-      }));
-    } else {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: value,
+        Manager: null,
+        CostCentre: null,
+        JobTitle: null,
+        WorkSchedule: null,
+        PaymentType: null,
+        Currency: null,
+        Salary: 0,
+        Comment: null,
+        Basis: null,
       }));
     }
   };
 
-  const formatDateToDDMMYYYY = (dateString) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    return `${day}.${month}.${year}`;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formDataToSubmit = {
+
+    const formatDateToDDMMYYYY = (dateString) => {
+      const [year, month, day] = dateString.split("-"); // Split the "YYYY-MM-DD" format
+      return `${day}.${month}.${year}`; // Rearrange to "DD.MM.YYYY"
+    };
+
+    const formattedDate = formatDateToDDMMYYYY(formData.Date);
+
+    const payload = {
       ...formData,
-      Manager: parseInt(formData.Manager, 10),
-      CostCentre: parseInt(formData.CostCentre, 10),
-      JobTitle: parseInt(formData.JobTitle, 10),
-      WorkSchedule: parseInt(formData.WorkSchedule, 10),
-      PaymentType: parseInt(formData.PaymentType, 10),
-      Currency: parseInt(formData.Currency, 10),
-      Salary: parseInt(formData.Salary, 10),
+      Date: formattedDate, // Replace with the formatted date
     };
 
     try {
-      const response = await onSubmit(formDataToSubmit);
+      const response = await onSubmit(payload);
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -156,12 +110,21 @@ const PayrollModal = ({ show, onClose, onSubmit, token, id, urlLink }) => {
         <div className="edit-form">
           <h3>Add Payroll History</h3>
           <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="disableInputsCheckbox">
+              <Form.Check
+                type="checkbox"
+                label="Dissmisal date"
+                checked={disableInputs}
+                onChange={handleCheckboxChange}
+              />
+            </Form.Group>
+
             <Form.Group controlId="formDate">
               <Form.Label>Date:</Form.Label>
               <Form.Control
                 type="date"
                 name="Date"
-                defaultValue={formData.Date}
+                value={formData.Date}
                 onChange={handleChange}
                 required
               />
@@ -171,11 +134,12 @@ const PayrollModal = ({ show, onClose, onSubmit, token, id, urlLink }) => {
               <Form.Control
                 as="select"
                 name="Manager"
+                value={formData.Manager || ""}
                 onChange={handleChange}
-                required
+                disabled={disableInputs}
               >
                 <option value="">Select Manager</option>
-                {employee.map((employee) => (
+                {manager.map((employee) => (
                   <option key={employee.id} value={employee.id}>
                     {employee.firstname} {employee.surname}
                   </option>
@@ -187,10 +151,11 @@ const PayrollModal = ({ show, onClose, onSubmit, token, id, urlLink }) => {
               <Form.Control
                 as="select"
                 name="CostCentre"
+                value={formData.CostCentre || ""}
                 onChange={handleChange}
-                required
+                disabled={disableInputs}
               >
-                <option value="">Select CostCentre</option>
+                <option value="">Select Cost Centre</option>
                 {projects.map((project) => (
                   <option key={project.id} value={project.id}>
                     {project.ProjectNameEN}
@@ -198,13 +163,50 @@ const PayrollModal = ({ show, onClose, onSubmit, token, id, urlLink }) => {
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group controlId="formPaymenttype">
-              <Form.Label>Payment type:</Form.Label>
+
+            <Form.Group controlId="formJobTitle">
+              <Form.Label>Job Title:</Form.Label>
+              <Form.Control
+                as="select"
+                name="JobTitle"
+                value={formData.JobTitle || ""}
+                onChange={handleChange}
+                disabled={disableInputs}
+              >
+                <option value="">Select Job Title</option>
+                {jobtitle.map((project) => (
+                  <option key={project.id} value={project.id}>
+                    {project.JobTitleEN}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId="formWorkSchedule">
+              <Form.Label>Work Schedule:</Form.Label>
+              <Form.Control
+                as="select"
+                name="WorkSchedule"
+                value={formData.WorkSchedule || ""}
+                onChange={handleChange}
+                disabled={disableInputs}
+              >
+                <option value="">Select Work Schedule</option>
+                {workSchedule.map((project) => (
+                  <option key={project.id} value={project.id}>
+                    {project.WorkScheduleEN}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+            <Form.Group controlId="formPaymentType">
+              <Form.Label>Payment Type:</Form.Label>
               <Form.Control
                 as="select"
                 name="PaymentType"
+                value={formData.PaymentType || ""}
                 onChange={handleChange}
-                required
+                disabled={disableInputs}
               >
                 <option value="">Select Payment Type</option>
                 {paymentType.map((paymentType) => (
@@ -215,12 +217,13 @@ const PayrollModal = ({ show, onClose, onSubmit, token, id, urlLink }) => {
               </Form.Control>
             </Form.Group>
             <Form.Group controlId="formCurrency">
-              <Form.Label>Currency type:</Form.Label>
+              <Form.Label>Currency Type:</Form.Label>
               <Form.Control
                 as="select"
                 name="Currency"
+                value={formData.Currency || ""}
                 onChange={handleChange}
-                required
+                disabled={disableInputs}
               >
                 <option value="">Select Currency</option>
                 {currency.map((currency) => (
@@ -230,45 +233,14 @@ const PayrollModal = ({ show, onClose, onSubmit, token, id, urlLink }) => {
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group controlId="formJobTitle">
-              <Form.Label>Job Title type:</Form.Label>
-              <Form.Control
-                as="select"
-                name="JobTitle"
-                onChange={handleChange}
-                required
-              >
-                <option value="">Select Job Title</option>
-                {jobtitle.map((jobtitle) => (
-                  <option key={jobtitle.id} value={jobtitle.id}>
-                    {jobtitle.JobTitleEN}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-            <Form.Group controlId="formWorkSchedule">
-              <Form.Label>Work Schedule:</Form.Label>
-              <Form.Control
-                as="select"
-                name="WorkSchedule"
-                onChange={handleChange}
-                required
-              >
-                <option value="">Select Work Schedule</option>
-                {workSchedule.map((schedule) => (
-                  <option key={schedule.id} value={schedule.id}>
-                    {schedule.WorkScheduleEN}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
             <Form.Group controlId="formSalary">
               <Form.Label>Salary:</Form.Label>
               <Form.Control
                 type="number"
                 name="Salary"
+                value={formData.Salary}
                 onChange={handleChange}
-                required
+                disabled={disableInputs}
               />
             </Form.Group>
             <Form.Group controlId="formComment">
@@ -276,12 +248,20 @@ const PayrollModal = ({ show, onClose, onSubmit, token, id, urlLink }) => {
               <Form.Control
                 type="text"
                 name="Comment"
+                value={formData.Comment || ""}
                 onChange={handleChange}
+                disabled={disableInputs}
               />
             </Form.Group>
             <Form.Group controlId="formBasis">
               <Form.Label>Basis:</Form.Label>
-              <Form.Control type="text" name="Basis" onChange={handleChange} />
+              <Form.Control
+                type="text"
+                name="Basis"
+                value={formData.Basis || ""}
+                onChange={handleChange}
+                disabled={disableInputs}
+              />
             </Form.Group>
             <Button type="submit">Save</Button>
           </Form>

@@ -131,7 +131,7 @@ import Setting from "./layouts/Setting";
 import { ThemeContext } from "../context/ThemeContext";
 import InvoiceList from "./pages/Invoice";
 import Statistics from "./pages/Statistics";
-import AnaliticalReports from "./pages/AnaliticalReports";
+import AnaliticalReports from "./pages/AnaliticalReports/AnaliticalReports";
 import Pendingtasks from "./pages/Pendingtasks";
 import Labordemand from "./pages/Labordemand";
 const Markup = () => {

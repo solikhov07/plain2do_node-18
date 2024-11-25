@@ -6,7 +6,7 @@ import PageTitle from "../../layouts/PageTitle";
 import { useLanguage } from "../../../context/LanguageContext";
 import translations from "../../../translation/translation";
 import { Badge } from "react-bootstrap";
-// import "./employee.css";
+import "./employee.css";
 
 const EmployeeList = () => {
   const parser = JSON.parse(localStorage.getItem("userDetails"));
@@ -31,6 +31,7 @@ const EmployeeList = () => {
   const urlLink = process.env.REACT_APP_API_URL;
   const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
@@ -139,8 +140,6 @@ const EmployeeList = () => {
     } else {
       url += "?excel=True";
     }
-
-    console.log(url);
 
     const requestOptions = {
       method: "GET",
@@ -262,18 +261,21 @@ const EmployeeList = () => {
             onChange={() => handleRowSelect(content.id)}
           />
         </td>
-        <td>{content.personnel_number}</td>
-        <td>{content.surname}</td>
-        <td>{content.firstname}</td>
+        <td>{content?.personnel_number}</td>
+        <td>{content?.surname}</td>
+        <td>{content?.firstname}</td>
         <td>
-          {content.position_data["JobTitle" + language.toUpperCase()] || "N/A"}
+          {content?.position_data?.["JobTitle" + language.toUpperCase()] ||
+            "N/A"}
         </td>
-        <td>{content.mobile_number || "N/A"}</td>
+        <td>{content?.mobile_number || "N/A"}</td>
         <td>
           <Badge
-            variant={content.current_status === "active" ? "success" : "danger"}
+            variant={
+              content?.current_status === "active" ? "success" : "danger"
+            }
           >
-            {content.current_status}
+            {content?.current_status}
           </Badge>
         </td>
         <td className="datab">
@@ -314,7 +316,7 @@ const EmployeeList = () => {
     formData.append("excel", file);
 
     try {
-      setUploading(true);
+      setIsLoading(true);
 
       const response = await fetch(`${urlLink}/excel/upload/`, {
         method: "POST",
@@ -345,7 +347,7 @@ const EmployeeList = () => {
         "error"
       );
     } finally {
-      setUploading(false);
+      setIsLoading(false);
     }
   };
 
@@ -371,7 +373,7 @@ const EmployeeList = () => {
                   htmlFor="excelUpload"
                   style={{ cursor: "pointer", margin: 0 }}
                 >
-                  {uploading ? t.uploading : t.upload}
+                  {isLoading ? t.uploading : t.upload}
                 </label>
               </Button>
               <input
@@ -380,7 +382,7 @@ const EmployeeList = () => {
                 accept=".xls,.xlsx"
                 onChange={handleExcelUpload}
                 style={{ display: "none" }}
-                disabled={uploading}
+                disabled={isLoading}
               />
             </div>
           </div>

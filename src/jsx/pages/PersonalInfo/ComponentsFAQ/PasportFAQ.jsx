@@ -398,12 +398,15 @@ const PassportFAQ = ({
     setIsWindowOpen(false);
   };
 
+  const bgCountry = data?.Passport[0]?.citizenship_data?.AlphaCode3;
+  const bglower = bgCountry?.toLowerCase();
+
   return (
-    <div className={`faq-container1 ${alphaCode}-bg table-responsive`}>
+    <div className={`faq-container1 ${bglower}-bg table-responsive`}>
       <div onClick={() => handleToggle("passport")} className="faq__t-wrapper">
         <h5 className="toggle-title">{t.passportInformation}</h5>
         <p className="faq__header-seria">
-          {data.Passport && data.Passport.length > 0 ? (
+          {data?.Passport && data?.Passport.length > 0 ? (
             <>{data.Passport[0].PassportNumber}</>
           ) : (
             t.noPassportInformation
@@ -415,7 +418,7 @@ const PassportFAQ = ({
           openSection === "passport" ? "open" : ""
         }`}
       >
-        {data.Passport && data.Passport.length > 0 ? (
+        {data?.Passport && data?.Passport.length > 0 ? (
           <div className="faq-details">
             <div className="faq__top-wrapper">
               <p className="faq__section-title">{t.passport}</p>
@@ -423,14 +426,14 @@ const PassportFAQ = ({
               <div className="faq__wrapper">
                 <p className="faq__topsubheader">{t.countryCode}</p>
                 <p className="faq__country-code">
-                  {data.Passport[0].IssuedBy_data.AlphaCode3}
+                  {data?.Passport[0]?.citizenship_data?.AlphaCode3}
                 </p>
               </div>
               <span className="faq__line"></span>
               <div className="faq__wrapper">
                 <p className="faq__topsubheader">{t.passportNumber}</p>
                 <p className="faq__country-code">
-                  {data.Passport[0].PassportNumber}
+                  {data?.Passport[0]?.PassportNumber}
                 </p>
               </div>
             </div>
@@ -439,8 +442,8 @@ const PassportFAQ = ({
                 <img
                   className="faq-photo"
                   src={
-                    data.Passport[0].Employee_data.photo
-                      ? data.Passport[0].Employee_data.photo
+                    data?.Passport[0]?.Employee_data?.photo
+                      ? data.Passport[0].Employee_data?.photo
                       : accountImg
                   }
                   alt={t.passportPhotoAlt}
@@ -491,32 +494,32 @@ const PassportFAQ = ({
                 <div className="faq-field">
                   <span className="field-label">{t.surname}:</span>{" "}
                   <p className="field__data">
-                    {data.Passport[0].Employee_data.surname}
+                    {data?.Passport[0].Employee_data?.surname}
                   </p>
                 </div>
                 <div className="faq-field">
                   <span className="field-label">{t.givenNames}:</span>{" "}
                   <p className="field__data">
-                    {data.Passport[0].Employee_data.firstname}
+                    {data?.Passport[0].Employee_data?.firstname}
                   </p>
                 </div>
                 <div className="faq-field">
                   <span className="field-label">{t.nationality}:</span>{" "}
                   <p className="field__data">
-                    {data.Passport[0].citizenship_data.CountryEN}
+                    {data?.Passport[0]?.citizenship_data?.CountryEN}
                   </p>
                 </div>
                 <div className="faq__birthwrapper">
                   <div className="faq-field">
                     <span className="field-label">{t.birthDate}:</span>{" "}
                     <p className="field__data">
-                      {data.Passport[0].Employee_data.date_of_birth}
+                      {data?.Passport[0]?.Employee_data?.date_of_birth}
                     </p>
                   </div>
                   <div className="faq-field">
                     <span className="field-label">{t.gender}:</span>{" "}
                     <p className="field__data">
-                      {data.Passport[0].Employee_data.gender}
+                      {data?.Passport[0]?.Employee_data?.gender}
                     </p>
                   </div>
                 </div>
@@ -524,12 +527,14 @@ const PassportFAQ = ({
                   <div className="faq-field">
                     <span className="field-label">{t.dateOfExpiry}:</span>{" "}
                     <p className="field__data">
-                      {data.Passport[0].ValidityDate}
+                      {data?.Passport[0]?.ValidityDate}
                     </p>
                   </div>
                   <div className="faq-field">
                     <span className="field-label">{t.dateOfIssue}:</span>{" "}
-                    <p className="field__data">{data.Passport[0].IssueDate}</p>
+                    <p className="field__data">
+                      {data?.Passport[0]?.IssueDate}
+                    </p>
                   </div>
                 </div>
               </div>
