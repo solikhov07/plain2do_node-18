@@ -344,21 +344,21 @@ const UserInfo = ({
                 onChange={handleChange}
               />
             </Form.Group>
-            <Form.Group controlId="formMobileNumber">
-              <Form.Label>Mobile Number</Form.Label>
-              <Form.Control
-                type="text"
-                name="mobile_number"
-                value={userData.mobile_number || ""}
-                onChange={handleChange}
-              />
-            </Form.Group>
             <Form.Group controlId="formOtherName">
               <Form.Label>Other Name</Form.Label>
               <Form.Control
                 type="text"
                 name="other_name"
                 value={userData.other_name || ""}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="formMobileNumber">
+              <Form.Label>Mobile Number</Form.Label>
+              <Form.Control
+                type="text"
+                name="mobile_number"
+                value={userData.mobile_number || ""}
                 onChange={handleChange}
               />
             </Form.Group>
