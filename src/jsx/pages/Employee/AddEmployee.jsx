@@ -384,11 +384,11 @@ const AddEmployee = () => {
         </Form.Group>
 
         <Form.Group controlId="CountryPersNo">
-          <Form.Label>Country persistence Number</Form.Label>
+          <Form.Label>Personal Identification number</Form.Label>
           <Form.Control
             type="text"
             name="CountryPersNo"
-            placeholder="Enter country persistence number"
+            placeholder="Enter Personal Identification number"
             value={employeeData.CountryPersNo}
             onChange={handleChange}
             isInvalid={!!errors.CountryPersNo}
