@@ -14,7 +14,7 @@ const InvoiceList = () => {
   useEffect(() => {
     if (!token) {
       console.error("No access token available.");
-      history.push("/login");
+      history("/login");
       return;
     }
 
@@ -32,7 +32,7 @@ const InvoiceList = () => {
       .then((response) => {
         if (!response.ok) {
           localStorage.removeItem("userDetails");
-          history.push("/login");
+          history("/login");
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         return response.json();

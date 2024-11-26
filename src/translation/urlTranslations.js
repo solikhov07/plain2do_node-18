@@ -67,7 +67,7 @@ const translations = {
       timesheet: "Список расписаний",
       addTimesheet: "Добавить расписание",
       payroll: "Платежная ведомость",
-      addPayroll: "Добавить платежную ведомость",
+      addPayroll: "Добавить зарплатную ведомость",
       details: "Детали",
       treasury: "Казначейства",
       statistics: "Статистика",

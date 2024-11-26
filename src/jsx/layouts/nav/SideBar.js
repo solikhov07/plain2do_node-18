@@ -78,7 +78,7 @@ const SideBar = () => {
 const { language } = useLanguage()
 const t = translations[language];
 const decodedToken = getDecodedRefreshTokenFromLocalStorage("userDetails");
-const userName = decodedToken.payload.username;
+const userName = decodedToken?.payload?.username;
   return (
     <div
       onMouseEnter={() => ChangeIconSidebar(true)}

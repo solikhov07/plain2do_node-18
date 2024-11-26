@@ -22,7 +22,8 @@ import FAQ from "./FAQ";
 import { useParams, useNavigate } from "react-router-dom";
 import PayrollHistoryTable from "./Payroll/PayrollHistoryTable";
 import PayrollHistoryUser from "./Payroll/PayrollHistoryUsers";
-
+import translation from '../../../translation/translation'
+import { useLanguage } from '../../../context/LanguageContext'
 const UserInfo = ({
   userData,
   setUserData,
@@ -38,9 +39,9 @@ const UserInfo = ({
     userData.current_status === "active"
   );
   const urlLink = process.env.REACT_APP_API_URL;
-
   const initialData = useRef(userData);
-
+  const { language } = useLanguage();
+  const t = translation[language];
   useEffect(() => {
     const fetchPositions = async () => {
       try {
@@ -86,7 +87,7 @@ const UserInfo = ({
     e.preventDefault();
 
     if (!hasChanges()) {
-      swal("No Changes", "There are no changes to save.", "info");
+      swal(t.nochanges, t.therearenochangestosave, "info");
       return;
     }
 
@@ -129,15 +130,15 @@ const UserInfo = ({
         if (!response.ok) {
           return response.json().then((errorData) => {
             console.error("Error response:", errorData);
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            throw new Error(`${t.httperrorstatus} ${response.status}`);
           });
         }
         return response.json();
       })
       .then((data) => {
         swal(
-          "Success",
-          "Personal information updated successfully!",
+          t.success.charAt(0).toUpperCase() + t.success.slice(1),
+          t.personalinformationupdatedsuccessfully,
           "success"
         );
         fetchUserData();
@@ -146,8 +147,8 @@ const UserInfo = ({
       .catch((error) => {
         console.error("Error updating data:", error);
         swal(
-          "Error",
-          "There was an issue updating the information: " + error.message,
+          t.error.charAt(0).toUpperCase() + t.error.slice(1),
+          t.therewasanissueupdatingtheinformation + error.message,
           "error"
         );
       });
@@ -205,9 +206,9 @@ const UserInfo = ({
     <div>
       <div className="card mb-2">
         <div className="card-header p-3 ps-4 pe-4 d-flex align-items-center">
-          <h4 className="m-0">Personal Information</h4>
+          <h4 className="m-0">{t.personalInformation}</h4>
           <Button variant="primary" onClick={() => setShowModal(true)}>
-            Edit
+            {t.edit}
           </Button>
         </div>
 
@@ -216,7 +217,7 @@ const UserInfo = ({
             <tbody>
               <tr>
                 <th>
-                  <h5>First Name</h5>
+                  <h5>{t.first_name}</h5>
                 </th>
                 <td classname="p-0">
                   <h5>{userData.firstname || "N/A"}</h5>
@@ -224,7 +225,7 @@ const UserInfo = ({
               </tr>
               <tr>
                 <th>
-                  <h5>Surname</h5>
+                  <h5>{t.surname}</h5>
                 </th>
                 <td classname="p-0">
                   <h5>{userData.surname || "N/A"}</h5>
@@ -232,7 +233,7 @@ const UserInfo = ({
               </tr>
               <tr>
                 <th>
-                  <h5>Other Name</h5>
+                  <h5>{t.othername}</h5>
                 </th>
                 <td classname="p-0">
                   <h5>{userData.other_name || "N/A"}</h5>
@@ -240,7 +241,7 @@ const UserInfo = ({
               </tr>
               <tr>
                 <th>
-                  <h5>Mobile number</h5>
+                  <h5>{t.mobile_number}</h5>
                 </th>
                 <td classname="p-0">
                   <h5>{userData.mobile_number || "N/A"}</h5>
@@ -248,16 +249,16 @@ const UserInfo = ({
               </tr>
               <tr>
                 <th>
-                  <h5>Position</h5>
+                  <h5>{t.position}</h5>
                 </th>
                 <td classname="p-0">
-                  <h5>{userData.position_data?.JobTitleEN || "N/A"}</h5>
+                  <h5>{userData.position_data["JobTitle"+language.toUpperCase()] ? userData.position_data["JobTitle"+language.toUpperCase()] : "N/A"}</h5>
                 </td>
               </tr>
 
               <tr>
                 <th>
-                  <h5>Employee Activation</h5>
+                  <h5>{t.employeeActivation}</h5>
                 </th>
                 <td classname="p-0">
                   <Form>
@@ -322,12 +323,12 @@ const UserInfo = ({
 
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Personal Information</Modal.Title>
+          <Modal.Title>{t.editPersonalInfo}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit} encType="multipart/form-data">
             <Form.Group controlId="formFirstname">
-              <Form.Label>First Name</Form.Label>
+              <Form.Label>{t.first_name}</Form.Label>
               <Form.Control
                 type="text"
                 name="firstname"
@@ -336,7 +337,7 @@ const UserInfo = ({
               />
             </Form.Group>
             <Form.Group controlId="formSurname">
-              <Form.Label>Surname</Form.Label>
+              <Form.Label>{t.surname}</Form.Label>
               <Form.Control
                 type="text"
                 name="surname"
@@ -345,7 +346,7 @@ const UserInfo = ({
               />
             </Form.Group>
             <Form.Group controlId="formOtherName">
-              <Form.Label>Other Name</Form.Label>
+              <Form.Label>{t.othername}</Form.Label>
               <Form.Control
                 type="text"
                 name="other_name"
@@ -354,7 +355,7 @@ const UserInfo = ({
               />
             </Form.Group>
             <Form.Group controlId="formMobileNumber">
-              <Form.Label>Mobile Number</Form.Label>
+              <Form.Label>{t.mobile_number}</Form.Label>
               <Form.Control
                 type="text"
                 name="mobile_number"
@@ -363,7 +364,7 @@ const UserInfo = ({
               />
             </Form.Group>
             <Form.Group controlId="formPosition">
-              <Form.Label>Position</Form.Label>
+              <Form.Label>{t.position}</Form.Label>
               <Form.Control
                 as="select"
                 name="position"
@@ -373,13 +374,13 @@ const UserInfo = ({
                 <option value="">Select Position</option>
                 {positions.map((position) => (
                   <option key={position.id} value={position.id}>
-                    {position.JobTitleEN}
+                    {position["JobTitle"+language.toUpperCase()]?position["JobTitle"+language.toUpperCase()]: position.JobTitleEN }
                   </option>
                 ))}
               </Form.Control>
             </Form.Group>
             <Form.Group controlId="formPhoto">
-              <Form.Label>Photo</Form.Label>
+              <Form.Label>{t.photo}</Form.Label>
               <Form.Control
                 type="file"
                 name="photo"
@@ -387,14 +388,14 @@ const UserInfo = ({
               />
             </Form.Group>
             <Button variant="primary" type="submit">
-              Save
+              {t.save}
             </Button>
             <Button
               variant="secondary"
               className="ml-2"
               onClick={() => setShowModal(false)}
             >
-              Cancel
+              {t.cancel}
             </Button>
           </Form>
         </Modal.Body>
@@ -436,7 +437,8 @@ const PersonalInformation = () => {
   const [userData, setUserData] = useState({});
   const urlLink = process.env.REACT_APP_API_URL;
   const [profileImage, setProfileImage] = useState(defaultImg);
-
+  const { language } = useLanguage();
+  const t = translation[language];
   const fetchUserData = () => {
     const url = `${urlLink}/employee/${id}/`;
     const requestOptions = {
@@ -451,8 +453,8 @@ const PersonalInformation = () => {
       .then((response) => {
         if (!response.ok) {
           localStorage.removeItem("userDetails");
-          history.push("/login");
-          throw new Error(`HTTP error! Status: ${response.status}`);
+          history("/login");
+          throw new Error(`${t.httperrorstatus}${response.status}`);
         }
         return response.json();
       })
@@ -467,8 +469,8 @@ const PersonalInformation = () => {
       .catch((error) => {
         console.error("Error fetching data:", error);
         swal(
-          "Error",
-          "There was an issue with the fetch operation: " + error.message,
+          t.error.charAt(0).toUpperCase() + t.error.slice(1),
+          t.therewasissuewithfetchoperation + error.message,
           "error"
         );
       });
@@ -477,7 +479,7 @@ const PersonalInformation = () => {
   useEffect(() => {
     if (!token) {
       console.error("No access token available.");
-      history.push("/login");
+      history("/login");
       return;
     }
     fetchUserData();
@@ -534,7 +536,7 @@ const PersonalInformation = () => {
                 handleLinkClick();
               }}
             >
-              Personal Information
+              {t.personalInformation}
             </Nav.Link>
             <Nav.Link
               onClick={() => {
@@ -542,7 +544,7 @@ const PersonalInformation = () => {
                 handleLinkClick();
               }}
             >
-              Employment Documents
+              {t.employmentdocuments}
             </Nav.Link>
             <Nav.Link
               onClick={() => {
@@ -550,7 +552,7 @@ const PersonalInformation = () => {
                 handleLinkClick();
               }}
             >
-              Certificates
+              {t.certificates}
             </Nav.Link>
             <Nav.Link
               onClick={() => {
@@ -558,7 +560,7 @@ const PersonalInformation = () => {
                 handleLinkClick();
               }}
             >
-              Salary & Transfer Info
+              {t.salarytransferinfo}
             </Nav.Link>
 
             <Nav.Link
@@ -567,7 +569,7 @@ const PersonalInformation = () => {
                 handleLinkClick();
               }}
             >
-              Payroll History
+              {t.payrollHistory}
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
@@ -594,31 +596,31 @@ const PersonalInformation = () => {
             onClick={() => setActiveContent("user-info")}
             className="text-decoration-none"
           >
-            Personal Information
+             {t.personalInformation}
           </Nav.Link>
           <Nav.Link
             onClick={() => setActiveContent("user-favorite-list")}
             className="text-decoration-none"
           >
-            Employment Documents
+            {t.employmentdocuments}
           </Nav.Link>
           <Nav.Link
             onClick={() => setActiveContent("delegations")}
             className="text-decoration-none"
           >
-            Certificates
+           {t.certificates}
           </Nav.Link>
           <Nav.Link
             onClick={() => setActiveContent("tender-templates")}
             className="text-decoration-none"
           >
-            Salary & Transfer Info
+            {t.salarytransferinfo}
           </Nav.Link>
           <Nav.Link
             onClick={() => setActiveContent("payroll-user")}
             className="text-decoration-none"
           >
-            Payroll History
+            {t.payrollHistory}
           </Nav.Link>
         </Nav>
       </Col>

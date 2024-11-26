@@ -22,7 +22,7 @@ const AnalyticalReports = () => {
   const urlLink = process.env.REACT_APP_API_URL;
 
   const handleBack = () => {
-    history.goBack();
+    history(-1);
   };
 
   // Helper to get number of days in the selected month and year

@@ -84,7 +84,7 @@ export const MenuList = [
             },
             {
                 titleEN: 'Payroll',
-                titleRU: "Расчетная ведомость",
+                titleRU: "Зарплатная ведомость",
                 titleTR: "Maaş Bordrosu",
                 to: 'payroll'
             },

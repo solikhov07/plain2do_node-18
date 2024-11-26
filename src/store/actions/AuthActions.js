@@ -21,7 +21,7 @@ export function signupAction(username, password, navigate) {
         saveTokenInLocalStorage(response.data);
         runLogoutTimer(dispatch, response.data.expiresIn * 1000, navigate);
         dispatch(confirmedSignupAction(response.data));
-        navigate("/dashboard"); // Replaces history.push
+        navigate("/dashboard");
       })
       .catch((error) => {
         const errorMessage = formatError(error.response.data);
@@ -32,7 +32,7 @@ export function signupAction(username, password, navigate) {
 
 export function logout(navigate) {
   localStorage.removeItem("userDetails");
-  window.location = ("/login"); // Replaces history.push
+  window.location = ("/login");
   return {
     type: LOGOUT_ACTION,
   };

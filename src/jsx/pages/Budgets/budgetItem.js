@@ -186,7 +186,7 @@ const BudgetItem = () => {
   }
 
   const handleBackClick = () => {
-    history.goBack();
+    history(-1);
   };
 
   const handleAddClick = () => {

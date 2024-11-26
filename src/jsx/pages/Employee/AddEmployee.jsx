@@ -38,7 +38,7 @@ const AddEmployee = () => {
   const [cyrillicText, setCyrillicText] = useState("");
 
   const handleBack = () => {
-    history.goBack();
+    history(-1);
   };
 
   const handleLatinChange = (e) => {
