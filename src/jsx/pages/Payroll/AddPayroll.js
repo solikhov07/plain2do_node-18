@@ -184,6 +184,10 @@ const AddPayroll = () => {
   };
 
   const handleAddPayroll = async () => {
+    if(selectedRows.length == 0){
+      swal(t.error.charAt(0).toUpperCase() + t.error.slice(1), t.pleasechooseatleastoneoption, "error")
+      return ;
+    }
     const today = new Date();
     const formattedDate = `${today.getDate().toString().padStart(2, "0")}.${(
       today.getMonth() + 1

@@ -255,6 +255,7 @@ const translations = {
   },
   payroll: {
     en: {
+      pleasechooseatleastoneoption: "Please choose at least one option",  
       error: "Error",
       failedtofetchpayrolldata: "Failed to fetch payroll data",
       failedtoaddpayroll: "Failed to add payroll",
@@ -329,6 +330,7 @@ const translations = {
       enterjobtitle: "Enter job title",
     },
     uz: {
+      pleasechooseatleastoneoption: "Iltimos, kamida bitta variantni tanlang",
       error: "Xato",
       failedtofetchpayrolldata: "Bordro ma'lumotlarini olib bo'lmadi",
       failedtoaddpayroll: "Bordro qo'shib bo'lmadi",
@@ -403,6 +405,7 @@ const translations = {
       enterjobtitle: "Ish nomini kiriting",
     },
     tr: {
+      pleasechooseatleastoneoption: "Lütfen en az bir seçenek belirleyin",
       error: "Hata",
       failedtofetchpayrolldata: "Bordro verileri alınamadı",
       failedtoaddpayroll: "Bordro eklenemedi",
@@ -477,6 +480,7 @@ const translations = {
       enterjobtitle: "İş unvanını girin",
     },
     ru: {
+      pleasechooseatleastoneoption: "Пожалуйста, выберите хотя бы один вариант",
       error: "Ошибка",
       failedtofetchpayrolldata: "Не удалось получить данные о заработной плате",
       failedtoaddpayroll: "Не удалось добавить платежную ведомость",
@@ -1427,7 +1431,7 @@ const translations = {
     issuedate: "Issue Date",
     validitydate: "Validity Date",
     personalidentificationnumber: "Personal Identification number",
-    enterpersonalidentificationnumber: "Enter Personal Identification number"
+    enterpersonalidentificationnumber: "Enter Personal Identification number",
   },
   tr: {
     subsPlan: "Abonelik Planı",
@@ -1745,7 +1749,7 @@ const translations = {
     issuedate: "Yayınlanma Tarihi",
     validitydate: "Geçerlilik Tarihi",
     personalidentificationnumber: "Kişisel Kimlik numarası",
-    enterpersonalidentificationnumber: "Kişisel Kimlik numaranızı girin"
+    enterpersonalidentificationnumber: "Kişisel Kimlik numaranızı girin",
   },
   ru: {
     subsPlan: "План подписки",
@@ -2062,7 +2066,7 @@ const translations = {
     issuedate: "Дата выпуска",
     validitydate: "Срок действия",
     personalidentificationnumber: "Личный идентификационный номер",
-    enterpersonalidentificationnumber: "Введите личный идентификационный номер"
+    enterpersonalidentificationnumber: "Введите личный идентификационный номер",
   },
 };
 
