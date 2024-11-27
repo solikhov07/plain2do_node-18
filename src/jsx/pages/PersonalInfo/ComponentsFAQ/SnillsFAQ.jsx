@@ -224,11 +224,11 @@ const SnillsFAQ = ({
   return (
     <div className="faq-container3">
       <div onClick={() => handleToggle("snils")} className="faq__t-wrapper">
-        <h5 className="toggle-title">SNILS Information</h5>
+        <h5 className="toggle-title">{t.snils}</h5>
         <p className="faq__header-seria">
           {data.Snils && data.Snils.length > 0
             ? data.Snils[0].DocumentNo
-            : "No SNILS information"}
+            : t.noSnils}
         </p>
       </div>
       <div

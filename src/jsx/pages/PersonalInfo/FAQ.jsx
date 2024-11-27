@@ -310,7 +310,7 @@ const FAQ = () => {
       />
 
       <button className="btn btn-secondary " onClick={handleBack}>
-        Back
+        {t.back}
       </button>
     </div>
   );

@@ -577,7 +577,7 @@ const Treasury = () => {
 
                 <div className="d-flex ">
                   <Button className="btn btn-info ms-1">
-                    <i className="flaticon-002-arrow-down me-1"></i>{" "}
+                  <i className="flaticon-004-arrow-up me-1"></i>{" "}
                     {t.importtreasury}
                   </Button>
 
@@ -585,7 +585,7 @@ const Treasury = () => {
                     className="btn btn-info ms-1"
                     onClick={downloadProjects}
                   >
-                    <i className="flaticon-004-arrow-up me-1"></i>{" "}
+                    <i className="flaticon-002-arrow-down me-1"></i>{" "}
                     {t.exporttreasury}
                   </Button>
                 </div>
@@ -598,14 +598,14 @@ const Treasury = () => {
                       <tr>
                         <th>{t.select}</th>
                         <th>ID</th>
-                        <th>Date</th>
+                        <th>{t.date}</th>
                         <th>{t.amount}</th>
                         <th>{t.documentNumber}</th>
                         <th>{t.expensetype}</th>
                         <th>{t.operationtype}</th>
                         <th>{t.our_company}</th>
                         <th>{t.counter_party}</th>
-                        <th>VAT</th>
+                        <th>{t.vat}</th>
                         <th>CR</th>
                         <th>{t.currency}</th>
                         <th>{t.action}</th>
@@ -723,14 +723,14 @@ const Treasury = () => {
                       <tr>
                         <th>{t.select}</th>
                         <th>ID</th>
-                        <th>Date</th>
+                        <th>{t.date}</th>
                         <th>{t.amount}</th>
                         <th>{t.documentNumber}</th>
                         <th>{t.expensetype}</th>
                         <th>{t.operationtype}</th>
                         <th>{t.our_company}</th>
                         <th>{t.counter_party}</th>
-                        <th>VAT</th>
+                        <th>{t.vat}</th>
                         <th>CR</th>
                         <th>{t.currency}</th>
                         <th>{t.action}</th>
@@ -992,7 +992,7 @@ const Treasury = () => {
 
             {/* VAT */}
             <Form.Group className="mb-3">
-              <Form.Label>VAT</Form.Label>
+              <Form.Label>{t.vat}</Form.Label>
               <Form.Control
                 type="number"
                 name="vat"

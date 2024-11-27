@@ -8,9 +8,9 @@ export const MenuList = [
         iconStyle: <i className="flaticon-381-layer-1"></i>,
         content: [
             {
-                titleEN: 'List Projects',
-                titleRU: "Список проектов",
-                titleTR: "Proje Listesi",
+                titleEN: 'Projects',
+                titleRU: "Проекты",
+                titleTR: "Projeler",
                 to: 'projects',					
             },
             {
@@ -21,8 +21,8 @@ export const MenuList = [
             },
             {
                 titleEN: 'Gantt Chart',
-                titleRU: "Диаграмма Гантт",
-                titleTR: "Gantt Çizelgesi",
+                titleRU: "Диаграмма Ганта",
+                titleTR: "Gantt Grafiği",
                 to: 'gantt-chart',
             },
             {
@@ -62,14 +62,14 @@ export const MenuList = [
     {
         titleEN: 'Employee',
         titleRU: "Сотрудник",
-        titleTR: "Çalışan",	
+        titleTR: "Personel",	
         classsChange: 'mm-collapse',
         iconStyle: <i className="flaticon-381-user-4"></i>,
         content: [
             {
-                titleEN: 'Employee General List',
-                titleRU: "Общий список сотрудников",
-                titleTR: "Çalışan Listesi",
+                titleEN: 'Employee List',
+                titleRU: "Список сотрудников",
+                titleTR: "Personel Listesi",
                 to: 'employee-list'
             },
             // {
@@ -78,7 +78,7 @@ export const MenuList = [
             // },
             {
                 titleEN: 'Timesheet',
-                titleRU: "Табель учета рабочего времени",
+                titleRU: "Табель",
                 titleTR: "Puantaj",
                 to: 'timesheet'
             },

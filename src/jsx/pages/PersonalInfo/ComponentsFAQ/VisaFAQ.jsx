@@ -40,7 +40,7 @@ const VisaFAQ = ({
             <Form.Control
               type="date"
               name="IssueDate"
-              defaultValue={formatDateToShow(data.Visa[0]?.IssueDate) || ""}
+              defaultValue={formatDateToShow(data?.Visa[0]?.IssueDate) || ""}
               className="edit__input"
             />
           </Form.Group>
@@ -50,7 +50,7 @@ const VisaFAQ = ({
             <Form.Control
               type="date"
               name="FromDate"
-              defaultValue={formatDateToShow(data.Visa[0]?.FromDate) || ""}
+              defaultValue={formatDateToShow(data?.Visa[0]?.FromDate) || ""}
               className="edit__input"
             />
           </Form.Group>
@@ -60,7 +60,7 @@ const VisaFAQ = ({
             <Form.Control
               type="date"
               name="ValidityDate"
-              defaultValue={formatDateToShow(data.Visa[0]?.ValidityDate) || ""}
+              defaultValue={formatDateToShow(data?.Visa[0]?.ValidityDate) || ""}
               className="edit__input"
             />
           </Form.Group>
@@ -70,7 +70,7 @@ const VisaFAQ = ({
             <Form.Control
               type="text"
               name="Visa_Serie"
-              defaultValue={data.Visa[0]?.Visa_Serie || ""}
+              defaultValue={data?.Visa[0]?.Visa_Serie || ""}
               className="edit__input"
             />
           </Form.Group>
@@ -80,7 +80,7 @@ const VisaFAQ = ({
             <Form.Control
               type="text"
               name="VisaNo"
-              defaultValue={data.Visa[0]?.VisaNo || ""}
+              defaultValue={data?.Visa[0]?.VisaNo || ""}
               className="edit__input"
             />
           </Form.Group>
@@ -90,7 +90,7 @@ const VisaFAQ = ({
             <Form.Control
               type="number"
               name="DurationOfStay"
-              defaultValue={data.Visa[0]?.DurationOfStay || ""}
+              defaultValue={data?.Visa[0]?.DurationOfStay || ""}
               className="edit__input"
             />
           </Form.Group>
@@ -100,7 +100,7 @@ const VisaFAQ = ({
             <Form.Control
               type="text"
               name="IssueBy"
-              defaultValue={data.Visa[0]?.IssueBy || ""}
+              defaultValue={data?.Visa[0]?.IssueBy || ""}
               className="edit__input"
             />
           </Form.Group>
@@ -139,7 +139,7 @@ const VisaFAQ = ({
 
     try {
       const response = await fetch(
-        `${urlLink}/employee/visa/${data.Visa[0].id}/`,
+        `${urlLink}/employee/visa/${data?.Visa[0].id}/`,
         {
           method: "PUT",
           headers: {
@@ -289,8 +289,8 @@ const VisaFAQ = ({
       <div onClick={() => handleToggle("visa")} className="faq__t-wrapper">
         <h5 className="toggle-title">{t.visaInformation}</h5>
         <p className="faq__header-seria">
-          {data.Visa && data.Visa.length > 0
-            ? `${data.Visa[0].Visa_Serie}${data.Visa[0].VisaNo}`
+          {data?.Visa && data?.Visa.length > 0
+            ? `${data?.Visa[0].Visa_Serie}${data?.Visa[0].VisaNo}`
             : t.noVisaInformation}
         </p>
       </div>
@@ -299,14 +299,14 @@ const VisaFAQ = ({
           openSection === "visa" ? "open" : ""
         }`}
       >
-        {data.Visa && data.Visa.length > 0 ? (
+        {data?.Visa && data?.Visa.length > 0 ? (
           <div className="faq-details">
             <div className="faq__top-wrapper">
               <p className="faq__section-title">{t.visa}</p>
               <span className="faq__line"></span>
               <div className="faq__wrapper">
                 <p className="faq__topsubheader">{t.visaNumber}</p>
-                <p className="faq__country-code">{data.Visa[0].VisaNo}</p>
+                <p className="faq__country-code">{data?.Visa[0].VisaNo}</p>
               </div>
             </div>
             <div className="faq__main-wrapper">
@@ -335,26 +335,26 @@ const VisaFAQ = ({
                 <div className="faq__birthwrapper">
                   <div className="faq-field">
                     <span className="field-label">{t.issueDate}:</span>{" "}
-                    <p className="field__data">{data.Visa[0].IssueDate}</p>
+                    <p className="field__data">{data?.Visa[0].IssueDate}</p>
                   </div>
                   <div className="faq-field">
                     <span className="field-label">{t.fromDate}:</span>{" "}
-                    <p className="field__data">{data.Visa[0].FromDate}</p>
+                    <p className="field__data">{data?.Visa[0].FromDate}</p>
                   </div>
                 </div>
                 <div className="faq-field">
                   <span className="field-label">{t.validityDate}:</span>{" "}
-                  <p className="field__data">{data.Visa[0].ValidityDate}</p>
+                  <p className="field__data">{data?.Visa[0].ValidityDate}</p>
                 </div>
 
                 <div className="faq-field">
                   <span className="field-label">{t.issuedBy}:</span>{" "}
-                  <p className="field__data">{data.Visa[0].IssueBy}</p>
+                  <p className="field__data">{data?.Visa[0].IssueBy}</p>
                 </div>
                 <div className="faq-field">
                   <span className="field-label">{t.durationOfStay}:</span>{" "}
                   <p className="field__data">
-                    {data.Visa[0].DurationOfStay} {t.days}
+                    {data?.Visa[0].DurationOfStay} {t.days}
                   </p>
                 </div>
               </div>
