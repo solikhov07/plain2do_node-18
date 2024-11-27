@@ -69,7 +69,7 @@ export const MenuList = [
             {
                 titleEN: 'Employee General List',
                 titleRU: "Общий список сотрудников",
-                titleTR: "Genel Çalışan Listesi",
+                titleTR: "Çalışan Listesi",
                 to: 'employee-list'
             },
             // {
@@ -79,7 +79,7 @@ export const MenuList = [
             {
                 titleEN: 'Timesheet',
                 titleRU: "Табель учета рабочего времени",
-                titleTR: "Zaman Çizelgesi",
+                titleTR: "Puantaj",
                 to: 'timesheet'
             },
             {

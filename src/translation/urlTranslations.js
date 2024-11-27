@@ -38,7 +38,7 @@ const translations = {
       employeeList: "Personel Listesi",
       addEmployee: "Personel Ekle",
       employeeInformation: "Çalışan Bilgileri",
-      timesheet: "Zaman Çizelgesi Listesi",
+      timesheet: "Zaman Çizelgesi",
       addTimesheet: "Zaman Çizelgesi Ekle",
       payroll: "Bordro",
       addPayroll: "Bordroyu Ekle",

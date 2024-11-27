@@ -65,7 +65,7 @@ const translations = {
       employeeeid: "Employee eID",
     },
     uz: {
-      timesheet: "Zaman Çizelgesi Listesi",
+      timesheet: "Vaqt Jadvallari Ro'yxati",
       addtimesheet: "Vaqt Jadvalini Qo'shish",
       year: "Yil",
       all: "Hammasi",
@@ -127,7 +127,7 @@ const translations = {
       employeeeid: "Xodim hayit",
     },
     tr: {
-      timesheet: "Vaqt Jadvallari Ro'yxati",
+      timesheet: "Zaman Çizelgesi",
       addtimesheet: "Zaman Çizelgesi Ekle",
       year: "Yıl",
       all: "Tüm",

@@ -98,7 +98,7 @@ const translations = {
         failedtoaddattendancedetails: "Davomat tafsilotlarini qo'shib bo'lmadi"
     },
     tr: {
-        timesheet: "Vaqt Jadvallari Ro'yxati",
+        timesheet: "Zaman Çizelgesi",
         addtimesheet: "Zaman Çizelgesi Ekle",
         year: "Yıl",
         all: "Tüm",
