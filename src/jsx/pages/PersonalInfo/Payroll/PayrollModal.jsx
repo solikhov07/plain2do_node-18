@@ -3,7 +3,8 @@ import { Form, Button } from "react-bootstrap";
 import swal from "sweetalert";
 import { fetchJobs } from "../../../components/apiData/apiEmployee";
 import "../styles.css";
-
+import { useLanguage } from "../../../../context/LanguageContext";
+import translations from "../../../../translation/translation";
 const PayrollModal = ({
   show,
   onClose,
@@ -18,7 +19,8 @@ const PayrollModal = ({
 }) => {
   const [jobtitle, setjobtitle] = useState([]);
   const [disableInputs, setDisableInputs] = useState(false); // State to control disabling inputs
-
+  const { language } = useLanguage()
+  const t = translations[language];
   const [formData, setFormData] = useState({
     Date: "",
     Manager: null,
@@ -126,7 +128,7 @@ const PayrollModal = ({
           &times;
         </span>
         <div className="edit-form">
-          <h3>Add Payroll History</h3>
+          <h3>{t.addpayrollhistory}</h3>
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="disableInputsCheckbox">
               <Form.Check
@@ -138,7 +140,7 @@ const PayrollModal = ({
             </Form.Group>
 
             <Form.Group controlId="formDate">
-              <Form.Label>Date:</Form.Label>
+              <Form.Label>{t.date}:</Form.Label>
               <Form.Control
                 type="date"
                 name="Date"
@@ -148,7 +150,7 @@ const PayrollModal = ({
               />
             </Form.Group>
             <Form.Group controlId="formManager">
-              <Form.Label>Manager:</Form.Label>
+              <Form.Label>{t.manager}:</Form.Label>
               <Form.Control
                 as="select"
                 name="Manager"
@@ -156,7 +158,7 @@ const PayrollModal = ({
                 onChange={handleChange}
                 disabled={disableInputs}
               >
-                <option value="">Select Manager</option>
+                <option value="">{t.selectmanager}</option>
                 {manager.map((employee) => (
                   <option key={employee.id} value={employee.id}>
                     {employee.firstname} {employee.surname}

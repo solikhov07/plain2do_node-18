@@ -1439,7 +1439,9 @@ const translations = {
     save: "Save",
     employmentdocuments: "Employee Documents",
     salarytransferinfo: "Salary & Transfer Info",
-    vat: "VAT"
+    vat: "VAT",
+    selectmanager: "Select Manager",
+    addpayrollhistory:"Add Payroll History"
   },
   tr: {
     date: "Tarih",
@@ -1766,7 +1768,9 @@ const translations = {
     therewasanissueupdatingtheinformation: "Bilgileri güncellerken bir sorun oluştu: ",
     save: "Kaydet",
     employmentdocuments: "İstihdam Belgeleri",
-    salarytransferinfo: "Maaş ve Transfer Bilgileri"
+    salarytransferinfo: "Maaş ve Transfer Bilgileri",
+    selectmanager: "Yöneticiyi Seçin",
+    addpayrollhistory: "Bordro Geçmişi Ekle"
   },
   ru: {
     date: "Дата",
@@ -2092,7 +2096,9 @@ const translations = {
     therewasanissueupdatingtheinformation: "Возникла проблема с обновлением информации: ",
     save: "Сохранить",
     employmentdocuments: "Трудовые документы",
-    salarytransferinfo: "Зарплаты и трансферы"
+    salarytransferinfo: "Зарплаты и трансферы",
+    selectmanager: "Выберите менеджера",
+    addpayrollhistory: "Добавить заработную платы"
   },
 };
 

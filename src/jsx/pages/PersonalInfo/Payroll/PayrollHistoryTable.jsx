@@ -250,14 +250,14 @@ const PayrollHistoryTable = () => {
             />
           </Form.Group>
           <Form.Group controlId="formManager">
-            <Form.Label>Manager:</Form.Label>
+            <Form.Label>{t.manager}:</Form.Label>
             <Form.Control
               as="select"
               defaultValue={content?.Manager_data?.id || ""}
               name="Manager"
               required
             >
-              <option value="">Select Manager</option>
+              <option value="">{t.selectmanager}</option>
               {employee.map((employee) => (
                 <option key={employee.id} value={employee.id}>
                   {employee.firstname} {employee.surname}

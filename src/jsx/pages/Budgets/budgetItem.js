@@ -5,7 +5,7 @@ import PageTitle from "../../layouts/PageTitle";
 import { useLanguage } from "../../../context/LanguageContext";
 import translations from "../../../translation/translation";
 import { useNavigate } from "react-router-dom";
-import "./BudgetItem.css"; // Import the CSS file
+import "./BudgetItem.css";
 import { getUserPermissions } from "../../components/Permissions/getUserPermissions";
 import { Button, Form } from "react-bootstrap";
 
@@ -399,20 +399,25 @@ const BudgetItem = () => {
       }
     });
   };
+
   const formatDateToShow = (dateString) => {
     if (!dateString) return "";
     const [day, month, year] = dateString.split(".");
     return `${year}-${month}-${day}`;
   };
+
   const handleEditSubmit = async (e, itemId) => {
     e.preventDefault();
+
     const formElements = e.target.elements;
+
     const formattedStartOfWorkDate = formatDateToDDMMYYYY(
       formElements.StartDate.value
     );
     const formattedEndOfWorkDate = formatDateToDDMMYYYY(
       formElements.EndDate.value
     );
+
     const payload = {
       Discipline: parseInt(formElements.Discipline.value, 10),
       Currency: parseInt(formElements.currency.value, 10),
@@ -427,7 +432,9 @@ const BudgetItem = () => {
       EmpNetSalary: parseFloat(formElements.EmpNetSalary.value),
       Budget_ID: parseInt(id, 10),
     };
+
     const apiUrl = `${urlLink}/gendt/budget-details/${itemId}/`;
+
     try {
       const response = await fetch(apiUrl, {
         method: "PUT",
@@ -437,6 +444,7 @@ const BudgetItem = () => {
         },
         body: JSON.stringify(payload),
       });
+
       if (!response.ok) {
         const errorData = await response.json();
         swal("error", "Error occured", "error");
@@ -488,8 +496,8 @@ const BudgetItem = () => {
             <Form.Control
               type="text"
               name="PrimaveraCode"
-              defaultValue={item?.PrimaveraCode}
               className="edit__input"
+              defaultValue={item?.PrimaveraCode}
             />
           </Form.Group>
 
@@ -510,70 +518,75 @@ const BudgetItem = () => {
           </Form.Group>
 
           <Form.Group controlId="formLegDocumentType">
-          <Form.Label>{t.documentType}</Form.Label>
+            <Form.Label>{t.documentType}</Form.Label>
             <Form.Control
-                 as="select"
-                 name="LegDocumentType"
-                 defaultValue={item?.LegDocumentType_data?.id}
-               >
-                 <option value="">Select Document type</option>
-                 {documentTypeOptions.map((jobTitle) => (
-                   <option key={jobTitle.value} value={jobTitle.value}>
-                     {jobTitle.label}
-                   </option>
-                 ))}
-               </Form.Control>
-             </Form.Group>
-             <Form.Group controlId="formCurrency">
-               <Form.Label>{t.currency}</Form.Label>
-               <Form.Control
-                 as="select"
-                 name="currency"
-                 defaultValue={item?.Currency_data?.id}
-               >
-                 <option value="">Select Currency</option>
-                 {currencyOptions.map((jobTitle) => (
-                   <option key={jobTitle.value} value={jobTitle.value}>
-                     {jobTitle.label}
-                   </option>
-                 ))}
-               </Form.Control>
-             </Form.Group>
-             <Form.Group controlId="formUoM">
-               <Form.Label>Unit of Measure</Form.Label>
-               <Form.Control
-                 as="select"
-                 name="UoM"
-                 defaultValue={item?.UoM_data?.id}
-               >
-                 <option value="">Select Unit of measure</option>
-                 {unitOfMeasureOptions.map((uom) => (
-                   <option key={uom.value} value={uom.value}>
-                     {uom.label}
-                   </option>
-                 ))}
-               </Form.Control>
-             </Form.Group>
-             <Form.Group controlId="formStartDate">
-               <Form.Label>Start of Work date</Form.Label>
-               <Form.Control
-                 type="date"
-                 name="StartDate"
-                 defaultValue={formatDateToShow(item?.StartOfWorkDate)}
-                 max={formatDateToShow(item?.EndOfWorkDate)}
-                 className="edit__input"
-               />
-             </Form.Group>
-             <Form.Group controlId="formEndDate">
-               <Form.Label>End of Work date</Form.Label>
-               <Form.Control
-                 type="date"
-                 name="EndDate"
-                 min={formatDateToShow(item?.StartOfWorkDate)}
-                 defaultValue={formatDateToShow(item?.EndOfWorkDate)}
-                 className="edit__input"
-                 />
-                 </Form.Group>
+              as="select"
+              name="LegDocumentType"
+              defaultValue={item?.LegDocumentType_data?.id}
+            >
+              <option value="">Select Document type</option>
+              {documentTypeOptions.map((jobTitle) => (
+                <option key={jobTitle.value} value={jobTitle.value}>
+                  {jobTitle.label}
+                </option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+
+          <Form.Group controlId="formCurrency">
+            <Form.Label>{t.currency}</Form.Label>
+            <Form.Control
+              as="select"
+              name="currency"
+              defaultValue={item?.Currency_data?.id}
+            >
+              <option value="">Select Currency</option>
+              {currencyOptions.map((jobTitle) => (
+                <option key={jobTitle.value} value={jobTitle.value}>
+                  {jobTitle.label}
+                </option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+
+          <Form.Group controlId="formUoM">
+            <Form.Label>Unit of Measure</Form.Label>
+            <Form.Control
+              as="select"
+              name="UoM"
+              defaultValue={item?.UoM_data?.id}
+            >
+              <option value="">Select Unit of measure</option>
+              {unitOfMeasureOptions.map((uom) => (
+                <option key={uom.value} value={uom.value}>
+                  {uom.label}
+                </option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+
+          <Form.Group controlId="formStartDate">
+            <Form.Label>Start of Work date</Form.Label>
+            <Form.Control
+              type="date"
+              name="StartDate"
+              defaultValue={formatDateToShow(item?.StartOfWorkDate)}
+              max={formatDateToShow(item?.EndOfWorkDate)}
+              className="edit__input"
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formEndDate">
+            <Form.Label>End of Work date</Form.Label>
+            <Form.Control
+              type="date"
+              name="EndDate"
+              min={formatDateToShow(item?.StartOfWorkDate)}
+              defaultValue={formatDateToShow(item?.EndOfWorkDate)}
+              className="edit__input"
+            />
+          </Form.Group>
+
           <Form.Group controlId="formEmpQty">
             <Form.Label>Employee Quantity:</Form.Label>
             <Form.Control
@@ -583,6 +596,7 @@ const BudgetItem = () => {
               className="edit__input"
             />
           </Form.Group>
+
           <Form.Group controlId="formEmpNetSalary">
             <Form.Label>Employee Salary:</Form.Label>
             <Form.Control
@@ -592,6 +606,7 @@ const BudgetItem = () => {
               className="edit__input"
             />
           </Form.Group>
+
           <div className="edit__btn-wrapper">
             <Button className="edit__btn" type="submit">
               {t.savechanges}
