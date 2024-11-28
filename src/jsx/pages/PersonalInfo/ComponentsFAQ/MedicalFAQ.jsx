@@ -138,7 +138,7 @@ const MedicalFAQ = ({
               type="date"
               name="IssueDate"
               className="edit__input"
-              defaultValue={formatDateToShow(data.Med[0]?.IssueDate)}
+              defaultValue={formatDateToShow(data?.Med[0]?.IssueDate)}
             />
           </Form.Group>
 
@@ -148,7 +148,7 @@ const MedicalFAQ = ({
               type="date"
               name="FromDate"
               className="edit__input"
-              defaultValue={formatDateToShow(data.Med[0]?.FromDate)}
+              defaultValue={formatDateToShow(data?.Med[0]?.FromDate)}
             />
           </Form.Group>
 
@@ -158,7 +158,7 @@ const MedicalFAQ = ({
               type="date"
               name="ValidityDate"
               className="edit__input"
-              defaultValue={formatDateToShow(data.Med[0]?.ValidityDate)}
+              defaultValue={formatDateToShow(data?.Med[0]?.ValidityDate)}
             />
           </Form.Group>
 
@@ -168,7 +168,7 @@ const MedicalFAQ = ({
               type="text"
               name="DocumentSerie"
               className="edit__input"
-              defaultValue={data.Med[0]?.DocumentSerie}
+              defaultValue={data?.Med[0]?.DocumentSerie}
             />
           </Form.Group>
 
@@ -178,7 +178,7 @@ const MedicalFAQ = ({
               type="text"
               name="DocumentNo"
               className="edit__input"
-              defaultValue={data.Med[0]?.DocumentNo}
+              defaultValue={data?.Med[0]?.DocumentNo}
             />
           </Form.Group>
 
@@ -188,7 +188,7 @@ const MedicalFAQ = ({
               type="text"
               name="IssuedBy"
               className="edit__input"
-              defaultValue={data.Med[0]?.IssuedBy}
+              defaultValue={data?.Med[0]?.IssuedBy}
             />
           </Form.Group>
 
@@ -222,7 +222,7 @@ const MedicalFAQ = ({
 
     try {
       const response = await fetch(
-        `${urlLink}/employee/med/${data.Med[0].id}/`,
+        `${urlLink}/employee/med/${data?.Med[0].id}/`,
         {
           method: "PUT",
           headers: {
@@ -274,8 +274,8 @@ const MedicalFAQ = ({
       <div onClick={() => handleToggle("medInfo")} className="faq__t-wrapper">
         <h5 className="toggle-title">{t.medicalInformation}</h5>
         <p className="faq__header-seria">
-          {data.Med && data.Med.length > 0
-            ? data.Med[0].IssueDate
+          {data?.Med && data?.Med.length > 0
+            ? data?.Med[0].IssueDate
             : t.noMedicalInformation}
         </p>
       </div>
@@ -284,7 +284,7 @@ const MedicalFAQ = ({
           openSection === "medInfo" ? "open" : ""
         }`}
       >
-        {data.Med && data.Med.length > 0 ? (
+        {data?.Med && data?.Med.length > 0 ? (
           <div className="faq-details">
             <div className="faq__top-wrapper">
               <p className="faq__section-title">{t.medicalCheckup}</p>
@@ -292,8 +292,8 @@ const MedicalFAQ = ({
               <div className="faq__wrapper">
                 <p className="faq__topsubheader">Document seria</p>
                 <p className="faq__country-code">
-                  {data.Med[0].DocumentSerie}
-                  {data.Med[0].DocumentNo}
+                  {data?.Med[0].DocumentSerie}
+                  {data?.Med[0].DocumentNo}
                 </p>
               </div>
             </div>
@@ -307,16 +307,16 @@ const MedicalFAQ = ({
                 </div>
                 <div className="faq-field">
                   <span className="field-label">{t.issuedBy}:</span>
-                  <p className="field__data">{data.Med[0].IssuedBy}</p>
+                  <p className="field__data">{data?.Med[0].IssuedBy}</p>
                 </div>
                 <div className="faq__birthwrapper">
                   <div className="faq-field">
                     <span className="field-label">Issue Date:</span>
-                    <p className="field__data">{data.Med[0].IssueDate}</p>
+                    <p className="field__data">{data?.Med[0].IssueDate}</p>
                   </div>
                   <div className="faq-field">
                     <span className="field-label">Validity Date:</span>
-                    <p className="field__data">{data.Med[0].ValidityDate}</p>
+                    <p className="field__data">{data?.Med[0].ValidityDate}</p>
                   </div>
                 </div>
 

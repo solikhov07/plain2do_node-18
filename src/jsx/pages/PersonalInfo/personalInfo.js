@@ -252,7 +252,7 @@ const UserInfo = ({
                   <h5>{t.position}</h5>
                 </th>
                 <td classname="p-0">
-                  <h5>{userData.position_data["JobTitle"+language.toUpperCase()] ? userData.position_data["JobTitle"+language.toUpperCase()] : "N/A"}</h5>
+                  <h5>{userData.position_data?.["JobTitle"+language.toUpperCase()] ? userData.position_data["JobTitle"+language.toUpperCase()] : "N/A"}</h5>
                 </td>
               </tr>
 

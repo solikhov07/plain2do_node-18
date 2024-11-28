@@ -31,7 +31,7 @@ const InnFAQ = ({
               className="edit__input"
               min="100000000000"
               step="1"
-              defaultValue={data.Inn[0]?.DocumentNo || ""}
+              defaultValue={data?.Inn[0]?.DocumentNo || ""}
               required
               onInput={(e) => {
                 if (e.target.value.length > 12) {
@@ -66,7 +66,7 @@ const InnFAQ = ({
 
     try {
       const response = await fetch(
-        `${urlLink}/employee/inn/${data.Inn[0]?.id}/`,
+        `${urlLink}/employee/inn/${data?.Inn[0]?.id}/`,
         {
           method: "PUT",
           headers: {
@@ -188,28 +188,28 @@ const InnFAQ = ({
       <div onClick={() => handleToggle("inn")} className="faq__t-wrapper">
         <h5 className="toggle-title">{t.innInformation}</h5>
         <p className="faq__header-seria">
-          {data.Inn && data.Inn.length > 0
-            ? data.Inn[0].DocumentNo
+          {data?.Inn && data?.Inn.length > 0
+            ? data?.Inn[0].DocumentNo
             : t.noInnInformation}
         </p>
       </div>
       <div
         className={`collapsible-content ${openSection === "inn" ? "open" : ""}`}
       >
-        {data.Inn && data.Inn.length > 0 ? (
+        {data?.Inn && data?.Inn.length > 0 ? (
           <div className="faq-details">
             <div className="faq__top-wrapper">
               <p className="faq__section-title">{t.inn}</p>
               <span className="faq__line"></span>
               <div className="faq__wrapper">
                 <p className="faq__topsubheader">{t.documentNumber}</p>
-                <p className="faq__country-code">{data.Inn[0].DocumentNo}</p>
+                <p className="faq__country-code">{data?.Inn[0].DocumentNo}</p>
               </div>
               <span className="faq__line"></span>
               <div className="faq__wrapper">
                 <p className="faq__topsubheader">{t.documentType}</p>
                 <p className="faq__country-code">
-                  {data.Inn[0].Doc_Type_En_data.Doc_Type_En}
+                  {data?.Inn[0].Doc_Type_En_data.Doc_Type_En}
                 </p>
               </div>
             </div>
@@ -224,7 +224,7 @@ const InnFAQ = ({
                 <div className="faq-field">
                   <span className="field-label">{t.employeeNumber}:</span>
                   <p className="field__data">
-                    {data.Inn[0].Employee_data.personnel_number}
+                    {data?.Inn[0].Employee_data.personnel_number}
                   </p>
                 </div>
                 <div className="faq-field">

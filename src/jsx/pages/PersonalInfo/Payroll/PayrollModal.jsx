@@ -34,6 +34,25 @@ const PayrollModal = ({
   });
 
   useEffect(() => {
+    if (show) {
+      setFormData({
+        Date: "",
+        Manager: null,
+        Employee: parseInt(id, 10),
+        CostCentre: null,
+        JobTitle: null,
+        WorkSchedule: null,
+        PaymentType: null,
+        Currency: null,
+        Salary: 0,
+        Comment: null,
+        Basis: null,
+      });
+      setDisableInputs(false);
+    }
+  }, [show, id]);
+
+  useEffect(() => {
     const getJobs = async () => {
       const data = await fetchJobs(token);
       setjobtitle(data);
@@ -45,7 +64,6 @@ const PayrollModal = ({
   const handleCheckboxChange = () => {
     setDisableInputs((prevState) => !prevState);
     if (!disableInputs) {
-      // Set all other fields except Date to null when disabling inputs
       setFormData((prevData) => ({
         ...prevData,
         Manager: null,

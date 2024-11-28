@@ -177,7 +177,7 @@ const RegistrationFAQ = ({
               type="date"
               name="IssueDate"
               className="edit__input"
-              defaultValue={formatDateToShow(data.Registration[0]?.IssueDate)}
+              defaultValue={formatDateToShow(data?.Registration[0]?.IssueDate)}
             />
           </Form.Group>
 
@@ -188,7 +188,7 @@ const RegistrationFAQ = ({
               name="ValidityDate"
               className="edit__input"
               defaultValue={formatDateToShow(
-                data.Registration[0]?.ValidityDate
+                data?.Registration[0]?.ValidityDate
               )}
             />
           </Form.Group>
@@ -199,7 +199,7 @@ const RegistrationFAQ = ({
               type="text"
               name="DocumentNo"
               className="edit__input"
-              defaultValue={data.Registration[0]?.DocumentNo}
+              defaultValue={data?.Registration[0]?.DocumentNo}
             />
           </Form.Group>
 
@@ -209,7 +209,7 @@ const RegistrationFAQ = ({
               type="text"
               name="Registration_Address"
               className="edit__input"
-              defaultValue={data.Registration[0]?.Registration_Address}
+              defaultValue={data?.Registration[0]?.Registration_Address}
             />
           </Form.Group>
 
@@ -219,7 +219,7 @@ const RegistrationFAQ = ({
               type="text"
               name="Issued_by"
               className="edit__input"
-              defaultValue={data.Registration[0]?.Issued_by}
+              defaultValue={data?.Registration[0]?.Issued_by}
             />
           </Form.Group>
 
@@ -229,7 +229,7 @@ const RegistrationFAQ = ({
               as="select"
               name="Dormitory"
               className="edit__input"
-              defaultValue={data.Registration[0]?.Dormitory}
+              defaultValue={data?.Registration[0]?.Dormitory}
             >
               {dormitory.map((dorm) => (
                 <option key={dorm.id} value={dorm.id}>
@@ -278,7 +278,7 @@ const RegistrationFAQ = ({
 
     try {
       const response = await fetch(
-        `${urlLink}/employee/registration/${data.Registration[0].id}/`,
+        `${urlLink}/employee/registration/${data?.Registration[0].id}/`,
         {
           method: "PUT",
           headers: {
@@ -332,8 +332,8 @@ const RegistrationFAQ = ({
       >
         <h5 className="toggle-title">{t.registrationInformation}</h5>
         <p className="faq__header-seria">
-          {data.Registration && data.Registration.length > 0
-            ? data.Registration[0].IssueDate
+          {data?.Registration && data?.Registration.length > 0
+            ? data?.Registration[0].IssueDate
             : t.noRegistrationInformation}
         </p>
       </div>
@@ -342,7 +342,7 @@ const RegistrationFAQ = ({
           openSection === "registration" ? "open" : ""
         }`}
       >
-        {data.Registration && data.Registration.length > 0 ? (
+        {data?.Registration && data?.Registration.length > 0 ? (
           <div className="faq-details">
             <div className="faq__top-wrapper">
               <p className="faq__section-title">{t.registration}</p>
@@ -350,7 +350,7 @@ const RegistrationFAQ = ({
               <div className="faq__wrapper">
                 <p className="faq__topsubheader">Document No</p>
                 <p className="faq__country-code">
-                  {data.Registration[0].DocumentNo}
+                  {data?.Registration[0].DocumentNo}
                 </p>
               </div>
             </div>
@@ -368,20 +368,20 @@ const RegistrationFAQ = ({
                       {t.registrationAddress}:
                     </span>
                     <p className="field__data">
-                      {data.Registration[0].Registration_Address}
+                      {data?.Registration[0].Registration_Address}
                     </p>
                   </div>
                   <div className="faq-field">
                     <span className="field-label">{t.issuedBy}:</span>
                     <p className="field__data">
-                      {data.Registration[0].Issued_by}
+                      {data?.Registration[0].Issued_by}
                     </p>
                   </div>
                 </div>
                 <div className="faq-field">
                   <span className="field-label">{t.dormitory}:</span>
                   <p className="field__data">
-                    {data.Registration[0].Dormitory}
+                    {data?.Registration[0].Dormitory}
                   </p>
                 </div>
 

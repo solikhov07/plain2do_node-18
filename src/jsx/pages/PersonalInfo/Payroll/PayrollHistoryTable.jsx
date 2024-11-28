@@ -6,13 +6,7 @@ import translations from "../../../../translation/translation";
 import PayrollModal from "./PayrollModal"; // Import the modal
 import "../styles.css";
 import { Button, Form, Spinner } from "react-bootstrap";
-import {
-  fetchCurrency,
-  fetchEmployee,
-  fetchJobs,
-  fetchPaymentType,
-  fetchWorkSchedule,
-} from "../../../components/apiData/apiEmployee";
+import { fetchJobs } from "../../../components/apiData/apiEmployee";
 
 const PayrollHistoryTable = () => {
   const { id } = useParams();
@@ -188,7 +182,7 @@ const PayrollHistoryTable = () => {
     return `${day}.${month}.${year}`;
   };
 
-  const handleEditSubmit = async (e) => {
+  const handleEditSubmit = async (e, contentId) => {
     e.preventDefault();
     setLoading(true);
     const formElements = e.target.elements;
@@ -207,7 +201,7 @@ const PayrollHistoryTable = () => {
     };
 
     try {
-      const response = await fetch(`${urlLink}/payroll-history/${userId}/`, {
+      const response = await fetch(`${urlLink}/payroll-history/${contentId}/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -245,7 +239,7 @@ const PayrollHistoryTable = () => {
     const EditData = (
       <div className="edit-form">
         <h3>Edit Salary & Transfer history</h3>
-        <Form onSubmit={handleEditSubmit}>
+        <Form onSubmit={(e) => handleEditSubmit(e, content.id)}>
           <Form.Group controlId="formDate">
             <Form.Label>Date:</Form.Label>
             <Form.Control
@@ -398,8 +392,6 @@ const PayrollHistoryTable = () => {
 
       return employeeNameMatch && projectNameMatch;
     });
-
-    console.log(filteredContents);
 
     return filteredContents.map((content) => (
       <tr key={content.id}>

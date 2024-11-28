@@ -399,15 +399,71 @@ const BudgetItem = () => {
       }
     });
   };
+  const formatDateToShow = (dateString) => {
+    if (!dateString) return "";
+    const [day, month, year] = dateString.split(".");
+    return `${year}-${month}-${day}`;
+  };
+  const handleEditSubmit = async (e, itemId) => {
+    e.preventDefault();
+    const formElements = e.target.elements;
+    const formattedStartOfWorkDate = formatDateToDDMMYYYY(
+      formElements.StartDate.value
+    );
+    const formattedEndOfWorkDate = formatDateToDDMMYYYY(
+      formElements.EndDate.value
+    );
+    const payload = {
+      Discipline: parseInt(formElements.Discipline.value, 10),
+      Currency: parseInt(formElements.currency.value, 10),
+      UoM: parseInt(formElements.UoM.value, 10),
+      LegDocumentType: parseInt(formElements.LegDocumentType.value, 10),
+      JotTitle: parseInt(formElements.JobTitle.value, 10),
+      BudgetCode: formElements.BudgetCode.value,
+      PrimaveraCode: formElements.PrimaveraCode.value,
+      StartOfWorkDate: formattedStartOfWorkDate || null,
+      EndOfWorkDate: formattedEndOfWorkDate || null,
+      EmpQty: parseInt(formElements.EmpQty.value, 10),
+      EmpNetSalary: parseFloat(formElements.EmpNetSalary.value),
+      Budget_ID: parseInt(id, 10),
+    };
+    const apiUrl = `${urlLink}/gendt/budget-details/${itemId}/`;
+    try {
+      const response = await fetch(apiUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        swal("error", "Error occured", "error");
+      } else {
+        const responseData = await response.json();
+        swal("success", "Update data successfully", "success");
+        fetchBudgetDetails();
+        setIsWindowOpen(false);
+      }
+    } catch (error) {
+      console.error("Error during PUT request:", error);
+      swal("error", "Error occured", "error");
+    }
+  };
 
   const handleEditRow = (item) => {
     const EditContent = (
       <div className="edit-form">
         <h3>{t.editmydata}</h3>
-        <Form>
+        <Form onSubmit={(e) => handleEditSubmit(e, item.id)}>
           <Form.Group controlId="formDiscipline">
             <Form.Label>{t.selectdiscipline}</Form.Label>
-            <Form.Control as="select" name="Discipline">
+            <Form.Control
+              as="select"
+              name="Discipline"
+              defaultValue={item?.Discipline_data?.id}
+            >
               <option value="">{t.selectdiscipline}</option>
               {disciplineOptions.map((discipline) => (
                 <option key={discipline.value} value={discipline.value}>
@@ -422,6 +478,7 @@ const BudgetItem = () => {
             <Form.Control
               type="text"
               name="BudgetCode"
+              defaultValue={item?.BudgetCode}
               className="edit__input"
             />
           </Form.Group>
@@ -431,13 +488,18 @@ const BudgetItem = () => {
             <Form.Control
               type="text"
               name="PrimaveraCode"
+              defaultValue={item?.PrimaveraCode}
               className="edit__input"
             />
           </Form.Group>
 
           <Form.Group controlId="formJobTitle">
             <Form.Label>{t.selectjobtitle}</Form.Label>
-            <Form.Control as="select" name="JobTitle">
+            <Form.Control
+              as="select"
+              name="JobTitle"
+              defaultValue={item?.JotTitle_data?.id}
+            >
               <option value="">{t.selectjobtitle}</option>
               {jobTitleOptions.map((jobTitle) => (
                 <option key={jobTitle.value} value={jobTitle.value}>
@@ -447,15 +509,89 @@ const BudgetItem = () => {
             </Form.Control>
           </Form.Group>
 
-          {/* <Form.Group controlId="formPhoneNumber">
-            <Form.Label>Your phone number:</Form.Label>
+          <Form.Group controlId="formLegDocumentType">
+          <Form.Label>{t.documentType}</Form.Label>
             <Form.Control
-              type="text"
-              name="phone_number"
+                 as="select"
+                 name="LegDocumentType"
+                 defaultValue={item?.LegDocumentType_data?.id}
+               >
+                 <option value="">Select Document type</option>
+                 {documentTypeOptions.map((jobTitle) => (
+                   <option key={jobTitle.value} value={jobTitle.value}>
+                     {jobTitle.label}
+                   </option>
+                 ))}
+               </Form.Control>
+             </Form.Group>
+             <Form.Group controlId="formCurrency">
+               <Form.Label>{t.currency}</Form.Label>
+               <Form.Control
+                 as="select"
+                 name="currency"
+                 defaultValue={item?.Currency_data?.id}
+               >
+                 <option value="">Select Currency</option>
+                 {currencyOptions.map((jobTitle) => (
+                   <option key={jobTitle.value} value={jobTitle.value}>
+                     {jobTitle.label}
+                   </option>
+                 ))}
+               </Form.Control>
+             </Form.Group>
+             <Form.Group controlId="formUoM">
+               <Form.Label>Unit of Measure</Form.Label>
+               <Form.Control
+                 as="select"
+                 name="UoM"
+                 defaultValue={item?.UoM_data?.id}
+               >
+                 <option value="">Select Unit of measure</option>
+                 {unitOfMeasureOptions.map((uom) => (
+                   <option key={uom.value} value={uom.value}>
+                     {uom.label}
+                   </option>
+                 ))}
+               </Form.Control>
+             </Form.Group>
+             <Form.Group controlId="formStartDate">
+               <Form.Label>Start of Work date</Form.Label>
+               <Form.Control
+                 type="date"
+                 name="StartDate"
+                 defaultValue={formatDateToShow(item?.StartOfWorkDate)}
+                 max={formatDateToShow(item?.EndOfWorkDate)}
+                 className="edit__input"
+               />
+             </Form.Group>
+             <Form.Group controlId="formEndDate">
+               <Form.Label>End of Work date</Form.Label>
+               <Form.Control
+                 type="date"
+                 name="EndDate"
+                 min={formatDateToShow(item?.StartOfWorkDate)}
+                 defaultValue={formatDateToShow(item?.EndOfWorkDate)}
+                 className="edit__input"
+                 />
+                 </Form.Group>
+          <Form.Group controlId="formEmpQty">
+            <Form.Label>Employee Quantity:</Form.Label>
+            <Form.Control
+              type="number"
+              name="EmpQty"
+              defaultValue={item?.EmpQty}
               className="edit__input"
             />
-          </Form.Group> */}
-
+          </Form.Group>
+          <Form.Group controlId="formEmpNetSalary">
+            <Form.Label>Employee Salary:</Form.Label>
+            <Form.Control
+              type="number"
+              name="EmpNetSalary"
+              defaultValue={item?.EmpNetSalary}
+              className="edit__input"
+            />
+          </Form.Group>
           <div className="edit__btn-wrapper">
             <Button className="edit__btn" type="submit">
               {t.savechanges}

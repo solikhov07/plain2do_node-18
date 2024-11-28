@@ -38,7 +38,7 @@ const PatentFAQ = ({
             <Form.Control
               type="number"
               name="DocumentSerie"
-              defaultValue={data.Patent[0]?.DocumentSerie || ""}
+              defaultValue={data?.Patent[0]?.DocumentSerie || ""}
               className="edit__input"
               min="10"
               max="99"
@@ -57,7 +57,7 @@ const PatentFAQ = ({
             <Form.Control
               type="number"
               name="DocumentNo"
-              defaultValue={data.Patent[0]?.DocumentNo || ""}
+              defaultValue={data?.Patent[0]?.DocumentNo || ""}
               className="edit__input"
               min="1000000000" // Minimum value greater than 1000000000
               required
@@ -69,7 +69,7 @@ const PatentFAQ = ({
             <Form.Control
               type="date"
               name="IssueDate"
-              defaultValue={formatDateToShow(data.Patent[0]?.IssueDate) || ""}
+              defaultValue={formatDateToShow(data?.Patent[0]?.IssueDate) || ""}
               className="edit__input"
             />
           </Form.Group>
@@ -80,7 +80,7 @@ const PatentFAQ = ({
               type="date"
               name="ValidityDate"
               defaultValue={
-                formatDateToShow(data.Patent[0]?.ValidityDate) || ""
+                formatDateToShow(data?.Patent[0]?.ValidityDate) || ""
               }
               className="edit__input"
             />
@@ -91,7 +91,7 @@ const PatentFAQ = ({
             <Form.Control
               type="text"
               name="Job_Title"
-              defaultValue={data.Patent[0]?.Job_Title || ""}
+              defaultValue={data?.Patent[0]?.Job_Title || ""}
               className="edit__input"
             />
           </Form.Group>
@@ -102,7 +102,7 @@ const PatentFAQ = ({
               as="select"
               name="SpecialMarks"
               className="edit__input"
-              defaultValue={data.Patent[0]?.SpecialMarks || "Работа у ЮЛ/ИП"}
+              defaultValue={data?.Patent[0]?.SpecialMarks || "Работа у ЮЛ/ИП"}
             >
               <option value="ВКС">ВКС</option>
               <option value="Работа у ЮЛ/ИП">Работа у ЮЛ/ИП</option>
@@ -114,7 +114,7 @@ const PatentFAQ = ({
             <Form.Control
               type="text"
               name="ValidTerritories"
-              defaultValue={data.Patent[0]?.ValidTerritories || ""}
+              defaultValue={data?.Patent[0]?.ValidTerritories || ""}
               className="edit__input"
             />
           </Form.Group>
@@ -124,7 +124,7 @@ const PatentFAQ = ({
             <Form.Control
               type="text"
               name="Issued_by"
-              defaultValue={data.Patent[0]?.Issued_by || ""}
+              defaultValue={data?.Patent[0]?.Issued_by || ""}
               className="edit__input"
             />
           </Form.Group>
@@ -134,7 +134,7 @@ const PatentFAQ = ({
             <Form.Control
               type="text"
               name="Register_Serial_number"
-              defaultValue={data.Patent[0]?.Register_Serial_number || ""}
+              defaultValue={data?.Patent[0]?.Register_Serial_number || ""}
               className="edit__input"
             />
           </Form.Group>
@@ -178,7 +178,7 @@ const PatentFAQ = ({
     try {
       // Adjust URL according to the endpoint used for editing patent information
       const response = await fetch(
-        `${urlLink}/employee/patent/${data.Patent[0].id}/`, // Make sure `data.Patent[0].id` reflects the correct ID
+        `${urlLink}/employee/patent/${data?.Patent[0].id}/`, // Make sure `data?.Patent[0].id` reflects the correct ID
         {
           method: "PUT",
           headers: {
@@ -389,8 +389,8 @@ const PatentFAQ = ({
       <div onClick={() => handleToggle("patent")} className="faq__t-wrapper">
         <h5 className="toggle-title">{t.patentInformation}</h5>
         <p className="faq__header-seria">
-          {data.Patent && data.Patent.length > 0
-            ? `${data.Patent[0].Register_Serial_number}`
+          {data?.Patent && data?.Patent.length > 0
+            ? `${data?.Patent[0].Register_Serial_number}`
             : t.noPatentInformation}
         </p>
       </div>
@@ -399,19 +399,19 @@ const PatentFAQ = ({
           openSection === "patent" ? "open" : ""
         }`}
       >
-        {data.Patent && data.Patent.length > 0 ? (
+        {data?.Patent && data?.Patent.length > 0 ? (
           <div className="faq-details">
             <div className="faq__top-wrapper">
               <p className="faq__section-title">{t.patent}</p>
               <span className="faq__line"></span>
               <div className="faq__wrapper">
                 <p className="faq__topsubheader">{t.issuedBy}</p>
-                <p className="faq__country-code">{data.Patent[0].Issued_by}</p>
+                <p className="faq__country-code">{data?.Patent[0].Issued_by}</p>
               </div>
               <span className="faq__line"></span>
               <div className="faq__wrapper">
                 <p className="faq__topsubheader">{t.documentNumber}</p>
-                <p className="faq__country-code">{data.Patent[0].DocumentNo}</p>
+                <p className="faq__country-code">{data?.Patent[0].DocumentNo}</p>
               </div>
             </div>
             <div className=" faq__patent-wrapper">
@@ -419,30 +419,30 @@ const PatentFAQ = ({
                 <div className="faq-field">
                   <span className="field-label">{t.nameSurname}:</span>{" "}
                   <p className="field__data">
-                    {data.Patent[0].Employee_data.firstname}{" "}
-                    {data.Patent[0].Employee_data.surname}
+                    {data?.Patent[0].Employee_data.firstname}{" "}
+                    {data?.Patent[0].Employee_data.surname}
                   </p>
                 </div>
                 <div className="faq__patentWrapper">
                   <div className="faq-field">
                     <span className="field-label">{t.jobTitle}:</span>{" "}
-                    <p className="field__data">{data.Patent[0].Job_Title}</p>
+                    <p className="field__data">{data?.Patent[0].Job_Title}</p>
                   </div>
                   <div className="faq-field">
                     <span className="field-label">Special Marks:</span>{" "}
-                    <p className="field__data">{data.Patent[0].SpecialMarks}</p>
+                    <p className="field__data">{data?.Patent[0].SpecialMarks}</p>
                   </div>
                 </div>
                 <div className="faq-field">
                   <span className="field-label">Valid Territories:</span>{" "}
                   <p className="field__data">
-                    {data.Patent[0].ValidTerritories}
+                    {data?.Patent[0].ValidTerritories}
                   </p>
                 </div>
                 <div className="faq-field">
                   <span className="field-label">{t.registerSerialNumber}:</span>{" "}
                   <p className="field__data">
-                    {data.Patent[0].Register_Serial_number}
+                    {data?.Patent[0].Register_Serial_number}
                   </p>
                 </div>
 

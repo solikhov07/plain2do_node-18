@@ -42,7 +42,7 @@ const Treasury = () => {
   const [loading, setLoading] = useState(true);
   const id = decodedToken.payload.user_id;
   const CompanyId = decodedToken.payload.company_id;
-
+  const [selectedFile, setSelectedFile] = useState(null);
   const initialTreasureState = {
     our_company: 0,
     operation_type: 0,
@@ -64,6 +64,7 @@ const Treasury = () => {
     dr: 0,
     responsible_user: 0,
     cost_center: 0,
+    file: null, // Add this for file upload
   };
   const [newTreasure, setNewTreasure] = useState(initialTreasureState);
 
@@ -172,13 +173,21 @@ const Treasury = () => {
 
   const handleUpdateTreasure = () => {
     const url = `${urlLink}/finance/${selectedTreasure.id}/`;
+    const formData = new FormData();
+    // Append the selected treasure fields to the form data
+    for (const key in selectedTreasure) {
+      formData.append(key, selectedTreasure[key]);
+    }
+    // Append the file if selected
+    if (selectedFile) {
+      formData.append("file", selectedFile);
+    }
     const requestOptions = {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
       },
-      body: JSON.stringify(selectedTreasure),
+      body: formData,
     };
 
     fetch(url, requestOptions)
@@ -283,13 +292,14 @@ const Treasury = () => {
   const handleAddTreasure = (event) => {
     event.preventDefault();
 
-    const formattedTreasure = {
-      ...newTreasure,
-      responsible_user: id,
-      our_company: CompanyId,
-      transaction_method: activeTab,
-      date: formatDate(newTreasure.date),
-    };
+    const formData = new FormData();
+    for (const key in newTreasure) {
+      formData.append(key, newTreasure[key]);
+    }
+    formData.append("responsible_user", id);
+    formData.append("our_company", CompanyId);
+    formData.append("transaction_method", activeTab);
+    formData.set("date", formatDate(newTreasure.date));
 
     const url = `${urlLink}/finance/`;
     const requestOptions = {
@@ -298,7 +308,7 @@ const Treasury = () => {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(formattedTreasure),
+      body: formData,
     };
 
     fetch(url, requestOptions)
@@ -470,12 +480,12 @@ const Treasury = () => {
             "N/A"}
         </td>
         <td>
-          {content?.counter_party_data.firstname}{" "}
-          {content?.counter_party_data.surname}
+        {content?.counter_party_data?.firstname}{" "}
+        {content?.counter_party_data?.surname}
         </td>
         <td>{content?.vat}</td>
         <td>{content?.cr}</td>
-        <td>{content?.currency}</td>
+        <td>{content?.currency_data?.["Currency" + language.toUpperCase()]}</td>
 
         <td className="datab">
           <button
@@ -1145,6 +1155,28 @@ const Treasury = () => {
                 </Form.Control.Feedback>
               )}
             </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>File</Form.Label>
+              <Form.Control
+                type="file"
+                name="file"
+                accept=".pdf, image/*"
+                onChange={(e) =>
+                  handleInputChange({
+                    target: {
+                      name: "file",
+                      value: e.target.files[0], // Save the file object
+                    },
+                  })
+                }
+                isInvalid={!!errors.file}
+              />
+              {errors.file && (
+                <Form.Control.Feedback type="invalid">
+                  {errors.file}
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
@@ -1525,6 +1557,19 @@ const Treasury = () => {
               {errors.cost_center && (
                 <Form.Control.Feedback type="invalid">
                   {errors.cost_center}
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>File</Form.Label>
+              <Form.Control
+                type="file"
+                onChange={(e) => setSelectedFile(e.target.files[0])}
+                isInvalid={!!errors.file}
+              />
+              {errors.file && (
+                <Form.Control.Feedback type="invalid">
+                  {errors.file}
                 </Form.Control.Feedback>
               )}
             </Form.Group>

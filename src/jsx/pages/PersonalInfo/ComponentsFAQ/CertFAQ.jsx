@@ -135,7 +135,7 @@ const CertFAQ = ({
               type="date"
               name="IssueDate"
               className="edit__input"
-              defaultValue={formatDateToShow(data.RusLCert[0]?.IssueDate)}
+              defaultValue={formatDateToShow(data?.RusLCert[0]?.IssueDate)}
             />
           </Form.Group>
 
@@ -145,7 +145,7 @@ const CertFAQ = ({
               type="date"
               name="ValidityDate"
               className="edit__input"
-              defaultValue={formatDateToShow(data.RusLCert[0]?.ValidityDate)}
+              defaultValue={formatDateToShow(data?.RusLCert[0]?.ValidityDate)}
             />
           </Form.Group>
 
@@ -155,7 +155,7 @@ const CertFAQ = ({
               type="text"
               name="DocumentNo"
               className="edit__input"
-              defaultValue={data.RusLCert[0]?.DocumentNo}
+              defaultValue={data?.RusLCert[0]?.DocumentNo}
             />
           </Form.Group>
 
@@ -165,7 +165,7 @@ const CertFAQ = ({
               type="text"
               name="PlaceOfIssue"
               className="edit__input"
-              defaultValue={data.RusLCert[0]?.PlaceOfIssue}
+              defaultValue={data?.RusLCert[0]?.PlaceOfIssue}
             />
           </Form.Group>
 
@@ -175,7 +175,7 @@ const CertFAQ = ({
               type="text"
               name="IssuedBy"
               className="edit__input"
-              defaultValue={data.RusLCert[0]?.IssuedBy}
+              defaultValue={data?.RusLCert[0]?.IssuedBy}
             />
           </Form.Group>
 
@@ -210,7 +210,7 @@ const CertFAQ = ({
 
     try {
       const response = await fetch(
-        `${urlLink}/employee/RusLCert/${data.RusLCert[0].id}/`,
+        `${urlLink}/employee/RusLCert/${data?.RusLCert[0].id}/`,
         {
           method: "PUT",
           headers: {
@@ -269,8 +269,8 @@ const CertFAQ = ({
       >
         <h5 className="toggle-title">{t.certificationsInformation}</h5>
         <p className="faq__header-seria">
-          {data.RusLCert && data.RusLCert.length > 0
-            ? data.RusLCert[0].IssueDate
+          {data?.RusLCert && data?.RusLCert.length > 0
+            ? data?.RusLCert[0].IssueDate
             : t.noCertificationsInformation}
         </p>
       </div>
@@ -279,7 +279,7 @@ const CertFAQ = ({
           openSection === "certifications" ? "open" : ""
         }`}
       >
-        {data.RusLCert && data.RusLCert.length > 0 ? (
+        {data?.RusLCert && data?.RusLCert.length > 0 ? (
           <div className="faq-details">
             <div className="faq__top-wrapper">
               <p className="faq__section-title">{t.certifications}</p>
@@ -288,7 +288,7 @@ const CertFAQ = ({
               <div className="faq__wrapper">
                 <p className="faq__topsubheader">{t.validityDate}</p>
                 <p className="faq__country-code">
-                  {data.RusLCert[0].ValidityDate}
+                  {data?.RusLCert[0].ValidityDate}
                 </p>
               </div>
             </div>
@@ -303,18 +303,18 @@ const CertFAQ = ({
                 <div className="faq__birthwrapper">
                   <div className="faq-field">
                     <span className="field-label">Issue By:</span>
-                    <p className="field__data">{data.RusLCert[0].IssuedBy}</p>
+                    <p className="field__data">{data?.RusLCert[0].IssuedBy}</p>
                   </div>
                   <div className="faq-field">
                     <span className="field-label">Place of Issue:</span>
                     <p className="field__data">
-                      {data.RusLCert[0].PlaceOfIssue}
+                      {data?.RusLCert[0].PlaceOfIssue}
                     </p>
                   </div>
                 </div>
                 <div className="faq-field">
                   <span className="field-label">Issue date:</span>
-                  <p className="field__data">{data.RusLCert[0].IssueDate}</p>
+                  <p className="field__data">{data?.RusLCert[0].IssueDate}</p>
                 </div>
 
                 <button

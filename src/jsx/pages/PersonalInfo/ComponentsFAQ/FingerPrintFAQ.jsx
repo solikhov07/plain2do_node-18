@@ -162,7 +162,7 @@ const FingerPrintFAQ = ({
               type="date"
               name="IssueDate"
               className="edit__input"
-              defaultValue={formatDateToShow(data.Daktil[0]?.IssueDate)}
+              defaultValue={formatDateToShow(data?.Daktil[0]?.IssueDate)}
             />
           </Form.Group>
 
@@ -172,7 +172,7 @@ const FingerPrintFAQ = ({
               type="date"
               name="ValidityDate"
               className="edit__input"
-              defaultValue={formatDateToShow(data.Daktil[0]?.ValidityDate)}
+              defaultValue={formatDateToShow(data?.Daktil[0]?.ValidityDate)}
             />
           </Form.Group>
 
@@ -182,7 +182,7 @@ const FingerPrintFAQ = ({
               type="text"
               name="DocumentSerie"
               className="edit__input"
-              defaultValue={data.Daktil[0]?.DocumentSerie}
+              defaultValue={data?.Daktil[0]?.DocumentSerie}
               min="10"
               required
               onInput={handleDocumentSerieInput}
@@ -197,7 +197,7 @@ const FingerPrintFAQ = ({
               className="edit__input"
               min="1000000"
               required
-              defaultValue={data.Daktil[0]?.DocumentNo}
+              defaultValue={data?.Daktil[0]?.DocumentNo}
               onInput={handleDocumentNoInput}
             />
           </Form.Group>
@@ -208,7 +208,7 @@ const FingerPrintFAQ = ({
               type="text"
               name="IssuedBy"
               className="edit__input"
-              defaultValue={data.Daktil[0]?.IssuedBy}
+              defaultValue={data?.Daktil[0]?.IssuedBy}
             />
           </Form.Group>
 
@@ -261,7 +261,7 @@ const FingerPrintFAQ = ({
 
     try {
       const response = await fetch(
-        `${urlLink}/employee/daktil/${data.Daktil[0].id}/`, // URL to update specific `daktil`
+        `${urlLink}/employee/daktil/${data?.Daktil[0].id}/`, // URL to update specific `daktil`
         {
           method: "PUT",
           headers: {
@@ -312,8 +312,8 @@ const FingerPrintFAQ = ({
       >
         <h5 className="toggle-title">{t.fingerprintingInformation}</h5>
         <p className="faq__header-seria">
-          {data.Daktil && data.Daktil.length > 0
-            ? data.Daktil[0].DocumentNo
+          {data?.Daktil && data?.Daktil.length > 0
+            ? data?.Daktil[0].DocumentNo
             : t.noFingerprintingInformation}
         </p>
       </div>
@@ -322,7 +322,7 @@ const FingerPrintFAQ = ({
           openSection === "fingerprinting" ? "open" : ""
         }`}
       >
-        {data.Daktil && data.Daktil.length > 0 ? (
+        {data?.Daktil && data?.Daktil.length > 0 ? (
           <div className="faq-details">
             <div className="faq__top-wrapper">
               <p className="faq__section-title">{t.fingerprinting}</p>
@@ -330,8 +330,8 @@ const FingerPrintFAQ = ({
               <div className="faq__wrapper">
                 <p className="faq__topsubheader">{t.documentNumber}</p>
                 <p className="faq__country-code">
-                  {data.Daktil[0].DocumentSerie}
-                  {data.Daktil[0].DocumentNo}
+                  {data?.Daktil[0].DocumentSerie}
+                  {data?.Daktil[0].DocumentNo}
                 </p>
               </div>
             </div>
@@ -346,18 +346,18 @@ const FingerPrintFAQ = ({
                 <div className="faq__birthwrapper">
                   <div className="faq-field">
                     <span className="field-label">Issue Date:</span>
-                    <p className="field__data">{data.Daktil[0]?.IssueDate}</p>
+                    <p className="field__data">{data?.Daktil[0]?.IssueDate}</p>
                   </div>
                   <div className="faq-field">
                     <span className="field-label">Validity Date:</span>
                     <p className="field__data">
-                      {data.Daktil[0]?.ValidityDate}
+                      {data?.Daktil[0]?.ValidityDate}
                     </p>
                   </div>
                 </div>
                 <div className="faq-field">
                   <span className="field-label">Issued By:</span>
-                  <p className="field__data">{data.Daktil[0]?.IssuedBy}</p>
+                  <p className="field__data">{data?.Daktil[0]?.IssuedBy}</p>
                 </div>
 
                 <button

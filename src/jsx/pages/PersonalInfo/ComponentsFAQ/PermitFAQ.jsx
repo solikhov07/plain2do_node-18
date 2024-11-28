@@ -233,7 +233,7 @@ const PermitFAQ = ({
             <Form.Control
               type="date"
               name="IssueDate"
-              defaultValue={formatDateToShow(data.VnjRvp[0]?.IssueDate) || ""}
+              defaultValue={formatDateToShow(data?.VnjRvp[0]?.IssueDate) || ""}
               className="edit__input"
               required
             />
@@ -245,7 +245,7 @@ const PermitFAQ = ({
               type="date"
               name="ValidityDate"
               defaultValue={
-                formatDateToShow(data.VnjRvp[0]?.ValidityDate) || ""
+                formatDateToShow(data?.VnjRvp[0]?.ValidityDate) || ""
               }
               className="edit__input"
               required
@@ -258,7 +258,7 @@ const PermitFAQ = ({
               type="date"
               name="DecisionDate"
               defaultValue={
-                formatDateToShow(data.VnjRvp[0]?.DecisionDate) || ""
+                formatDateToShow(data?.VnjRvp[0]?.DecisionDate) || ""
               }
               className="edit__input"
               required
@@ -270,7 +270,7 @@ const PermitFAQ = ({
             <Form.Control
               type="text"
               name="DecisionNumber"
-              defaultValue={data.VnjRvp[0]?.DecisionNumber}
+              defaultValue={data?.VnjRvp[0]?.DecisionNumber}
               className="edit__input"
               onChange={handleDecisionNumberChange}
               required
@@ -285,7 +285,7 @@ const PermitFAQ = ({
             <Form.Control
               type="text"
               name="DocumentSerie"
-              defaultValue={data.VnjRvp[0]?.DocumentSerie}
+              defaultValue={data?.VnjRvp[0]?.DocumentSerie}
               className="edit__input"
               onChange={handleDocumentSerieChange}
               required
@@ -300,7 +300,7 @@ const PermitFAQ = ({
             <Form.Control
               type="text"
               name="DocumentNo"
-              defaultValue={data.VnjRvp[0]?.DocumentNo}
+              defaultValue={data?.VnjRvp[0]?.DocumentNo}
               className="edit__input"
               onChange={handleDocumentNoChange}
               required
@@ -315,7 +315,7 @@ const PermitFAQ = ({
             <Form.Control
               type="text"
               name="ValidTerritories"
-              defaultValue={data.VnjRvp[0]?.ValidTerritories}
+              defaultValue={data?.VnjRvp[0]?.ValidTerritories}
               className="edit__input"
               required
             />
@@ -326,7 +326,7 @@ const PermitFAQ = ({
             <Form.Control
               type="text"
               name="IssuedBy"
-              defaultValue={data.VnjRvp[0]?.IssuedBy}
+              defaultValue={data?.VnjRvp[0]?.IssuedBy}
               className="edit__input"
               required
             />
@@ -396,7 +396,7 @@ const PermitFAQ = ({
 
     try {
       const response = await fetch(
-        `${urlLink}/employee/VnjRvp/${data.VnjRvp[0].id}/`, // Replace `recordId` with the actual ID of the record being edited
+        `${urlLink}/employee/VnjRvp/${data?.VnjRvp[0].id}/`, // Replace `recordId` with the actual ID of the record being edited
         {
           method: "PUT",
           headers: {
@@ -453,8 +453,8 @@ const PermitFAQ = ({
       >
         <h5 className="toggle-title">{t.residencePermitInformation}</h5>
         <p className="faq__header-seria">
-          {data.VnjRvp && data.VnjRvp.length > 0
-            ? data.VnjRvp[0].IssueDate
+          {data?.VnjRvp && data?.VnjRvp.length > 0
+            ? data?.VnjRvp[0].IssueDate
             : t.noResidencePermitInformation}
         </p>
       </div>
@@ -463,7 +463,7 @@ const PermitFAQ = ({
           openSection === "residencePermit" ? "open" : ""
         }`}
       >
-        {data.VnjRvp && data.VnjRvp.length > 0 ? (
+        {data?.VnjRvp && data?.VnjRvp.length > 0 ? (
           <div className="faq-details">
             <div className="faq__top-wrapper">
               <p className="faq__section-title">{t.residencePermit}</p>
@@ -472,7 +472,7 @@ const PermitFAQ = ({
               <div className="faq__wrapper">
                 <p className="faq__topsubheader">Document No</p>
                 <p className="faq__country-code">
-                  {data.VnjRvp[0]?.DocumentNo}
+                  {data?.VnjRvp[0]?.DocumentNo}
                 </p>
               </div>
             </div>
@@ -486,19 +486,19 @@ const PermitFAQ = ({
                 </div>
                 <div className="faq-field">
                   <span className="field-label">Issued By:</span>
-                  <p className="field__data">{data.VnjRvp[0]?.IssuedBy}</p>
+                  <p className="field__data">{data?.VnjRvp[0]?.IssuedBy}</p>
                 </div>
                 <div className="faq__birthwrapper">
                   <div className="faq-field">
                     <span className="field-label">Valid Territories:</span>
                     <p className="field__data">
-                      {data.VnjRvp[0]?.ValidTerritories}
+                      {data?.VnjRvp[0]?.ValidTerritories}
                     </p>
                   </div>
                   <div className="faq-field">
                     <span className="field-label">Valid Date:</span>
                     <p className="field__data">
-                      {data.VnjRvp[0]?.ValidityDate}
+                      {data?.VnjRvp[0]?.ValidityDate}
                     </p>
                   </div>
                 </div>

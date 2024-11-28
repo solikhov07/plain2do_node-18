@@ -40,7 +40,6 @@ export const MenuList = [
         titleRU: "Мои задачи",
         titleTR: "Görevlerim",
         classsChange: 'mm-collapse',
-        update:"New",
         iconStyle: 
         <i className="flaticon-381-list-1"></i>,        
         content:[

@@ -28,7 +28,7 @@ const SnillsFAQ = ({
             <Form.Control
               type="text"
               name="DocumentNo"
-              defaultValue={formatDocumentNo(data.Snils[0]?.DocumentNo || "")}
+              defaultValue={formatDocumentNo(data?.Snils[0]?.DocumentNo || "")}
               className="edit__input"
               required
               maxLength={14} // Max length for SNILS format
@@ -95,7 +95,7 @@ const SnillsFAQ = ({
 
     try {
       const response = await fetch(
-        `${urlLink}/employee/snils/${data.Snils[0]?.id}/`,
+        `${urlLink}/employee/snils/${data?.Snils[0]?.id}/`,
         {
           method: "PUT",
           headers: {
@@ -226,8 +226,8 @@ const SnillsFAQ = ({
       <div onClick={() => handleToggle("snils")} className="faq__t-wrapper">
         <h5 className="toggle-title">{t.snils}</h5>
         <p className="faq__header-seria">
-          {data.Snils && data.Snils.length > 0
-            ? data.Snils[0].DocumentNo
+          {data?.Snils && data?.Snils.length > 0
+            ? data?.Snils[0].DocumentNo
             : t.noSnils}
         </p>
       </div>
@@ -236,20 +236,20 @@ const SnillsFAQ = ({
           openSection === "snils" ? "open" : ""
         }`}
       >
-        {data.Snils && data.Snils.length > 0 ? (
+        {data?.Snils && data?.Snils.length > 0 ? (
           <div className="faq-details">
             <div className="faq__top-wrapper">
               <p className="faq__section-title">{t.inn}</p>
               <span className="faq__line"></span>
               <div className="faq__wrapper">
                 <p className="faq__topsubheader">{t.documentNumber}</p>
-                <p className="faq__country-code">{data.Snils[0].DocumentNo}</p>
+                <p className="faq__country-code">{data?.Snils[0].DocumentNo}</p>
               </div>
               <span className="faq__line"></span>
               <div className="faq__wrapper">
                 <p className="faq__topsubheader">{t.documentType}</p>
                 <p className="faq__country-code">
-                  {data.Snils[0].Doc_Type_En_data.Doc_Type_En}
+                  {data?.Snils[0].Doc_Type_En_data.Doc_Type_En}
                 </p>
               </div>
             </div>
@@ -264,7 +264,7 @@ const SnillsFAQ = ({
                 <div className="faq-field">
                   <span className="field-label">{t.employeeNumber}:</span>
                   <p className="field__data">
-                    {data.Snils[0].Employee_data.personnel_number}
+                    {data?.Snils[0].Employee_data.personnel_number}
                   </p>
                 </div>
                 <div className="faq-field">

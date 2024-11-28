@@ -172,7 +172,7 @@ const MigrFAQ = ({
               type="date"
               name="IssueDate"
               className="edit__input"
-              defaultValue={formatDateToShow(data.MigrCard[0]?.IssueDate)}
+              defaultValue={formatDateToShow(data?.MigrCard[0]?.IssueDate)}
               required
             />
           </Form.Group>
@@ -183,7 +183,7 @@ const MigrFAQ = ({
               type="date"
               name="From"
               className="edit__input"
-              defaultValue={formatDateToShow(data.MigrCard[0]?.From)}
+              defaultValue={formatDateToShow(data?.MigrCard[0]?.From)}
               required
             />
           </Form.Group>
@@ -194,7 +194,7 @@ const MigrFAQ = ({
               type="date"
               name="To"
               className="edit__input"
-              defaultValue={formatDateToShow(data.MigrCard[0]?.To)}
+              defaultValue={formatDateToShow(data?.MigrCard[0]?.To)}
               required
             />
           </Form.Group>
@@ -205,7 +205,7 @@ const MigrFAQ = ({
               type="number"
               name="DocumentSerie"
               className="edit__input"
-              defaultValue={data.MigrCard[0]?.DocumentSerie}
+              defaultValue={data?.MigrCard[0]?.DocumentSerie}
               required
             />
           </Form.Group>
@@ -216,7 +216,7 @@ const MigrFAQ = ({
               type="number"
               name="DocumentNo"
               className="edit__input"
-              defaultValue={data.MigrCard[0]?.DocumentNo}
+              defaultValue={data?.MigrCard[0]?.DocumentNo}
               required
             />
           </Form.Group>
@@ -227,7 +227,7 @@ const MigrFAQ = ({
               as="select"
               name="VisitPurpose"
               className="edit__input"
-              defaultValue={data.MigrCard[0]?.VisitPurpose}
+              defaultValue={data?.MigrCard[0]?.VisitPurpose}
               required
             >
               <option value="Служебный/ Official">Служебный/ Official</option>
@@ -248,7 +248,7 @@ const MigrFAQ = ({
               type="text"
               name="BorderCheckpoint"
               className="edit__input"
-              defaultValue={data.MigrCard[0]?.BorderCheckpoint}
+              defaultValue={data?.MigrCard[0]?.BorderCheckpoint}
               required
             />
           </Form.Group>
@@ -287,7 +287,7 @@ const MigrFAQ = ({
 
     try {
       const response = await fetch(
-        `${urlLink}/employee/migr-card/${data.MigrCard[0].id}/`,
+        `${urlLink}/employee/migr-card/${data?.MigrCard[0].id}/`,
         {
           method: "PUT",
           headers: {
@@ -352,8 +352,8 @@ const MigrFAQ = ({
       <div onClick={() => handleToggle("migrInfo")} className="faq__t-wrapper">
         <h5 className="toggle-title">{t.migrationInformation}</h5>
         <p className="faq__header-seria">
-          {data.MigrCard && data.MigrCard.length > 0
-            ? data.MigrCard[0].IssueDate
+          {data?.MigrCard && data?.MigrCard.length > 0
+            ? data?.MigrCard[0].IssueDate
             : t.noMigrationInformation}
         </p>
       </div>
@@ -362,7 +362,7 @@ const MigrFAQ = ({
           openSection === "migrInfo" ? "open" : ""
         }`}
       >
-        {data.MigrCard && data.MigrCard.length > 0 ? (
+        {data?.MigrCard && data?.MigrCard.length > 0 ? (
           <div className="faq-details">
             <div className="faq__top-wrapper">
               <p className="faq__section-title">{t.migrationCard}</p>
@@ -370,7 +370,7 @@ const MigrFAQ = ({
               <div className="faq__wrapper">
                 <p className="faq__topsubheader">{t.issueDate}</p>
                 <p className="faq__country-code">
-                  {data.MigrCard[0].IssueDate}
+                  {data?.MigrCard[0].IssueDate}
                 </p>
               </div>
             </div>
@@ -385,12 +385,12 @@ const MigrFAQ = ({
                 <div className="faq-field">
                   <span className="field-label">Border Checkpoint:</span>
                   <p className="field__data">
-                    {data.MigrCard[0].BorderCheckpoint}
+                    {data?.MigrCard[0].BorderCheckpoint}
                   </p>
                 </div>
                 <div className="faq-field">
                   <span className="field-label">Visit Purpose:</span>
-                  <p className="field__data">{data.MigrCard[0].VisitPurpose}</p>
+                  <p className="field__data">{data?.MigrCard[0].VisitPurpose}</p>
                 </div>
 
                 <button

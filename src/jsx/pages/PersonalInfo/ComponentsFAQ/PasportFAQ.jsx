@@ -40,8 +40,8 @@ const PassportFAQ = ({
       <img
         className="sliding-image"
         src={
-          data.Passport[0].Employee_data.photo
-            ? data.Passport[0].Employee_data.photo
+          data?.Passport[0].Employee_data.photo
+            ? data?.Passport[0].Employee_data.photo
             : accountImg
         }
         alt="PDF Image"
@@ -61,7 +61,7 @@ const PassportFAQ = ({
             <Form.Control
               as="select"
               name="citizenship"
-              defaultValue={data.Passport[0]?.citizenship_data?.id || ""}
+              defaultValue={data?.Passport[0]?.citizenship_data?.id || ""}
               className="edit__input"
             >
               {countries.map((country) => (
@@ -77,7 +77,7 @@ const PassportFAQ = ({
             <Form.Control
               as="select"
               name="IssuedBy"
-              defaultValue={data.Passport[0]?.IssuedBy_data?.id || ""}
+              defaultValue={data?.Passport[0]?.IssuedBy_data?.id || ""}
               className="edit__input"
             >
               {countries.map((country) => (
@@ -93,7 +93,7 @@ const PassportFAQ = ({
             <Form.Control
               type="text"
               name="PassportSerie"
-              defaultValue={data.Passport[0]?.PassportSerie || ""}
+              defaultValue={data?.Passport[0]?.PassportSerie || ""}
               className="edit__input"
             />
           </Form.Group>
@@ -103,7 +103,7 @@ const PassportFAQ = ({
             <Form.Control
               type="text"
               name="PassportNumber"
-              defaultValue={data.Passport[0]?.PassportNumber || ""}
+              defaultValue={data?.Passport[0]?.PassportNumber || ""}
               className="edit__input"
             />
           </Form.Group>
@@ -113,7 +113,7 @@ const PassportFAQ = ({
             <Form.Control
               type="text"
               name="CountryPersNo"
-              defaultValue={data.Passport[0]?.CountryPersNo || ""}
+              defaultValue={data?.Passport[0]?.CountryPersNo || ""}
               className="edit__input"
             />
           </Form.Group>
@@ -123,7 +123,7 @@ const PassportFAQ = ({
             <Form.Control
               as="select"
               name="Letter"
-              defaultValue={data.Passport[0]?.Letter || ""}
+              defaultValue={data?.Passport[0]?.Letter || ""}
               className="edit__input"
             >
               <option value="Latin">Latin</option>
@@ -137,7 +137,7 @@ const PassportFAQ = ({
               type="date"
               name="ValidityDate"
               defaultValue={
-                formatDateForInput(data.Passport[0]?.ValidityDate) || ""
+                formatDateForInput(data?.Passport[0]?.ValidityDate) || ""
               }
               className="edit__input"
             />
@@ -149,7 +149,7 @@ const PassportFAQ = ({
               type="date"
               name="IssueDate"
               defaultValue={
-                formatDateForInput(data.Passport[0]?.IssueDate) || ""
+                formatDateForInput(data?.Passport[0]?.IssueDate) || ""
               }
               className="edit__input"
             />
@@ -192,7 +192,7 @@ const PassportFAQ = ({
 
     try {
       const response = await fetch(
-        `${urlLink}/employee/passport/${data.Passport[0]?.id}/`,
+        `${urlLink}/employee/passport/${data?.Passport[0]?.id}/`,
         {
           method: "PUT",
           headers: {
@@ -407,7 +407,7 @@ const PassportFAQ = ({
         <h5 className="toggle-title">{t.passportInformation}</h5>
         <p className="faq__header-seria">
           {data?.Passport && data?.Passport.length > 0 ? (
-            <>{data.Passport[0].PassportNumber}</>
+            <>{data?.Passport[0].PassportNumber}</>
           ) : (
             t.noPassportInformation
           )}
@@ -443,7 +443,7 @@ const PassportFAQ = ({
                   className="faq-photo"
                   src={
                     data?.Passport[0]?.Employee_data?.photo
-                      ? data.Passport[0].Employee_data?.photo
+                      ? data?.Passport[0].Employee_data?.photo
                       : accountImg
                   }
                   alt={t.passportPhotoAlt}
